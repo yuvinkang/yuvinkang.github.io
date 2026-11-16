@@ -261,12 +261,12 @@ def hero():
     G = 150; s = 1.25; y = G - 29 * s
     b = GROUND(20, 820, G)
     b += scientist(60, y, s) + juggler(315, y, s) + bassist(505, y, s) + kicker_bag(690, y, s)
-    for cx, t in [(118, "01 — wet lab"), (330, "02 — juggling"), (520, "03 — principal bass"), (730, "04 — taekwondo")]:
+    for cx, t in [(118, "01 — Research"), (330, "02 — Soccer"), (520, "03 — Double Bassist"), (730, "04 — Taekwondo")]:
         b += CAP(cx, G + 20, t)
-    write("hero", svg("hero", "0 0 840 180", b, "Animated stick figures working in a lab, juggling a soccer ball, playing double bass, and kicking a heavy bag"))
+    write("hero", svg("hero", "0 0 840 180", b, "Animated stick figures: one doing lab research, one juggling a soccer ball, one playing double bass, one practicing taekwondo"))
 
-def research():
-    G = 150; s = 1.25; y = G - 29 * s; x = 100
+def biolistics():
+    G = 180; s = 1.3; y = G - 29 * s; x = 58
     gun = ('<rect class="fill" x="-1.8" y="-4" width="3.6" height="14" rx="1"/>'
            '<rect class="fill" x="-7" y="-3" width="6" height="3" rx="1"/>'
            '<rect class="gold-fill" x="1.8" y="-1" width="3" height="7" rx="1.2"/>')
@@ -274,24 +274,20 @@ def research():
     puff = '<circle class="puff" cx="37" cy="-28" r="3"/>'
     body = fig("gunner", x, y, s, dict(aR=-90, fR=0, aL=aL[0], fL=aL[1], lL=16, lR=-14), dict(hR=gun, front=puff))
     mx, my = x + 37 * s, y - 28 * s
-    # plant
-    px = 470
-    plant = (f'<path class="pot" d="M{px-17} 128 L{px+17} 128 L{px+13} {G} L{px-13} {G} Z"/>'
-             f'<path class="st" d="M{px} 128 C{px} 110 {px-3} 95 {px} 70"/>')
-    leaves = [(px - 14, 104, 12, 5, -25), (px + 14, 96, 12, 5, 25), (px - 11, 84, 10, 4.2, -35), (px + 10, 76, 9, 4, 35), (px + 1, 66, 7, 3.6, -80)]
-    for i, (cx, cy, rx, ry, a) in enumerate(leaves):
-        plant += f'<ellipse class="leaf" cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" transform="rotate({a} {cx} {cy})"/>'
-    for i, (cx, cy, rx, ry, a) in enumerate(leaves):
-        plant += f'<ellipse class="leaf-glow" cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" transform="rotate({a} {cx} {cy})"/>'
-    plant += f'<text class="cap gfp" x="{px+24}" y="62">GFP⁺</text>'
+    px = 252
+    plant = (f'<path class="pot" d="M{px-17} {G-22} L{px+17} {G-22} L{px+13} {G} L{px-13} {G} Z"/>'
+             f'<path class="st" d="M{px} {G-22} C{px} {G-40} {px-3} {G-55} {px} {G-80}"/>')
+    leaves = [(px - 14, G - 46, 12, 5, -25), (px + 14, G - 54, 12, 5, 25), (px - 11, G - 66, 10, 4.2, -35), (px + 10, G - 74, 9, 4, 35), (px + 1, G - 84, 7, 3.6, -80)]
+    for cls in ("leaf", "leaf-glow"):
+        for (cx, cy, rx, ry, a) in leaves:
+            plant += f'<ellipse class="{cls}" cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" transform="rotate({a} {cx} {cy})"/>'
+    plant += f'<text class="cap gfp" x="{px+20}" y="{G-92}">GFP⁺</text>'
     parts = ""
-    targets = [(-14, 104), (14, 96), (-11, 84), (10, 76), (1, 68), (-4, 100), (8, 88)]
-    for i, (tx, ty) in enumerate(targets):
-        dx, dy = px + tx - mx, ty - my
+    for i, (tx, ty) in enumerate([(-14, -46), (14, -54), (-11, -66), (10, -74), (1, -82), (-4, -50), (8, -62)]):
+        dx, dy = px + tx - mx, G + ty - my
         parts += (f'<circle class="au p{i}" cx="{mx:.1f}" cy="{my:.1f}" r="2" '
                   f'style="--dx:{dx:.0f}px;--dy:{dy:.0f}px;animation-delay:{i * 0.045:.2f}s"/>')
-    b = GROUND(20, 620, G) + plant + parts + body
-    b += CAP(150, G + 20, "biolistics — gold microcarriers → plant cells") + CAP(470, G + 20, "transient GFP expression")
+    b = GROUND(10, 310, G) + plant + parts + body + CAP(14, 22, "Au → Nicotiana / Allium", "start")
     CSS.append("@keyframes recoil{0%{transform:rotate(-90deg)}4%{transform:rotate(-99deg)}18%,100%{transform:rotate(-90deg)}}"
                ".gunner .aR{animation:recoil 1.4s infinite ease-out}"
                "@keyframes puff{0%{opacity:.55;transform:scale(.4)}30%,100%{opacity:0;transform:scale(2.4)}}"
@@ -301,89 +297,173 @@ def research():
                "@keyframes glow{0%{opacity:0}12%{opacity:.25}35%{opacity:.25}45%{opacity:.55}68%{opacity:.55}78%{opacity:.9}94%{opacity:.9}100%{opacity:0}}"
                ".scene .leaf-glow{animation:glow 4.2s infinite;animation-delay:.35s}"
                "@keyframes gfp{0%,70%{opacity:0}80%,94%{opacity:1}100%{opacity:0}}.scene .gfp{animation:gfp 4.2s infinite .35s;fill:var(--bio)}")
-    write("research", svg("research", "0 0 640 180", b, "Animated stick figure firing gold particles from a gene gun at a plant, which glows green"))
+    write("biolistics", svg("biolistics", "0 0 320 200", b, "Stick figure firing gold microcarriers from a gene gun at a plant, which glows green"))
 
-def experience():
-    G = 150; s = 1.65; y = G - 29 * s; x = 110
+def bioscaffold():
+    G = 150; s = 1.2; y = G - 29 * s; x = 70; T = 7
+    t1, t2 = (28, -30), (30, -14)
+    a1, a2 = arm(t1), arm(t2)
+    tot2 = a2[0] + a2[1]
+    sx0, sw, sh = 151, 41, 22
+    top_final = 152
+    hand2 = (x + t2[0] * s, y + t2[1] * s)
+    tip = (sx0 + sw / 2, top_final)
+    v = ((tip[0] - hand2[0]) / s, (tip[1] - hand2[1]) / s)       # hand → tip, figure-local units
+    lw, lh = sw / s, sh / s
+    tipL = (v[0], v[1] - 3)
+    carry = (f'<g class="carry"><rect class="scaf-carry" x="{tipL[0]-lw/2:.2f}" y="{tipL[1]:.2f}" width="{lw:.2f}" height="{lh:.2f}" rx="1.6"/>'
+             + "".join(L(round(tipL[0] - lw / 2 + k * lw / 6, 2), round(tipL[1], 2), round(tipL[0] - lw / 2 + k * lw / 6, 2), round(tipL[1] + lh, 2), "mesh") for k in range(1, 6))
+             + "".join(L(round(tipL[0] - lw / 2, 2), round(tipL[1] + k * lh / 4, 2), round(tipL[0] + lw / 2, 2), round(tipL[1] + k * lh / 4, 2), "mesh") for k in range(1, 4))
+             + '</g>')
+    forceps = upright(L(0, -3, tipL[0] - 1, tipL[1], "thin") + L(0, -3, tipL[0] + 1, tipL[1], "thin") + carry, tot2)
+    body = fig("surgeon", x, y, s, dict(aR=a1[0], fR=a1[1], aL=12, fL=-10, lL=8, lR=-6),
+               dict(hR=forceps, back='<path class="coat" d="M-5 -30 L5 -30 L8 -1 L-8 -1 Z"/>'))
+    skin = (f'<rect class="dermis" x="10" y="{G+25}" width="300" height="30"/>'
+            f'<rect class="dermis" x="10" y="{G+6}" width="141" height="20"/><rect class="dermis" x="192" y="{G+6}" width="118" height="20"/>'
+            f'<rect class="epi" x="10" y="{G}" width="141" height="6"/><rect class="epi" x="192" y="{G}" width="118" height="6"/>'
+            f'<rect class="wound" x="151" y="{G}" width="41" height="25"/>')
+    mesh = "".join(L(sx0 + k * 6.8, top_final, sx0 + k * 6.8, top_final + sh, "mesh") for k in range(1, 6))
+    mesh += "".join(L(sx0, top_final + k * 5.5, sx0 + sw, top_final + k * 5.5, "mesh") for k in range(1, 4))
+    placed = f'<g class="placed"><rect class="scaf" x="{sx0}" y="{top_final}" width="{sw}" height="{sh}" rx="2"/>{mesh}</g>'
+    cells = ""
+    starts = [(128, 170, "c-teal"), (138, 182, "c-gold"), (122, 160, "c-coral"), (206, 168, "c-teal"), (214, 182, "c-coral"), (200, 160, "c-gold")]
+    ends = [(158, 160), (166, 168), (162, 156), (184, 160), (178, 168), (172, 156)]
+    for i, ((cx, cy, c), (ex_, ey)) in enumerate(zip(starts, ends)):
+        cells += f'<circle class="cell {c}" cx="{cx}" cy="{cy}" r="3" style="--dx:{ex_-cx}px;--dy:{ey-cy}px;animation-delay:{i*0.12:.2f}s"/>'
+    stain = f'<rect class="stain" x="10" y="{G}" width="300" height="55"/>'
+    labels = (CAP(14, 22, "porcine ECM bioscaffold → wound bed", "start")
+              + f'<text class="cap he" x="306" y="{G-8}" text-anchor="end">H&amp;E · day 14</text>')
+    b = skin + placed + cells + stain + body + labels
+    kf("placeArm", [(0, a1[0], "ease-in-out"), (22, a2[0]), (30, a2[0], "ease-in-out"), (40, a1[0]), (100, a1[0])])
+    kf("placeFore", [(0, a1[1], "ease-in-out"), (22, a2[1]), (30, a2[1], "ease-in-out"), (40, a1[1]), (100, a1[1])])
+    CSS.append(f".surgeon .aR{{animation:placeArm {T}s infinite}}.surgeon .fR{{animation:placeFore {T}s infinite}}"
+               f"@keyframes carry{{0%,22%{{opacity:1}}22.5%,94%{{opacity:0}}98%,100%{{opacity:1}}}}.surgeon .carry{{animation:carry {T}s infinite}}"
+               f"@keyframes placed{{0%,22%{{opacity:0}}22.5%,92%{{opacity:1}}96%,100%{{opacity:0}}}}.scene .placed{{animation:placed {T}s infinite}}"
+               f"@keyframes scafFill{{0%,40%{{fill:var(--tint-soft)}}70%,92%{{fill:#f6c9d6}}100%{{fill:var(--tint-soft)}}}}"
+               f".scene .scaf{{animation:scafFill {T}s infinite}}"
+               f"@keyframes cell{{0%,32%{{opacity:0;transform:none}}36%{{opacity:1;transform:none}}64%,90%{{opacity:1;transform:translate(var(--dx),var(--dy))}}95%,100%{{opacity:0;transform:translate(var(--dx),var(--dy))}}}}"
+               f".scene .cell{{animation:cell {T}s infinite ease-in-out}}"
+               f"@keyframes stain{{0%,72%{{opacity:0}}78%,90%{{opacity:.35}}96%,100%{{opacity:0}}}}"
+               f".scene .stain{{fill:#b06ab3;animation:stain {T}s infinite}}"
+               f"@keyframes he{{0%,72%{{opacity:0}}78%,90%{{opacity:1}}96%,100%{{opacity:0}}}}.scene .he{{fill:#8e3b91;animation:he {T}s infinite}}")
+    write("bioscaffold", svg("bioscaffold", "0 0 320 210", b, "Stick figure placing a porous bioscaffold into a skin wound; cells migrate in and the tissue integrates"))
+
+def rover():
+    G = 160; T = 9
+    plants = [80, 165, 250]
+    pl = ""
+    for i, px in enumerate(plants):
+        pl += (f'<g transform="translate({px} {G}) scale(1.6) translate({-px} {-G})"><g class="sprout sp{i}">' + L(px, G, px, G - 16)
+               + f'<ellipse class="sleaf" cx="{px-5}" cy="{G-11}" rx="5" ry="2.4" transform="rotate(-30 {px-5} {G-11})"/>'
+               + f'<ellipse class="sleaf" cx="{px+5}" cy="{G-15}" rx="5" ry="2.4" transform="rotate(30 {px+5} {G-15})"/></g></g>'
+               + f'<circle class="ping pg{i}" cx="{px}" cy="{G-14}" r="5"/>')
+    wheel = lambda cx: (f'<g class="wheel" style="transform-origin:{cx}px -6px"><circle class="head" cx="{cx}" cy="-6" r="6"/>'
+                        + L(cx - 6, -6, cx + 6, -6, "thin") + L(cx, -12, cx, 0, "thin") + '</g>')
+    rov = ('<g class="rover">' + '<rect class="tintbox" x="-22" y="-26" width="44" height="15" rx="3"/>'
+           + L(-20, -30, 6, -30) + L(-7, -30, -7, -26, "thin") + L(16, -26, 16, -40) + '<circle class="gold-fill" cx="16" cy="-42" r="2.6"/>'
+           + L(22, -18, 30, -18) + '<g class="probe">' + L(30, -18, 30, -6) + '<circle class="fill" cx="30" cy="-5" r="1.6"/></g>'
+           + wheel(-13) + wheel(13) + '<text class="cap" x="-17" y="-15.5" text-anchor="start" style="font-size:6px">PRAIRI</text></g>')
+    S = 1.5
+    rv = f'<g class="rover-move"><g transform="translate(0 {G}) scale({S})">{rov}</g></g>'
+    xs, probe, pings, wheels = [], [], {}, []
+    start = -90
+    xs.append((0, start, "ease-in-out")); wheels.append((0, 0))
+    t = 0
+    for i, px in enumerate(plants):
+        rx = px - 30 * S
+        arrive = (t + 1.3) / T * 100; leave = (t + 2.1) / T * 100
+        xs += [(arrive, rx), (leave, rx, "ease-in-out")]
+        ang = (rx - start) / (6 * S) * 57.3
+        wheels += [(arrive, ang), (leave, ang)]
+        probe += [((t + 1.4) / T * 100, 0, "ease-in"), ((t + 1.6) / T * 100, 1), ((t + 1.85) / T * 100, 1, "ease-out"), ((t + 2.0) / T * 100, 0)]
+        pings[i] = (t + 1.6) / T * 100
+        t += 2.1
+    end = 400
+    xs += [(100 * (t + 1.6) / T, end), (100, end)]
+    wa = (end - start) / (6 * S) * 57.3
+    wheels += [(100 * (t + 1.6) / T, wa), (100, wa)]
+    kf("roverX", xs, "tx"); kf("wheel", wheels)
+    pf = [(0, 0)] + probe + [(100, 0)]
+    CSS.append("@keyframes probe{" + "".join(f"{p:.2f}%{{transform:scaleY({1 if v else .25})}}" for p, v, *_ in pf) + "}")
+    for i, p in pings.items():
+        CSS.append(f"@keyframes ping{i}{{0%,{p:.2f}%{{opacity:0;transform:scale(.5)}}{p+.3:.2f}%{{opacity:.8;transform:scale(.6)}}{p+8:.2f}%,100%{{opacity:0;transform:scale(3.2)}}}}"
+                   f".scene .pg{i}{{animation:ping{i} {T}s infinite ease-out}}"
+                   f"@keyframes leaf{i}{{0%,{p:.2f}%{{fill:var(--bg)}}{p+2:.2f}%,96%{{fill:var(--bio)}}100%{{fill:var(--bg)}}}}"
+                   f".scene .sp{i} .sleaf{{animation:leaf{i} {T}s infinite}}")
+    CSS.append(f".scene .rover-move{{animation:roverX {T}s infinite}}.scene .wheel{{animation:wheel {T}s infinite}}"
+               f".scene .probe{{transform-origin:30px -18px;animation:probe {T}s infinite}}"
+               ".scene .ping{fill:none;stroke:var(--bio);stroke-width:1;transform-box:fill-box;transform-origin:center}"
+               "@keyframes sun{to{transform:rotate(360deg)}}.scene .sun{transform-box:fill-box;transform-origin:center;animation:sun 24s linear infinite}")
+    soil = f'<rect class="soil" x="0" y="{G}" width="320" height="22"/>' + "".join(f'<circle class="pebble" cx="{18+k*37}" cy="{G+9+(k%3)*4}" r="1.6"/>' for k in range(9))
+    sun = '<g class="sun"><circle class="sun-core" cx="286" cy="36" r="10"/>' + "".join(L(286 + 15 * math.cos(math.radians(a)), 36 + 15 * math.sin(math.radians(a)), 286 + 20 * math.cos(math.radians(a)), 36 + 20 * math.sin(math.radians(a)), "ray") for a in range(0, 360, 45)) + '</g>'
+    b = sun + soil + pl + rv + CAP(14, 22, "meter-resolution soil & plant health", "start")
+    write("rover", svg("rover", "0 0 320 190", b, "Rover driving along a crop row, probing each plant, which turns green once scanned"))
+
+def clinic():
+    G = 185; s = 1.45; y = G - 29 * s; x = 52
     clip = ('<rect class="paper" x="10" y="-25" width="12" height="16" rx="1.5" transform="rotate(8 16 -17)"/>'
             '<rect class="fill" x="13.5" y="-26.5" width="5" height="2.5" rx="1" transform="rotate(8 16 -17)"/>'
             + L(12.6, -20, 19.4, -19, "hair") + L(12.4, -17, 19, -16, "hair") + L(12.2, -14, 17, -13.3, "hair"))
     aL = arm((13, -12)); w1, w2 = arm((15, -20)), arm((18, -18))
     pen = L(0, -3, -1.5, 3, "thin")
     steth = '<path class="st hair" d="M-3 -33 C-6 -24 -1 -21 2 -22 M3 -33 C5 -28 4 -24 2 -22"/><circle class="fill" cx="2" cy="-22" r="1.2"/>'
-    fig1 = fig("clinician", x, y, s, dict(aL=aL[0], fL=aL[1], aR=w1[0], fR=w1[1], lL=8, lR=-6), dict(front=clip, hR=pen, head=steth))
+    scrubs = '<path class="scrubs" d="M-5 -31 L5 -31 L6 -3 L-6 -3 Z"/>'
+    f1 = fig("clinician", x, y, s, dict(aL=aL[0], fL=aL[1], aR=w1[0], fR=w1[1], lL=8, lR=-6), dict(front=clip, hR=pen, head=steth, back=scrubs))
+    mon = ('<rect class="screen" x="118" y="44" width="186" height="96" rx="10"/>' + L(211, 140, 211, G) + L(186, G, 236, G)
+           + '<path class="ekg" pathLength="100" d="M130 104 H160 L165 100 L170 104 H178 L182 110 L188 68 L194 120 L199 104 H212 L218 96 L226 104 H240 L245 100 L250 104 H292"/>'
+           + '<text class="cap" x="132" y="62" text-anchor="start">HR 72 · SpO₂ 98%</text>'
+           + '<path class="heart" d="M286 60 c-2-3-7-2-7 2 c0 3 4 5 7 8 c3-3 7-5 7-8 c0-4-5-5-7-2z"/>')
+    b = GROUND(10, 310, G) + mon + f1 + CAP(14, 22, "vitals · EKG · EHR", "start")
     kf("writeArm", [(0, w1[0]), (100, w2[0])]); kf("writeFore", [(0, w1[1]), (100, w2[1])])
-    mon = ('<rect class="screen" x="210" y="34" width="170" height="80" rx="8"/>' + L(295, 114, 295, G) + L(272, G, 318, G)
-           + '<path class="ekg" pathLength="100" d="M222 84 H252 L257 80 L262 84 H270 L274 90 L280 52 L286 100 L291 84 H302 L308 76 L316 84 H332 L337 80 L342 84 H368"/>'
-           + '<text class="cap" x="224" y="52" text-anchor="start">HR 72 BPM</text>'
-           + '<path class="heart" d="M362 48 c-2-3-7-2-7 2 c0 3 4 5 7 8 c3-3 7-5 7-8 c0-4-5-5-7-2z"/>')
-    px1, px2 = 440, 590
-    printer = (f'<rect class="st" x="{px1}" y="40" width="{px2-px1}" height="110" rx="6"/>' + L(px1 + 8, 62, px2 - 8, 62)
-               + L(px1 + 14, 140, px2 - 14, 140)
-               + f'<g class="nozzle"><rect class="fill" x="{px1+14}" y="58" width="16" height="10" rx="2"/><path class="fill" d="M{px1+19} 68 h6 l-3 5z"/></g>'
-               + f'<g class="printed" style="transform-origin:515px 140px"><rect class="paper" x="490" y="104" width="50" height="36" rx="2"/>'
-               + "".join(L(492, 108 + k * 5, 538, 108 + k * 5, "hair") for k in range(7)) + '</g>')
-    b = GROUND(20, 620, G) + mon + printer + fig1
-    b += CAP(150, G + 20, "clinical — vitals & EKG") + CAP(515, G + 20, "design — rapid prototyping")
     CSS.append(".clinician .aR{animation:writeArm .45s infinite alternate ease-in-out}.clinician .fR{animation:writeFore .45s infinite alternate ease-in-out}"
                "@keyframes ekg{0%{stroke-dashoffset:100;opacity:1}70%{stroke-dashoffset:0;opacity:1}90%,100%{stroke-dashoffset:0;opacity:0}}"
-               ".scene .ekg{fill:none;stroke:var(--bio);stroke-width:1.8;stroke-linejoin:round;stroke-dasharray:100;animation:ekg 2.4s infinite linear}"
+               ".scene .ekg{fill:none;stroke:var(--tint-deep);stroke-width:1.8;stroke-linejoin:round;stroke-dasharray:100;animation:ekg 2.4s infinite linear}"
                "@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.25)}24%{transform:scale(1)}36%{transform:scale(1.15)}}"
-               ".scene .heart{fill:var(--bio);transform-box:fill-box;transform-origin:center;animation:beat 1.2s infinite}"
-               "@keyframes nozzle{0%{transform:translateX(0)}100%{transform:translateX(116px)}}"
+               ".scene .heart{fill:var(--coral);transform-box:fill-box;transform-origin:center;animation:beat 1.2s infinite}")
+    write("clinic", svg("clinic", "0 0 320 205", b, "Stick figure medical assistant charting next to an EKG monitor"))
+
+def design():
+    G = 185; s = 1.45; y = G - 29 * s; x = 52
+    sketch = ('<rect class="paper" x="9" y="-26" width="14" height="17" rx="1.5" transform="rotate(8 16 -17)"/>'
+              '<path class="st hair" d="M12 -14 h8 M13 -14 v4 M19 -14 v4 M19 -14 v-7" transform="rotate(8 16 -17)"/>')
+    aL = arm((13, -12)); w1, w2 = arm((15, -20)), arm((18, -18))
+    pen = L(0, -3, -1.5, 3, "thin")
+    d1 = fig("designer", x, y, s, dict(aL=aL[0], fL=aL[1], aR=w1[0], fR=w1[1], lL=8, lR=-6), dict(front=sketch, hR=pen))
+    p1, p2 = 128, 304
+    printer = (f'<rect class="frame" x="{p1}" y="44" width="{p2-p1}" height="{G-44}" rx="8"/>' + L(p1 + 10, 66, p2 - 10, 66)
+               + L(p1 + 16, G - 12, p2 - 16, G - 12)
+               + f'<g class="nozzle"><rect class="fill" x="{p1+16}" y="62" width="16" height="10" rx="2"/><path class="gold-fill" d="M{p1+21} 72 h6 l-3 5z"/></g>'
+               + f'<g class="printed" style="transform-origin:216px {G-12}px">'
+               + f'<rect class="print" x="186" y="{G-40}" width="60" height="6" rx="2"/>'
+               + f'<rect class="print" x="191" y="{G-34}" width="5" height="22"/><rect class="print" x="236" y="{G-34}" width="5" height="22"/>'
+               + f'<rect class="print" x="240" y="{G-76}" width="6" height="37" rx="2"/>'
+               + "".join(f'<circle class="hole" cx="{196+k*10}" cy="{G-37}" r="1.1"/>' for k in range(4))
+               + '</g>')
+    b = printer + GROUND(10, 310, G) + d1 + CAP(14, 22, "sketch → CAD → 3D print → DFM", "start")
+    CSS.append(".designer .aR{animation:writeArm .5s infinite alternate ease-in-out}.designer .fR{animation:writeFore .5s infinite alternate ease-in-out}"
+               "@keyframes nozzle{0%{transform:translateX(0)}100%{transform:translateX(124px)}}"
                ".scene .nozzle{animation:nozzle 1.1s infinite alternate ease-in-out}"
                "@keyframes printed{0%{transform:scaleY(0);opacity:1}85%{transform:scaleY(1);opacity:1}96%,100%{transform:scaleY(1);opacity:0}}"
-               ".scene .printed{animation:printed 9s infinite linear}")
-    write("experience", svg("experience", "0 0 640 180", b, "Animated stick figure writing on a clipboard next to an EKG monitor and a 3D printer"))
+               ".scene .printed{animation:printed 8s infinite linear}")
+    write("design", svg("design", "0 0 320 205", b, "Stick figure sketching while a 3D printer prints a shower chair layer by layer"))
 
-def projects():
-    G = 115; T = 14
-    plants = [90 + 100 * i for i in range(6)]
-    pl = ""
-    for i, px in enumerate(plants):
-        pl += (f'<g transform="translate({px} {G}) scale(1.5) translate({-px} {-G})"><g class="sprout sp{i}">' + L(px, G, px, G - 16)
-               + f'<ellipse class="sleaf" cx="{px-5}" cy="{G-11}" rx="5" ry="2.4" transform="rotate(-30 {px-5} {G-11})"/>'
-               + f'<ellipse class="sleaf" cx="{px+5}" cy="{G-15}" rx="5" ry="2.4" transform="rotate(30 {px+5} {G-15})"/></g></g>'
-               + f'<circle class="ping pg{i}" cx="{px}" cy="{G-12}" r="5"/>')
-    wheel = lambda cx: (f'<g class="wheel" style="transform-origin:{cx}px -6px"><circle class="head" cx="{cx}" cy="-6" r="6"/>'
-                        + L(cx - 6, -6, cx + 6, -6, "thin") + L(cx, -12, cx, 0, "thin") + '</g>')
-    rover = ('<g class="rover">' + '<rect class="paper" x="-22" y="-26" width="44" height="15" rx="3"/>'
-             + L(-20, -30, 6, -30) + L(-7, -30, -7, -26, "thin") + L(16, -26, 16, -40) + '<circle class="fill" cx="16" cy="-42" r="2.6"/>'
-             + L(22, -18, 30, -18) + '<g class="probe">' + L(30, -18, 30, -6) + '<circle class="fill" cx="30" cy="-5" r="1.6"/></g>'
-             + wheel(-13) + wheel(13) + f'<text class="cap" x="-17" y="-15.5" text-anchor="start" style="font-size:6px">PRAIRI</text></g>')
-    rv = f'<g class="rover-move"><g transform="translate(0 {G}) scale(1.5)">{rover}</g></g>'
-    # rover keyframes: drive, stop, probe, drive...
-    xs, probe, pings, leaves, wheels = [], [], {}, {}, []
-    start = -90
-    xs.append((0, start, "ease-in-out")); wheels.append((0, 0))
-    t = 0
-    prev = start
-    for i, px in enumerate(plants):
-        rx = px - 45
-        arrive = (t + 1.3) / T * 100; leave = (t + 2.1) / T * 100
-        xs += [(arrive, rx), (leave, rx, "ease-in-out")]
-        ang = (rx - start) / 9 * 57.3
-        wheels += [(arrive, ang), (leave, ang)]
-        probe += [((t + 1.4) / T * 100, 0, "ease-in"), ((t + 1.6) / T * 100, 1), ((t + 1.85) / T * 100, 1, "ease-out"), ((t + 2.0) / T * 100, 0)]
-        pings[i] = (t + 1.6) / T * 100
-        t += 2.1
-    end = 740
-    xs += [(100 * (t + 1.6) / T, end), (100, end)]
-    wheels += [(100 * (t + 1.6) / T, (end - start) / 9 * 57.3), (100, (end - start) / 9 * 57.3)]
-    kf("roverX", [xs[0]] + xs[1:], "tx")
-    kf("wheel", wheels)
-    pf = [(0, 0)] + probe + [(100, 0)]
-    CSS.append("@keyframes probe{" + "".join(f"{p:.2f}%{{transform:scaleY({1 if v else .25})}}" for p, v, *_ in pf) + "}")
-    for i, p in pings.items():
-        CSS.append(f"@keyframes ping{i}{{0%,{p:.2f}%{{opacity:0;transform:scale(.5)}}{p+.3:.2f}%{{opacity:.8;transform:scale(.6)}}{p+6:.2f}%,100%{{opacity:0;transform:scale(3.2)}}}}"
-                   f".scene .pg{i}{{animation:ping{i} {T}s infinite ease-out}}"
-                   f"@keyframes leaf{i}{{0%,{p:.2f}%{{fill:var(--bg)}}{p+1.5:.2f}%,96%{{fill:var(--bio)}}100%{{fill:var(--bg)}}}}"
-                   f".scene .sp{i} .sleaf{{animation:leaf{i} {T}s infinite}}")
-    CSS.append(f".scene .rover-move{{animation:roverX {T}s infinite}}.scene .wheel{{animation:wheel {T}s infinite}}"
-               f".scene .probe{{transform-origin:30px -18px;animation:probe {T}s infinite}}"
-               ".scene .ping{fill:none;stroke:var(--bio);stroke-width:1;transform-box:fill-box;transform-origin:center}")
-    b = GROUND(0, 640, G) + pl + rv + CAP(320, G + 22, "prairi — autonomous soil & plant health mapping")
-    write("projects", svg("projects", "0 0 640 150", b, "Animated rover driving along a crop row, probing each plant"))
+def pushers():
+    """Two stickmen who push the landing-page photo carousel."""
+    G = 96; s = 1.3; y = G - 29 * s
+    pose = dict(up=24, aL=-108, fL=-6, aR=-114, fR=-4, lL=22, sL=8, lR=-16, sR=10)
+    left = fig("pusher pusher-l", 150, y, s, pose)
+    right = fig("pusher pusher-r", 650, y, s, pose, flip=True)
+    floor = '<ellipse class="turntable" cx="400" cy="40" rx="236" ry="20"/>'
+    b = floor + GROUND(40, 760, G) + left + right
+    kf("pushLeg", [(0, 26), (50, -22), (100, 26)]); kf("pushShin", [(0, 10), (25, 40), (50, 6), (75, 20), (100, 10)])
+    kf("pushArm", [(0, -108), (50, -118), (100, -108)])
+    CSS.append("@keyframes breathe{0%,100%{transform:rotate(24deg)}50%{transform:rotate(21deg)}}.pusher .up{animation:breathe 3s infinite ease-in-out}"
+               ".carousel.pushing-prev .pusher-l .lL,.carousel.pushing-prev .pusher-l .lR,.carousel.pushing-next .pusher-r .lL,.carousel.pushing-next .pusher-r .lR{animation:pushLeg .55s infinite linear}"
+               ".carousel.pushing-prev .pusher-l .sL,.carousel.pushing-prev .pusher-l .sR,.carousel.pushing-next .pusher-r .sL,.carousel.pushing-next .pusher-r .sR{animation:pushShin .55s infinite linear}"
+               ".carousel.pushing-prev .pusher-l .lR,.carousel.pushing-prev .pusher-l .sR,.carousel.pushing-next .pusher-r .lR,.carousel.pushing-next .pusher-r .sR{animation-delay:-.275s}"
+               "@keyframes lean{0%,100%{transform:rotate(31deg)}50%{transform:rotate(28deg)}}.carousel.pushing-prev .pusher-l .up,.carousel.pushing-next .pusher-r .up{animation:lean .55s infinite}"
+               ".carousel.pushing-prev .pusher-l .aL,.carousel.pushing-prev .pusher-l .aR,.carousel.pushing-next .pusher-r .aL,.carousel.pushing-next .pusher-r .aR{animation:pushArm .55s infinite ease-in-out}")
+    write("pushers", svg("pushers", "0 0 800 110", b, "Two stick figures pushing the photo carousel"))
 
 def soccer():
     G = 140; s = 1.2; y = G - 29 * s; T = 6
@@ -475,18 +555,29 @@ def profile():
 
 # ═════════════════════════ BASE STYLES ═════════════════════════
 BASE = """/* GENERATED by _tools/scenes.py — edit that file, then re-run it. */
-.scene{display:block;width:100%;height:auto;overflow:hidden;--ink:var(--text)}
+.scene{display:block;width:100%;height:auto;overflow:hidden;--ink:var(--ink-strong,#12312d)}
 .scene line,.scene .st{stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none}
 .scene .thin{stroke-width:1.1}.scene .hair{stroke-width:.7}.scene .thick{stroke-width:3.2}
 .scene .head{fill:var(--bg);stroke:var(--ink);stroke-width:1.7}
 .scene .fill{fill:var(--ink);stroke:none}
-.scene .ground{stroke:var(--line);stroke-width:1}
-.scene .staff{stroke:var(--line);stroke-width:1}
+.scene .ground{stroke:var(--tint);stroke-width:1.2}
+.scene .staff{stroke:var(--tint);stroke-width:1}
 .scene .cap{font-family:var(--font-mono);font-size:10px;fill:var(--muted);letter-spacing:.06em}
 .scene .ball{fill:var(--bg);stroke:var(--ink);stroke-width:1.3}
-.scene .coat{fill:var(--bg);stroke:var(--ink);stroke-width:1}
-.scene .tube{fill:#e9f8f0;stroke:var(--ink);stroke-width:.8}
-.scene .liquid{fill:var(--bio);opacity:.35}
+.scene .scrubs{fill:var(--tint);stroke:var(--ink);stroke-width:.8}
+.scene .tintbox{fill:var(--tint);stroke:var(--ink);stroke-width:1.3}
+.scene .frame{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+.scene .print{fill:var(--tint)}.scene .hole{fill:var(--bg)}
+.scene .soil{fill:#efe6da}.scene .pebble{fill:#d8c8b2}
+.scene .sun-core{fill:var(--gold);opacity:.85}.scene line.ray{stroke:var(--gold);stroke-width:1.4}
+.scene .epi{fill:#f2b8c6}.scene .dermis{fill:#fbe3e8}.scene .wound{fill:#c96b7e;opacity:.55}
+.scene .scaf,.scene .scaf-carry{fill:var(--tint-soft);stroke:var(--tint-deep);stroke-width:1.2}.scene line.mesh{stroke:var(--tint-deep);stroke-width:.6}
+.scene .cell{opacity:0}.scene .c-teal{fill:var(--tint-deep)}.scene .c-gold{fill:var(--gold)}.scene .c-coral{fill:var(--coral)}
+.scene .stain{opacity:0}
+.scene .turntable{fill:var(--tint-soft);stroke:var(--tint);stroke-width:1.5}
+.scene .coat{fill:var(--tint-soft);stroke:var(--ink);stroke-width:1}
+.scene .tube{fill:var(--tint-soft);stroke:var(--ink);stroke-width:.8}
+.scene .liquid{fill:var(--tint-deep);opacity:.45}
 .scene .bubble{fill:var(--bio);opacity:0}
 .scene .drop{fill:var(--bio)}
 .scene .wood{fill:#f3ece4;stroke:var(--ink);stroke-width:1.3}
@@ -509,7 +600,7 @@ BASE = """/* GENERATED by _tools/scenes.py — edit that file, then re-run it. *
 """
 
 if __name__ == "__main__":
-    hero(); research(); experience(); projects(); soccer(); bass_scene(); tkd_scene(); blog(); profile()
+    hero(); biolistics(); bioscaffold(); rover(); clinic(); design(); pushers(); soccer(); bass_scene(); tkd_scene(); blog(); profile()
     with open(os.path.join(ROOT, "assets", "css", "scenes.css"), "w") as f:
         f.write(BASE + "\n".join(CSS) + "\n")
     print("scenes written:", sorted(os.listdir(INC)))

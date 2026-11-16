@@ -1,15 +1,21 @@
 <div class="personal">
   {% for it in site.data.personal %}
-  <article class="personal-item">
+  <article class="personal-item{% if it.image and it.image != '' %} has-photo{% endif %}" tabindex="0">
     <div class="personal-scene">
       {% case it.scene %}
         {% when "bass" %}{% include scenes/bass.html %}
         {% when "soccer" %}{% include scenes/soccer.html %}
         {% when "taekwondo" %}{% include scenes/taekwondo.html %}
       {% endcase %}
+      {% if it.image and it.image != '' %}
+      <figure class="popout">
+        <img src="{{ it.image | relative_url }}" alt="{{ it.caption | default: it.title }}" loading="lazy">
+        {% if it.caption %}<figcaption class="mono">{{ it.caption }}</figcaption>{% endif %}
+      </figure>
+      {% endif %}
     </div>
     <div class="personal-text">
-      <p class="mono">0{{ forloop.index }}</p>
+      <p class="mono">0{{ forloop.index }}{% if it.image and it.image != '' %}<span class="hover-hint"> · hover for photo</span>{% endif %}</p>
       <h3 class="personal-title">{{ it.title }}</h3>
       <div class="prose">{{ it.text | markdownify }}</div>
     </div>

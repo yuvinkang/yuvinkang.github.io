@@ -5,7 +5,7 @@
 
 name: "Yuvin Kang"
 tagline: "Biomedical Engineering · Yale University"      # small line above your name
-intro: "Tissue engineering, plant biotech, and hardware — plus a lot of double bass."  # under your name; "" to hide
+intro: ""  # optional sentence under your name; "" hides it
 description: "Yuvin Kang — biomedical engineering at Yale. Research, experience, projects, and writing."
 
 # Contact & links (leave a value as "" to hide it)
@@ -24,6 +24,10 @@ baseurl: ""
 permalink: /blog/:year/:title/
 markdown: kramdown
 timezone: America/New_York
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
 exclude:
   - README.md
   - CLAUDE.md

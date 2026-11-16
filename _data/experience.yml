@@ -1,31 +1,36 @@
 # WORK EXPERIENCE — newest first. Copy a block (from "- role" down) to add another.
+# "scene" picks the animation beside each entry: bioscaffold, biolistics, rover, clinic, design, or none.
+# In summary/highlights, **double asterisks** make text bold.
 
 - role: "Co-Founder"
   organization: "Prairi Robotics"
   location: "New Haven, CT"
   dates: "Sep 2026 – Present"
-  summary: "Autonomous rover for meter-resolution soil and plant health data in precision farming."
+  scene: rover
+  summary: "An autonomous rover that maps soil and plant health at meter resolution for precision farming."
   highlights:
-    - "Designed the CAD model and prototype in SolidWorks with input from 20+ farmers."
-    - "Working to fund paid pilots in Dublin and North Carolina."
+    - "**Co-founded** the venture and defined the rover's sensing and data-collection goals."
+    - "**Designed** the CAD model and prototype in SolidWorks with input from **20+ farmers**."
+    - "**Securing funding** for paid pilots in Dublin and North Carolina."
 
 - role: "Medical Assistant"
   organization: "Pleasant Hill Family Medicine"
   location: "Duluth, GA"
   dates: "Jun 2025 – Present (seasonal)"
-  summary: "Clinical procedures and patient data in a family practice."
+  scene: clinic
+  summary: "Clinical procedures and patient data in a busy family practice."
   highlights:
-    - "Performed EKG and FMD testing; recorded vitals and relayed patient data and lab results to physicians."
-    - "Helped the clinic move to Practice Fusion EHR, standardizing data entry and reducing documentation errors."
-    - "Maintained HIPAA-compliant records; followed infection-control and specimen-handling protocols."
+    - "**Performed** EKG and FMD testing; recorded vitals and relayed results to physicians."
+    - "**Aided** the move to Practice Fusion EHR, standardizing data entry and reducing documentation errors."
+    - "**Maintained** HIPAA-compliant records and infection-control and specimen-handling protocols."
 
 - role: "Industrial Design Intern"
   organization: "Product Quickstart"
   location: "Lawrenceville, GA"
   dates: "Sep 2023 – May 2024"
+  scene: design
   summary: "Took client product concepts from sketch to production."
   highlights:
-    - "Designed and modeled 15+ product concepts in SolidWorks, from sketches to 3D-printed prototypes; presented biweekly design reviews."
-    - "Advanced 4 products through DFM to production — 2,000+ manufactured units."
-    - "Developed assistive and health devices, including an accessible shower chair and a stepwise-dosing nicotine dispenser."
-
+    - "**Designed 15+ product concepts** in SolidWorks, from sketches to 3D-printed prototypes."
+    - "**Advanced 4 products** through DFM to production — **2,000+ units** manufactured."
+    - "**Developed** assistive devices, including an accessible shower chair and a tapered-dose nicotine dispenser."

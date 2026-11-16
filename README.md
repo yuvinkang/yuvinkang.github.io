@@ -13,11 +13,11 @@ You can edit everything right on GitHub: open a file, click the ✏️ pencil ic
 | Section icons | `_data/icons.yml` |
 | Profile bio, education, awards | `_data/profile.yml` |
 | Personal history timeline | `_data/timeline.yml` |
-| Research | `_data/research.yml` |
-| Work experience | `_data/experience.yml` |
-| Projects | `_data/projects.yml` |
-| Personal (music, soccer, taekwondo…) | `_data/personal.yml` |
-| Skills | `_data/skills.yml` |
+| Research (and which animation sits beside each entry) | `_data/research.yml` |
+| Work experience (and its animations) | `_data/experience.yml` |
+| Projects (card + its own page) | one file per project in `_projects/` — edit the text under the `---` lines; set `image:` for the cover photo |
+| Personal (music, soccer, taekwondo…) + hover photos | `_data/personal.yml` |
+| Landing-page photo carousel | `_data/gallery.yml` |
 | Blog posts | add a file in `_posts/` (see the sample post for instructions) |
 | Colors, fonts, spacing | the top section of `assets/css/style.css` |
 | Scroll / fade animations | `assets/js/site.js` |
@@ -25,7 +25,13 @@ You can edit everything right on GitHub: open a file, click the ✏️ pencil ic
 
 **Tip for the `.yml` files:** keep the indentation (the spaces at the start of lines) and the quotation marks the same as the examples. To add an entry, copy an existing block and change the text.
 
-Images and files (photos, a résumé PDF) go in `assets/images/` or `assets/files/` — use **Add file → Upload files**.
+## Adding your photos
+
+1. Open the right folder on GitHub — `assets/images/gallery/` (carousel), `assets/images/personal/` (hover popouts), or `assets/images/projects/` (project pages).
+2. **Add file → Upload files**, drag your photo in, and commit.
+3. Point to it: in `_data/gallery.yml`, `_data/personal.yml`, or the project's file in `_projects/`, change the path to your file, e.g. `/assets/images/gallery/orchestra.jpg`.
+
+Tip: JPGs under ~500 KB load fastest. Portrait photos suit the carousel; landscape suits projects.
 
 ## Putting it online (one-time setup)
 

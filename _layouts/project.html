@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<article class="page project-page reveal">
+  <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a><span>{{ page.year }}</span></p>
+  <h1 class="page-title">{{ page.title }}</h1>
+  {% if page.summary %}<p class="lede">{{ page.summary }}</p>{% endif %}
+  {% if page.tags %}<div class="tags">{% for t in page.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
+
+  <figure class="project-cover">
+    {% if page.image and page.image != "" %}
+      <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
+    {% else %}
+      <img src="{{ '/assets/images/placeholder.svg' | relative_url }}" alt="Placeholder — add a photo for {{ page.title }}">
+    {% endif %}
+  </figure>
+
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>

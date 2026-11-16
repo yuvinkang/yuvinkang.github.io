@@ -1,9 +1,12 @@
 # PERSONAL — one block per interest. Write as much as you like in "text"
 # (leave a blank line between paragraphs). "scene" picks the animation: bass, soccer, taekwondo, or none.
-# To add a new interest, copy a block and set scene: none.
+# "image" is the photo that pops out when someone hovers over the block:
+#   upload your photo to assets/images/personal/ and change the path. Use "" for no popout.
 
 - title: "Music · Double Bass"
   scene: bass
+  image: /assets/images/personal/bass.svg
+  caption: "Yale Symphony Orchestra"
   text: |
     Principal bassist of the Yale Symphony Orchestra. Two-time Interlochen Arts Camp full orchestral scholar — one of three bassists selected internationally — and concerto competition winner, performing with full orchestra at Gas South Arena.
 
@@ -11,6 +14,8 @@
 
 - title: "Soccer"
   scene: soccer
+  image: /assets/images/personal/soccer.svg
+  caption: "Yale C1 Club Soccer"
   text: |
     Yale C1 Club Soccer. In high school, varsity soccer — 6A state semifinalists.
 
@@ -18,6 +23,8 @@
 
 - title: "Taekwondo"
   scene: taekwondo
+  image: /assets/images/personal/taekwondo.svg
+  caption: "Yale Club Taekwondo"
   text: |
     Social chair of Yale Club Taekwondo.
 

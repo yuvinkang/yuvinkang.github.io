@@ -1,0 +1,16 @@
+# LANDING-PAGE CAROUSEL — the revolving photo ring under your name.
+# To use your own photos: upload them to assets/images/gallery/ (Add file → Upload files),
+# then change "src" below to the new file name. Add or remove blocks freely (5–10 works best).
+
+- src: /assets/images/gallery/photo-1.svg
+  caption: "Yale Symphony Orchestra"
+- src: /assets/images/gallery/photo-2.svg
+  caption: "Ng Lab, Dublin"
+- src: /assets/images/gallery/photo-3.svg
+  caption: "Club soccer"
+- src: /assets/images/gallery/photo-4.svg
+  caption: "Kyriakides Lab"
+- src: /assets/images/gallery/photo-5.svg
+  caption: "Club Taekwondo"
+- src: /assets/images/gallery/photo-6.svg
+  caption: "Prairi Robotics"

@@ -8,8 +8,10 @@ layout: default
     {% if site.intro and site.intro != "" %}<p class="hero-intro">{{ site.intro }}</p>{% endif %}
   </div>
   <div class="hero-scene">{% include scenes/hero.html %}</div>
-  <a class="scroll-cue" href="#{{ site.data.navigation[0].id }}" aria-label="Scroll down"><span>Scroll</span><i></i></a>
+  <a class="scroll-cue" href="#gallery" aria-label="Scroll down"><span>Scroll</span><i></i></a>
 </section>
+
+<div id="gallery">{% include gallery.html %}</div>
 
 {% for item in site.data.navigation %}
 <section class="section reveal" id="{{ item.id }}">

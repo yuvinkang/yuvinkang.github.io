@@ -1,11 +1,12 @@
-<div class="section-scene">{% include scenes/projects.html %}</div>
+{% assign projects = site.projects | sort: "order" %}
 <div class="cards">
-  {% for p in site.data.projects %}
-  {% if p.link and p.link != "" %}<a class="card" href="{{ p.link }}" style="--i: {{ forloop.index }}">{% else %}<div class="card" style="--i: {{ forloop.index }}">{% endif %}
-    <p class="mono card-meta"><span>{{ p.year }}</span>{% if p.link and p.link != "" %}<span aria-hidden="true">↗</span>{% endif %}</p>
+  {% for p in projects %}
+  <a class="card" href="{{ p.url | relative_url }}" style="--i: {{ forloop.index }}">
+    <p class="mono card-meta"><span>{{ p.year }}</span><span class="card-go" aria-hidden="true">→</span></p>
     <p class="card-title">{{ p.title }}</p>
-    {% if p.description %}<p class="card-body">{{ p.description }}</p>{% endif %}
+    {% if p.summary %}<p class="card-body">{{ p.summary }}</p>{% endif %}
     {% if p.tags %}<div class="tags">{% for t in p.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
-  {% if p.link and p.link != "" %}</a>{% else %}</div>{% endif %}
+    <span class="card-more mono">Read more</span>
+  </a>
   {% endfor %}
 </div>
