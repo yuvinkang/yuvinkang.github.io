@@ -5,15 +5,14 @@ layout: default
   <div class="hero-grid">
     <div class="hero-left">
       <h1 class="hero-name"><span>{{ site.name | split: " " | first }}</span> <span>{{ site.name | split: " " | last }}</span></h1>
-      {% assign sfx_word = "HEY!" %}{% assign sfx_class = "sfx-hero" %}{% include sfx.html %}
       <div class="hero-actions">
         <a class="btn btn-solid" href="#profile">About me</a>
         {% if site.email != "" %}<a class="btn" href="mailto:{{ site.email }}">Email</a>{% endif %}
         {% if site.linkedin != "" %}<a class="btn" href="{{ site.linkedin }}">LinkedIn</a>{% endif %}
       </div>
-      <div class="hero-scene panel">{% include scenes/hero.html %}</div>
+      <div class="hero-scene block">{% include scenes/hero.html %}</div>
     </div>
-    <div class="hero-wheel panel">{% include ferris.html %}</div>
+    <div class="hero-wheel block">{% include ferris.html %}</div>
   </div>
 </section>
 
@@ -23,7 +22,6 @@ layout: default
     <span class="section-icon"><svg viewBox="0 0 24 24" aria-hidden="true">{{ site.data.icons[item.icon] }}</svg></span>
     <span class="section-num">0{{ forloop.index }}</span>
     <h2 class="section-title">{{ item.title }}</h2>
-    {% if item.sfx %}{% assign sfx_word = item.sfx %}{% assign sfx_class = "sfx-section" %}{% include sfx.html %}{% endif %}
   </header>
   {% case item.id %}
     {% when "profile" %}{% include section-profile.html %}
