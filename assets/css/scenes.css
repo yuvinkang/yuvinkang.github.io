@@ -30,7 +30,6 @@
 @keyframes spin{to{transform:rotate(360deg)}}
 .scene .spinner{transform-box:fill-box;transform-origin:center}
 .scene:not(.in-view) *{animation-play-state:paused!important}
-@media (prefers-reduced-motion:reduce){.scene *{animation-play-state:paused!important}}
 @keyframes sciArm{0%{transform:rotate(-43.2deg);animation-timing-function:ease-in-out}30%{transform:rotate(-34.3deg)}55%{transform:rotate(-34.3deg);animation-timing-function:ease-in-out}75%{transform:rotate(-43.2deg)}100%{transform:rotate(-43.2deg)}}
 @keyframes sciFore{0%{transform:rotate(-79.5deg);animation-timing-function:ease-in-out}30%{transform:rotate(-69deg)}40%{transform:rotate(-73deg)}50%{transform:rotate(-69deg)}55%{transform:rotate(-69deg);animation-timing-function:ease-in-out}75%{transform:rotate(-79.5deg)}100%{transform:rotate(-79.5deg)}}
 .sci .aR{animation:sciArm 2.6s infinite}.sci .fR{animation:sciFore 2.6s infinite}@keyframes sciDrop{0%,38%{opacity:0;transform:none}42%{opacity:1;transform:none}60%{opacity:0;transform:translateY(7px)}100%{opacity:0}}.sci .drop{animation:sciDrop 2.6s infinite ease-in}@keyframes bubble{0%{opacity:0;transform:none}20%{opacity:.9}100%{opacity:0;transform:translate(1px,-14px)}}.sci .bubble{animation:bubble 2.2s infinite ease-out}.sci .b1{animation-delay:-.75s}.sci .b2{animation-delay:-1.5s}@keyframes sciHead{0%,60%{transform:rotate(0)}70%,90%{transform:rotate(8deg)}100%{transform:rotate(0)}}.sci .up{animation:sciHead 7.8s infinite ease-in-out}
