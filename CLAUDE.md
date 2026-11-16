@@ -26,9 +26,9 @@ This is the owner's personal website: a Jekyll site built by GitHub Pages direct
 - Scenes pause when off-screen (`.scene.in-view` toggled in site.js). The owner chose to keep animations running even when the OS requests reduced motion — only smooth scrolling is disabled then.
 
 ## Design language
-Solid, flat page color (--page, dark turquoise #0D5C59 — one variable to recolor) with clean white **square** content blocks (no rounded corners, no outlines/hard shadows). Text directly on the page color is white (--on-page). Geist for text, Geist Mono for labels/dates; light turquoise (--tint, --tint-soft) for scene panels and chips; royal blue --accent for emphasis; small gold/coral/GFP-green touches inside animations. The owner tried and rejected a comic-book theme (halftone dots, outlines, Bangers font, sound-effect starbursts) — don't reintroduce it. Theme overrides live in the "SOLID BACKGROUND + SQUARE BLOCKS" block at the end of style.css.
+White page with turquoise accents: --accent/--tint-deep #00796B, --brand #0D5C59 (dark turquoise for solid buttons/active tab), light turquoise --tint #B2DFDB / --tint-soft for frames, scene panels and chips. Content sits in clean white **square** blocks (no rounded corners) framed by a 1px --tint border. Geist for text, Geist Mono for labels/dates; small gold/coral/GFP-green touches inside animations. The owner rejected both a comic-book theme (halftone, outlines, Bangers, sound effects) and a dark solid-turquoise page — keep the page white. Theme overrides live in the "WHITE PAGE + SQUARE BLOCKS" block at the end of style.css.
 
-Landing page is intentionally minimal: name, About me / Email / LinkedIn, the activity strip, and the Ferris wheel. Don't add stats or chips there.
+Landing page is intentionally minimal: name, "Biomedical Engineering @ Yale University" (site.tagline), About me / Email / LinkedIn, the activity strip, and the Ferris wheel. Don't add stats or chips there.
 
 The Prari page is a design showcase (idea, SolidWorks renders, modules, research, my part + skills), not a pitch — keep market/pricing/competitor material off it.
 

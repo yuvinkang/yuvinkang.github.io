@@ -5,6 +5,7 @@ layout: default
   <div class="hero-grid">
     <div class="hero-left">
       <h1 class="hero-name"><span>{{ site.name | split: " " | first }}</span> <span>{{ site.name | split: " " | last }}</span></h1>
+      {% if site.tagline and site.tagline != "" %}<p class="hero-sub">{{ site.tagline }}</p>{% endif %}
       <div class="hero-actions">
         <a class="btn btn-solid" href="#profile">About me</a>
         {% if site.email != "" %}<a class="btn" href="mailto:{{ site.email }}">Email</a>{% endif %}
