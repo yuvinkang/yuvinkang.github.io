@@ -1,0 +1,92 @@
+---
+layout: default
+---
+{% assign d = site.data.biolistics %}
+{% assign all = site.projects | sort: "order" %}
+{% for p in all %}{% if p.url == page.url %}{% assign pos = forloop.index0 %}{% endif %}{% endfor %}
+{% assign prev_i = pos | minus: 1 %}{% assign next_i = pos | plus: 1 %}
+
+<article class="bx">
+
+  <header class="bx-head reveal">
+    <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a><span class="mono">{{ page.year }}</span></p>
+    <h1 class="page-title">{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }}</p>
+    <p class="bx-authors mono">{{ page.authors }} · School of Biology &amp; Environmental Science, UCD</p>
+    {% if page.paper %}<a class="btn btn-solid bx-paper" href="{{ page.paper | relative_url }}">Read the paper (PDF)</a>{% endif %}
+  </header>
+
+  <section class="bx-sec reveal">
+    <p class="px-num mono">01 — The question</p>
+    <p class="px-lede">{{ d.question }}</p>
+    <div class="setup">
+      {% for s in d.setup %}
+      <div class="setup-item"><p class="mono">{{ s.label }}</p><p class="setup-v">{{ s.value }}</p><p class="setup-n">{{ s.note }}</p></div>
+      {% endfor %}
+    </div>
+    <div class="bx-scene">{% assign entry_scene = page.scene %}{% include entry-scene.html %}</div>
+  </section>
+
+  <section class="bx-sec reveal">
+    <p class="px-num mono">02 — The data</p>
+    <h2 class="px-h">31 bombardments.<br><span>Every blue focus counted by hand.</span></h2>
+
+    <div class="dist">
+      {% for g in d.groups %}
+      <div class="dist-group">
+        <div class="dist-head">
+          <p class="dist-name">{{ g.name }}<span class="mono">{{ g.sub }}</span></p>
+          <p class="mono">n = {{ g.n }}</p>
+        </div>
+        <div class="strip" aria-label="Foci counts for the {{ g.name }} group: {{ g.counts | join: ', ' }}">
+          {% for c in g.counts %}
+          <span class="dot" style="--h: {{ c | times: 100 | divided_by: 55 | at_least: 3 }}%; --i: {{ forloop.index }}" title="{{ c }} foci"></span>
+          {% endfor %}
+        </div>
+        <dl class="dist-stats">
+          <div><dt class="mono">Median</dt><dd>{{ g.median }}</dd></div>
+          <div><dt class="mono">Mean</dt><dd>{{ g.mean }}</dd></div>
+          <div><dt class="mono">Max</dt><dd>{{ g.max }}</dd></div>
+          <div><dt class="mono">CV</dt><dd>{{ g.cv }}</dd></div>
+        </dl>
+      </div>
+      {% endfor %}
+      <p class="mono bx-axis">each bar = one sample · height = GUS-positive foci (0–55)</p>
+    </div>
+
+    <div class="verdict">
+      <p class="verdict-stat mono">{{ d.verdict.stat }}</p>
+      <div>
+        <p class="verdict-t">{{ d.verdict.title }}</p>
+        <p>{{ d.verdict.text }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bx-sec reveal">
+    <p class="px-num mono">03 — What it means</p>
+    <ol class="findings">
+      {% for f in d.findings %}
+      <li style="--i: {{ forloop.index }}"><p class="finding-t">{{ f.title }}</p><p>{{ f.text }}</p></li>
+      {% endfor %}
+    </ol>
+    <div class="implication">
+      <p class="label">{{ d.implication.title }}</p>
+      <p>{{ d.implication.text }}</p>
+    </div>
+  </section>
+
+  <section class="bx-sec reveal">
+    <p class="px-num mono">04 — My part</p>
+    <div class="prose bx-mine">{{ content }}</div>
+  </section>
+
+  <nav class="project-nav" aria-label="More projects">
+    {% if pos > 0 %}{% assign pp = all[prev_i] %}
+    <a class="pn-card" href="{{ pp.url | relative_url }}"><span class="mono">← Previous</span><span class="pn-title">{{ pp.title }}</span></a>
+    {% else %}<span></span>{% endif %}
+    {% if next_i < all.size %}{% assign np = all[next_i] %}
+    <a class="pn-card pn-next" href="{{ np.url | relative_url }}"><span class="mono">Next project →</span><span class="pn-title">{{ np.title }}</span></a>
+    {% endif %}
+  </nav>
+</article>

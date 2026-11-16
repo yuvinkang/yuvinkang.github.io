@@ -5,7 +5,7 @@
   <li class="entry{% if e.scene and e.scene != 'none' %} has-scene{% endif %}" style="--i: {{ forloop.index }}">
     <div class="entry-text">
       <p class="mono entry-dates">{{ e.dates }}</p>
-      <h3 class="entry-title">{% if e.link and e.link != "" %}<a class="ext" href="{{ e.link }}">{{ e.title }} <span aria-hidden="true">↗</span></a>{% else %}{{ e.title }}{% endif %}</h3>
+      <h3 class="entry-title">{% if e.link and e.link != "" %}<a class="ext" href="{% if e.link contains "://" %}{{ e.link }}{% else %}{{ e.link | relative_url }}{% endif %}">{{ e.title }} <span aria-hidden="true">→</span></a>{% else %}{{ e.title }}{% endif %}</h3>
       <p class="entry-org">{{ e.lab }}{% if e.location %}<span> · {{ e.location }}</span>{% endif %}</p>
       {% if e.summary %}<p class="entry-summary">{{ e.summary | markdownify | remove: '<p>' | remove: '</p>' }}</p>{% endif %}
       {% if e.highlights %}<ul class="bullets">{% for h in e.highlights %}<li>{{ h | markdownify | remove: '<p>' | remove: '</p>' }}</li>{% endfor %}</ul>{% endif %}

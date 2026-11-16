@@ -22,9 +22,9 @@ entries:
     location: "Dublin, Ireland"
     dates: "May 2025 – Aug 2026"
     scene: biolistics
-    summary: "Biolistic gene delivery and plant metabolic engineering toward an Alzheimer's therapeutic."
+    summary: "First-author study of biolistic gene delivery, and plant metabolic engineering toward an Alzheimer's therapeutic."
+    link: /projects/biolistic-optimization/
     highlights:
-      - "**Raised transformation efficiency 43%** by optimizing gold microcarrier size, helium burst pressure, and target distance."
+      - "**First-authored a study** of how helium pressure and target distance affect transformation efficiency in *Allium cepa* epidermis — 31 bombardments, analyzed in Python."
       - "**Contributed** to heterologous production of galantamine, an FDA-approved Alzheimer's drug, in plant cell culture."
-      - "**Performed** aseptic callus culture, plasmid prep, microcarrier coating, and GFP/GUS reporter screening."
-    link: ""
+      - "**Performed** aseptic callus culture, plasmid prep, gold microcarrier coating, and GUS reporter screening."
