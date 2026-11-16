@@ -2,8 +2,19 @@
 title: "Biolistic Delivery Optimization"
 year: "2025"
 order: 2
+role: "Research Assistant · Ng Lab, UCD"
+tools: ["Gene gun", "Plasmid prep", "GFP/GUS screening"]
+status: "Completed"
 tags: ["Plant biotech", "Gene gun", "GFP/GUS"]
 summary: "Tuned three gene-gun delivery parameters for a 43% gain in transformation efficiency."
+scene: biolistics
+metrics:
+  - value: "43%"
+    label: "higher transformation efficiency"
+  - value: "3"
+    label: "delivery parameters optimized"
+  - value: "2"
+    label: "plant systems tested"
 image: ""
 ---
 
@@ -21,4 +32,4 @@ Biolistic transformation fires DNA-coated gold microcarriers into plant cells. I
 
 - **43% increase** in transformation efficiency.
 
-*Edit this page to add figures, methods, and what you learned.*
+> Edit this page to add figures, methods, and what you learned.

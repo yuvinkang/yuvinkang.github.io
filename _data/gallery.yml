@@ -1,16 +1,23 @@
-# LANDING-PAGE CAROUSEL — the revolving photo ring under your name.
+# FERRIS WHEEL — the photos riding the wheel on the landing page.
 # To use your own photos: upload them to assets/images/gallery/ (Add file → Upload files),
-# then change "src" below to the new file name. Add or remove blocks freely (5–10 works best).
+# then change "src" to the new file name. "blurb" is what the stickman on that cabin says
+# when someone hovers over the photo. 5–8 photos works best.
 
 - src: /assets/images/gallery/photo-1.svg
   caption: "Yale Symphony Orchestra"
-- src: /assets/images/gallery/photo-2.svg
-  caption: "Ng Lab, Dublin"
+  blurb: "Principal bass, back row, best seat in the house."
+- src: /assets/images/projects/prari/field.webp
+  caption: "Prari Robotics"
+  blurb: "Our rover in the rows — designed in SolidWorks with my co-founders."
 - src: /assets/images/gallery/photo-3.svg
   caption: "Club soccer"
+  blurb: "Yale C1 Club Soccer. Still chasing that 6A semifinal energy."
 - src: /assets/images/gallery/photo-4.svg
   caption: "Kyriakides Lab"
+  blurb: "Bioscaffolds, histology, and a lot of microscope time."
 - src: /assets/images/gallery/photo-5.svg
   caption: "Club Taekwondo"
-- src: /assets/images/gallery/photo-6.svg
-  caption: "Prairi Robotics"
+  blurb: "Social chair by day, board-breaker by night."
+- src: /assets/images/gallery/photo-2.svg
+  caption: "Ng Lab, Dublin"
+  blurb: "Gene gun + gold particles + onion cells = glowing GFP."

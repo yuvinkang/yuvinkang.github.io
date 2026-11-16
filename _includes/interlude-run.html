@@ -1,0 +1,11 @@
+<div class="run-lane" aria-label="A stickman jogging across the page">
+  <div class="lane-track" aria-hidden="true"></div>
+  <div class="jog">
+    {% if site.strava and site.strava != "" %}
+    <a class="jog-bubble" href="{{ site.strava }}">i love to run too! add me on strava <strong>@Yuvin Kang</strong> ↗</a>
+    {% else %}
+    <span class="jog-bubble">i love to run too! add me on strava <strong>@Yuvin Kang</strong></span>
+    {% endif %}
+    {% include scenes/jogger.html %}
+  </div>
+</div>

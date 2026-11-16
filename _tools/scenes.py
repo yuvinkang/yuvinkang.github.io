@@ -362,7 +362,7 @@ def rover():
     rov = ('<g class="rover">' + '<rect class="tintbox" x="-22" y="-26" width="44" height="15" rx="3"/>'
            + L(-20, -30, 6, -30) + L(-7, -30, -7, -26, "thin") + L(16, -26, 16, -40) + '<circle class="gold-fill" cx="16" cy="-42" r="2.6"/>'
            + L(22, -18, 30, -18) + '<g class="probe">' + L(30, -18, 30, -6) + '<circle class="fill" cx="30" cy="-5" r="1.6"/></g>'
-           + wheel(-13) + wheel(13) + '<text class="cap" x="-17" y="-15.5" text-anchor="start" style="font-size:6px">PRAIRI</text></g>')
+           + wheel(-13) + wheel(13) + '<text class="cap" x="-17" y="-15.5" text-anchor="start" style="font-size:6px">PRARI</text></g>')
     S = 1.5
     rv = f'<g class="rover-move"><g transform="translate(0 {G}) scale({S})">{rov}</g></g>'
     xs, probe, pings, wheels = [], [], {}, []
@@ -464,6 +464,184 @@ def pushers():
                "@keyframes lean{0%,100%{transform:rotate(31deg)}50%{transform:rotate(28deg)}}.carousel.pushing-prev .pusher-l .up,.carousel.pushing-next .pusher-r .up{animation:lean .55s infinite}"
                ".carousel.pushing-prev .pusher-l .aL,.carousel.pushing-prev .pusher-l .aR,.carousel.pushing-next .pusher-r .aL,.carousel.pushing-next .pusher-r .aR{animation:pushArm .55s infinite ease-in-out}")
     write("pushers", svg("pushers", "0 0 800 110", b, "Two stick figures pushing the photo carousel"))
+
+def mini_svg(name, vb, body, label=""):
+    aria = f'role="img" aria-label="{label}"' if label else 'aria-hidden="true"'
+    return f'<svg class="scene mini mini-{name}" viewBox="{vb}" {aria}>{body}</svg>\n'
+
+SIT = dict(lL=-90, sL=90, lR=-84, sR=84)
+
+def riders():
+    """Six stickmen who ride the Ferris-wheel cabins."""
+    out = {}
+    # 0 — waving
+    out[0] = fig("rd0", 0, 0, 1, dict(SIT, aR=-155, fR=-15, aL=30, fL=-30))
+    kf("rdWave", [(0, -30), (100, 25)])
+    CSS.append(".rd0 .fR{animation:rdWave .5s infinite alternate ease-in-out}")
+    # 1 — swinging legs
+    out[1] = fig("rd1", 0, 0, 1, dict(SIT, aR=30, fR=-40, aL=-20, fL=-30))
+    kf("rdSwingA", [(0, 70), (100, 115)]); kf("rdSwingB", [(0, 115), (100, 70)])
+    CSS.append(".rd1 .sL{animation:rdSwingA .7s infinite alternate ease-in-out}.rd1 .sR{animation:rdSwingB .7s infinite alternate ease-in-out}")
+    # 2 — cheering, arms up
+    out[2] = fig("rd2", 0, 0, 1, dict(SIT, aR=-160, fR=10, aL=160, fL=-10))
+    kf("rdCheerR", [(0, -150), (100, -170)]); kf("rdCheerL", [(0, 150), (100, 170)])
+    CSS.append(".rd2 .aR{animation:rdCheerR .35s infinite alternate}.rd2 .aL{animation:rdCheerL .35s infinite alternate}"
+               "@keyframes rdBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}.rd2{animation:rdBounce .7s infinite}")
+    # 3 — photographer with flash
+    cam = upright('<rect class="fill" x="-4" y="-7" width="8" height="5.5" rx="1"/><circle class="flash" cx="0" cy="-4.2" r="1.6"/>', -150 + -40)
+    aC = arm((8, -40))
+    out[3] = fig("rd3", 0, 0, 1, dict(SIT, aR=aC[0], fR=aC[1], aL=-120, fL=-60), dict(hR=cam))
+    CSS.append("@keyframes flash{0%,86%{opacity:0}88%{opacity:1}96%,100%{opacity:0}}.rd3 .flash{fill:var(--gold);animation:flash 2.6s infinite}")
+    # 4 — spinning a soccer ball on one finger
+    bl = '<g transform="translate(0 -10)"><g class="spinner">' + ball(4.5) + '</g></g>'
+    out[4] = fig("rd4", 0, 0, 1, dict(SIT, aR=-178, fR=0, aL=40, fL=-50), dict(hR=bl))
+    CSS.append(".rd4 .spinner{animation:spin .5s linear infinite}")
+    # 5 — hanging off the side by one hand, legs kicking
+    out[5] = fig("rd5", 0, 0, 1, dict(aR=-180, fR=0, aL=-30, fL=-20, lL=20, sL=40, lR=-20, sR=30))
+    kf("rdKickL", [(0, 25), (100, -25)]); kf("rdKickR", [(0, -25), (100, 25)])
+    CSS.append(".rd5 .lL{animation:rdKickL .45s infinite alternate ease-in-out}.rd5 .lR{animation:rdKickR .45s infinite alternate ease-in-out}"
+               "@keyframes rdSway5{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}.rd5{animation:rdSway5 1.8s infinite ease-in-out;transform-origin:0 -28px}")
+    for k, body in out.items():
+        vb = "-30 -66 64 84" if k in (2, 4) else ("-26 -54 56 72" if k != 5 else "-20 -58 40 92")
+        write(f"rider-{k}", mini_svg(f"rider{k}", vb, body))
+    # excited reaction while a cabin is hovered
+    CSS.append("@keyframes rdHop{0%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}"
+               ".gondola.is-active .rider svg{animation:rdHop .45s infinite}")
+
+def wheel_frame():
+    """Static frame + rotor of the Ferris wheel (viewBox 0 0 500 540, hub at 250,245)."""
+    CX, CY, R = 250, 232, 158
+    G = 522
+    rotor = f'<g class="rotor" transform="rotate(0 {CX} {CY})">'
+    rotor += f'<circle class="rim" cx="{CX}" cy="{CY}" r="{R}"/><circle class="rim rim-in" cx="{CX}" cy="{CY}" r="{R-16}"/>'
+    for k in range(24):
+        a = math.radians(k * 15); a2 = math.radians(k * 15 + 7.5)
+        x1, y1 = CX + (R - 16) * math.cos(a), CY + (R - 16) * math.sin(a)
+        x2, y2 = CX + R * math.cos(a2), CY + R * math.sin(a2)
+        rotor += L(round(x1, 1), round(y1, 1), round(x2, 1), round(y2, 1), "truss")
+        x3, y3 = CX + (R - 16) * math.cos(math.radians(k * 15 + 15)), CY + (R - 16) * math.sin(math.radians(k * 15 + 15))
+        rotor += L(round(x2, 1), round(y2, 1), round(x3, 1), round(y3, 1), "truss")
+    for k in range(12):
+        a = math.radians(k * 30)
+        rotor += L(CX, CY, round(CX + (R - 16) * math.cos(a), 1), round(CY + (R - 16) * math.sin(a), 1), "spoke")
+    for k in range(24):
+        a = math.radians(k * 15 + 7.5)
+        rotor += f'<circle class="bulb b{k % 3}" cx="{CX + R * math.cos(a):.1f}" cy="{CY + R * math.sin(a):.1f}" r="3"/>'
+    rotor += f'<circle class="hub" cx="{CX}" cy="{CY}" r="16"/><circle class="hub-in" cx="{CX}" cy="{CY}" r="6"/></g>'
+    legs = (L(CX, CY, CX - 105, G, "leg") + L(CX, CY, CX + 105, G, "leg")
+            + L(CX - 60, CY + 140, CX + 60, CY + 140, "brace") + L(CX - 82, CY + 200, CX + 82, CY + 200, "brace"))
+    base = f'<rect class="platform" x="{CX-64}" y="{G-14}" width="128" height="14" rx="3"/>' + L(20, G, 480, G, "ground")
+    booth = (f'<rect class="booth" x="392" y="{G-56}" width="58" height="56" rx="4"/><rect class="booth-win" x="402" y="{G-46}" width="38" height="18" rx="2"/>'
+             f'<path class="booth-roof" d="M386 {G-56} L421 {G-74} L456 {G-56} Z"/><text class="cap" x="421" y="{G-8}" text-anchor="middle" style="font-size:8px">RIDES</text>')
+    lever = (f'<g class="lever" style="transform-origin:372px {G-20}px">' + L(372, G - 20, 372, G - 44, "lever-stick")
+             + f'<circle class="lever-knob" cx="372" cy="{G-46}" r="4"/></g><rect class="fill" x="364" y="{G-22}" width="16" height="8" rx="2"/>')
+    s = 1.15; oy = G - 29 * s
+    hand = ((372 - 345) / s, (G - 44 - oy) / s)
+    la = arm(hand)
+    operator = fig("operator", 345, oy, s, dict(aR=la[0], fR=la[1], aL=20, fL=-30, lL=6, lR=-6),
+                   dict(head='<path class="cap-hat" d="M-7 -44 Q0 -52 7 -44 Z"/>'))
+    ticket = upright('<rect class="ticket" x="-2" y="-7" width="9" height="6" rx="1"/>', -100)
+    q1 = fig("queue1", 70, oy, s, dict(aR=-100, fR=-20, aL=10, fL=-10, lL=6, lR=-6), dict(hR=ticket))
+    q2 = fig("queue2", 108, oy, s * 0.85, dict(aR=-20, fR=-60, aL=20, fL=-40, lL=5, lR=-5), ex=None)
+    q2 = q2.replace(f'translate(108 {oy:g})', f'translate(108 {G - 29 * s * .85:g})')
+    sign = f'<g class="queue-sign"><rect class="paper" x="132" y="{G-62}" width="60" height="22" rx="4"/><text class="cap" x="162" y="{G-47}" text-anchor="middle" style="font-size:8px">drag to spin</text>' + L(162, G - 40, 162, G, "thin") + '</g>'
+    body = legs + rotor + base + booth + lever + operator + q1 + q2 + sign
+    kf("leverPull", [(0, 0), (100, -38)])
+    CSS.append(".scene .rim{fill:none;stroke:var(--ink);stroke-width:2.2}.scene .rim-in{stroke-width:1.2}"
+               ".scene line.truss{stroke:var(--accent);stroke-width:.9;opacity:.55}.scene line.spoke{stroke:var(--ink);stroke-width:1.1;opacity:.75}"
+               ".scene .hub{fill:var(--accent)}.scene .hub-in{fill:var(--bg)}"
+               ".scene line.leg{stroke:var(--ink);stroke-width:3}.scene line.brace{stroke:var(--ink);stroke-width:1.4}"
+               ".scene .platform{fill:var(--tint)}.scene .booth{fill:var(--bg);stroke:var(--ink);stroke-width:1.4}.scene .booth-win{fill:var(--tint-soft);stroke:var(--ink);stroke-width:1}"
+               ".scene .booth-roof{fill:var(--coral)}.scene line.lever-stick{stroke:var(--ink);stroke-width:2.4}.scene .lever-knob{fill:var(--coral)}"
+               ".scene .cap-hat{fill:var(--accent)}.scene .ticket{fill:var(--gold)}"
+               ".scene .bulb{fill:var(--gold)}"
+               "@keyframes bulb{0%,100%{opacity:1}50%{opacity:.25}}.scene .b0{animation:bulb 1.2s infinite}.scene .b1{animation:bulb 1.2s infinite .4s}.scene .b2{animation:bulb 1.2s infinite .8s}"
+               ".wheel .lever{transition:transform .5s var(--ease)}.wheel.is-fast .lever{transform:rotate(-38deg)}"
+               ".wheel .operator .up{transition:transform .5s var(--ease)}.wheel.is-fast .operator .up{transform:rotate(-8deg)}"
+               "@keyframes q1{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}.queue1{animation:q1 1.6s infinite ease-in-out}"
+               "@keyframes q2tap{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(-20deg)}}.queue2 .lR{animation:q2tap .4s infinite}"
+               "@keyframes cheerQ{0%,100%{transform:rotate(-150deg)}50%{transform:rotate(-175deg)}}.wheel.is-fast .queue2 .aR{animation:cheerQ .3s infinite}"
+               ".wheel.is-paused .queue1 .aR{animation:rdWave .5s infinite alternate}")
+    write("wheel-frame", f'<svg class="scene wheel-frame" viewBox="0 0 500 540" aria-hidden="true">{body}</svg>\n')
+
+def jogger():
+    body = fig("jogger", 0, 0, 1, dict(up=10, aL=-45, fL=-80, aR=40, fR=-80, lL=35, sL=75, lR=-45, sR=25))
+    dust = '<circle class="dust d0" cx="-8" cy="28" r="2"/><circle class="dust d1" cx="-12" cy="27" r="1.5"/>'
+    CSS.append(".jogger .lL,.jogger .lR{animation:runLeg .55s infinite linear}.jogger .sL,.jogger .sR{animation:runShin .55s infinite linear}"
+               ".jogger .lR,.jogger .sR{animation-delay:-.275s}.jogger .aL,.jogger .aR{animation:runArm .55s infinite ease-in-out}.jogger .aL{animation-delay:-.275s}"
+               ".jogger{animation:bob .55s infinite}"
+               "@keyframes dust{0%{opacity:.6;transform:none}100%{opacity:0;transform:translate(-10px,-4px) scale(1.8)}}"
+               ".scene .dust{fill:var(--faint,#b9c4d6);transform-box:fill-box;transform-origin:center;animation:dust .55s infinite}.scene .d1{animation-delay:.27s}")
+    write("jogger", mini_svg("jogger", "-24 -52 52 84", body + dust, "Stick figure running"))
+
+def pizza():
+    G = 70; s = 1.15
+    slice_ = ('<path class="slice" d="M0 -3 L-9 -22 Q0 -26 9 -22 Z"/><path class="crust" d="M-9 -22 Q0 -26 9 -22"/>'
+              '<circle class="pep" cx="-2" cy="-16" r="1.6"/><circle class="pep" cx="3" cy="-12" r="1.3"/>'
+              '<circle class="bite k1" cx="0" cy="-3" r="3.2"/><circle class="bite k2" cx="-1" cy="-7" r="3.4"/><circle class="bite k3" cx="1" cy="-11" r="3.6"/>')
+    mouth_t, low_t = (6, -38), (14, -20)
+    m, lo = arm(mouth_t), arm(low_t)
+    held = upright(f'<g transform="rotate(-160 0 -3)">{slice_}</g>', lo[0] + lo[1])
+    body = fig("eater", 60, G - 14 * s - 0, s, dict(SIT, aR=lo[0], fR=lo[1], aL=20, fL=-50), dict(hR=held))
+    box = ('<g class="pizza-box"><path class="box" d="M110 70 L170 70 L166 60 L114 60 Z"/>'
+           '<circle class="pie" cx="140" cy="64" r="9"/><path class="cut" d="M140 64 L149 64 M140 64 L135 57 M140 64 L135 71"/>'
+           '<circle class="pep" cx="143" cy="61" r="1.4"/><circle class="pep" cx="137" cy="67" r="1.4"/></g>')
+    crumbs = "".join(f'<circle class="crumb cr{i}" cx="{66+i*3}" cy="{G-46+i}" r="1"/>' for i in range(3))
+    ledge = L(0, G, 210, G, "ground") + f'<rect class="crate" x="46" y="{G-16}" width="22" height="16" rx="2"/>' + L(46, G - 8, 68, G - 8, "hair")
+    T = 6
+    kf("eatArm", [(0, lo[0]), (14, lo[0], "ease-in-out"), (22, m[0]), (30, m[0], "ease-in-out"), (38, lo[0]), (44, lo[0], "ease-in-out"),
+                  (52, m[0]), (60, m[0], "ease-in-out"), (68, lo[0]), (74, lo[0], "ease-in-out"), (82, m[0]), (88, m[0], "ease-in-out"), (96, lo[0]), (100, lo[0])])
+    kf("eatFore", [(0, lo[1]), (14, lo[1], "ease-in-out"), (22, m[1]), (30, m[1], "ease-in-out"), (38, lo[1]), (44, lo[1], "ease-in-out"),
+                   (52, m[1]), (60, m[1], "ease-in-out"), (68, lo[1]), (74, lo[1], "ease-in-out"), (82, m[1]), (88, m[1], "ease-in-out"), (96, lo[1]), (100, lo[1])])
+    CSS.append(f".eater .aR{{animation:eatArm {T}s infinite}}.eater .fR{{animation:eatFore {T}s infinite}}"
+               f"@keyframes chew{{0%,24%,32%,54%,62%,84%,92%,100%{{transform:rotate(0)}}27%,57%,87%{{transform:rotate(-6deg)}}}}.eater .up{{animation:chew {T}s infinite}}"
+               f"@keyframes bite1{{0%,25%{{opacity:0}}26%,97%{{opacity:1}}100%{{opacity:0}}}}@keyframes bite2{{0%,55%{{opacity:0}}56%,97%{{opacity:1}}100%{{opacity:0}}}}@keyframes bite3{{0%,85%{{opacity:0}}86%,97%{{opacity:1}}100%{{opacity:0}}}}"
+               f".scene .bite{{fill:var(--bg);opacity:0}}.scene .k1{{animation:bite1 {T}s infinite}}.scene .k2{{animation:bite2 {T}s infinite}}.scene .k3{{animation:bite3 {T}s infinite}}"
+               f"@keyframes crumb{{0%,26%{{opacity:0;transform:none}}28%{{opacity:1}}45%,100%{{opacity:0;transform:translateY(40px)}}}}"
+               f".scene .crumb{{fill:#d9a441;animation:crumb {T/3:.1f}s infinite}}.scene .cr1{{animation-delay:.15s}}.scene .cr2{{animation-delay:.3s}}"
+               ".scene .slice{fill:#ffd36b;stroke:var(--ink);stroke-width:.8}.scene .crust{fill:none;stroke:#c98b3c;stroke-width:2.4;stroke-linecap:round}"
+               ".scene .pep{fill:#e0533d}.scene .crate{fill:#e9d5b5;stroke:var(--ink);stroke-width:1}.scene .box{fill:#e9d5b5;stroke:var(--ink);stroke-width:1}.scene .pie{fill:#ffd36b;stroke:#c98b3c;stroke-width:2}.scene .cut{stroke:#c98b3c;stroke-width:.8;fill:none}")
+    write("pizza", mini_svg("pizza", "0 0 210 82", ledge + box + body + crumbs, "Stick figure eating pizza"))
+
+def climber():
+    body = fig("climber", 0, 0, 1, dict(aL=-170, fL=10, aR=-150, fR=-20, lL=-40, sL=70, lR=-10, sR=30))
+    kf("clA", [(0, -175), (100, -140)]); kf("clB", [(0, -140), (100, -175)])
+    kf("clLa", [(0, -50), (100, -10)]); kf("clLb", [(0, -10), (100, -50)])
+    CSS.append(".climber .aL{animation:clA .35s infinite alternate paused}.climber .aR{animation:clB .35s infinite alternate paused}"
+               ".climber .lL{animation:clLa .35s infinite alternate paused}.climber .lR{animation:clLb .35s infinite alternate paused}"
+               ".sidenav.is-climbing .climber .aL,.sidenav.is-climbing .climber .aR,.sidenav.is-climbing .climber .lL,.sidenav.is-climbing .climber .lR{animation-play-state:running}")
+    write("climber", mini_svg("climber", "-20 -64 40 96", body))
+
+def peeker():
+    body = fig("peeker", 0, 0, 1, dict(aR=-160, fR=-20, aL=160, fL=20))
+    CSS.append(".card:hover .peeker .fR{animation:rdWave .4s infinite alternate ease-in-out}")
+    write("peeker", mini_svg("peeker", "-24 -52 48 52", body))
+
+def dispenser():
+    G = 185; s = 1.45; y = G - 29 * s; x = 70
+    press1, press2 = arm((24, -20)), arm((24, -15))
+    body = fig("presser", x, y, s, dict(aR=press1[0], fR=press1[1], aL=10, fL=-20, lL=8, lR=-6))
+    bx = x + 24 * s
+    dev = (f'<rect class="tintbox" x="{bx-2}" y="{y-14*s}" width="54" height="66" rx="10"/>'
+           f'<rect class="device-btn" x="{bx-6}" y="{y-22*s}" width="18" height="6" rx="3"/>'
+           f'<rect class="paper" x="{bx+8}" y="{y-6*s}" width="34" height="22" rx="3"/>')
+    bars = "".join(f'<rect class="dose dz{i}" x="{bx+12+i*7}" y="{y-6*s+4}" width="5" height="14" rx="1"/>' for i in range(4))
+    cal = ('<rect class="paper" x="210" y="70" width="90" height="84" rx="8"/>' + L(210, 88, 300, 88)
+           + '<text class="cap" x="255" y="82" text-anchor="middle" style="font-size:8px">TAPER PLAN</text>'
+           + "".join(f'<rect class="cal-bar cb{i}" x="{222+i*19}" y="{148-(4-i)*13}" width="12" height="{(4-i)*13}" rx="2"/>' for i in range(4)))
+    b = GROUND(10, 310, G) + cal + dev + bars + body + CAP(14, 22, "dose 4 → 3 → 2 → 1", "start")
+    T = 6
+    kf("pressArm", [(0, press1[0]), (8, press2[0]), (14, press1[0]), (100, press1[0])])
+    kf("pressFore", [(0, press1[1]), (8, press2[1]), (14, press1[1]), (100, press1[1])])
+    steps = ""
+    for i in range(4):
+        steps += (f"@keyframes dz{i}{{0%,{i*25+12}%{{opacity:1}}{i*25+14}%,96%{{opacity:.12}}100%{{opacity:1}}}}"
+                  f".scene .dz{3-i}{{animation:dz{i} {T}s infinite}}"
+                  f"@keyframes cb{i}{{0%,{i*25}%,{i*25+20}%,100%{{fill:var(--tint)}}{i*25+4}%,{i*25+16}%{{fill:var(--accent)}}}}"
+                  f".scene .cb{i}{{animation:cb{i} {T}s infinite}}")
+    CSS.append(f".presser .aR{{animation:pressArm {T/4}s infinite}}.presser .fR{{animation:pressFore {T/4}s infinite}}"
+               ".scene .device-btn{fill:var(--coral)}.scene .dose{fill:var(--accent)}" + steps)
+    write("dispenser", svg("dispenser", "0 0 320 205", b, "Stick figure pressing a dispenser that steps its dose down over time"))
 
 def soccer():
     G = 140; s = 1.2; y = G - 29 * s; T = 6
@@ -600,7 +778,7 @@ BASE = """/* GENERATED by _tools/scenes.py — edit that file, then re-run it. *
 """
 
 if __name__ == "__main__":
-    hero(); biolistics(); bioscaffold(); rover(); clinic(); design(); pushers(); soccer(); bass_scene(); tkd_scene(); blog(); profile()
+    hero(); biolistics(); bioscaffold(); rover(); clinic(); design(); dispenser(); riders(); wheel_frame(); jogger(); pizza(); climber(); peeker(); soccer(); bass_scene(); tkd_scene(); blog(); profile()
     with open(os.path.join(ROOT, "assets", "css", "scenes.css"), "w") as f:
         f.write(BASE + "\n".join(CSS) + "\n")
     print("scenes written:", sorted(os.listdir(INC)))

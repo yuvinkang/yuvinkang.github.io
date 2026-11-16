@@ -2,16 +2,17 @@
 # "scene" picks the animation beside each entry: bioscaffold, biolistics, rover, clinic, design, or none.
 # In summary/highlights, **double asterisks** make text bold.
 
-- role: "Co-Founder"
-  organization: "Prairi Robotics"
+- role: "Co-Founder · Biology & Plant Science"
+  organization: "Prari Robotics"
   location: "New Haven, CT"
   dates: "Sep 2026 – Present"
   scene: rover
-  summary: "An autonomous rover that maps soil and plant health at meter resolution for precision farming."
+  link: /projects/prari-rover/
+  summary: "Modular autonomous rovers for high-resolution soil and crop data — co-founded at Yale with Tony Gao and Hunter Yang."
   highlights:
-    - "**Co-founded** the venture and defined the rover's sensing and data-collection goals."
-    - "**Designed** the CAD model and prototype in SolidWorks with input from **20+ farmers**."
-    - "**Securing funding** for paid pilots in Dublin and North Carolina."
+    - "**Designed** the rover and its swappable sensor modules in SolidWorks."
+    - "**22 farmer interviews** shaped what the rover measures: nitrogen, pH, labile carbon, phosphorus, and more."
+    - "**Paid pilot agreed** with South Mountain Farms (565 acres, NC); proposal for the Sobotka Seed Prize for Sustainable Ventures."
 
 - role: "Medical Assistant"
   organization: "Pleasant Hill Family Medicine"

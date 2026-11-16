@@ -1,5 +1,5 @@
 <nav class="sidenav" aria-label="Sections">
-  <span class="sidenav-track" aria-hidden="true"><span class="sidenav-progress"></span></span>
+  <span class="sidenav-track" aria-hidden="true"><span class="sidenav-progress"></span><span class="climb">{% include scenes/climber.html %}</span></span>
   {% for item in site.data.navigation %}
   {% assign home = '/' | relative_url %}
   <a class="tab{% if item.id == 'blog' and page.url contains '/blog' %} active{% endif %}{% if item.id == 'projects' and page.url contains '/projects/' %} active{% endif %}" href="{{ home }}#{{ item.id }}" data-target="{{ item.id }}">

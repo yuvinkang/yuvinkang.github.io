@@ -20,8 +20,14 @@
   </main>
 
   <footer class="site-footer">
-    {% include links.html %}
-    <p class="copyright">© {{ 'now' | date: '%Y' }} {{ site.name }}</p>
+    <div class="footer-pizza" title="Pizza: favorite food, no contest.">
+      {% include scenes/pizza.html %}
+      <p class="mono pizza-cap">refueling · favorite food: pizza</p>
+    </div>
+    <div class="footer-row">
+      {% include links.html %}
+      <p class="copyright">© {{ 'now' | date: '%Y' }} {{ site.name }} · <a href="#top">back to top ↑</a></p>
+    </div>
   </footer>
 
   <script src="{{ '/assets/js/site.js' | relative_url }}"></script>

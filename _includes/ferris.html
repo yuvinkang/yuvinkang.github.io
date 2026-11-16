@@ -1,0 +1,39 @@
+{% assign photos = site.data.gallery %}
+{% if photos and photos.size > 0 %}
+<div class="wheel" data-wheel style="--n: {{ photos.size }}">
+  {% include scenes/wheel-frame.html %}
+  <div class="gondolas">
+    {% for ph in photos %}
+    {% assign k = forloop.index0 | modulo: 6 %}
+    <button type="button" class="gondola rider-at-{{ k }}" data-i="{{ forloop.index0 }}"
+            data-src="{{ ph.src | relative_url }}" data-caption="{{ ph.caption | escape }}" data-blurb="{{ ph.blurb | escape }}"
+            aria-label="{{ ph.caption | escape }} — {{ ph.blurb | escape }}">
+      <span class="swing">
+        <span class="hanger" aria-hidden="true"></span>
+        <span class="cabin">
+          <img src="{{ ph.src | relative_url }}" alt="" loading="lazy" draggable="false">
+          <span class="rider" aria-hidden="true">
+            {% case k %}
+              {% when 0 %}{% include scenes/rider-0.html %}
+              {% when 1 %}{% include scenes/rider-1.html %}
+              {% when 2 %}{% include scenes/rider-2.html %}
+              {% when 3 %}{% include scenes/rider-3.html %}
+              {% when 4 %}{% include scenes/rider-4.html %}
+              {% else %}{% include scenes/rider-5.html %}
+            {% endcase %}
+          </span>
+        </span>
+        <span class="blurb" role="tooltip"><strong>{{ ph.caption }}</strong>{{ ph.blurb }}</span>
+      </span>
+    </button>
+    {% endfor %}
+  </div>
+  <p class="mono wheel-hint">hover a cabin · drag to spin · click to open</p>
+</div>
+
+<dialog class="lightbox" aria-label="Photo">
+  <button type="button" class="lightbox-close" aria-label="Close">×</button>
+  <img src="" alt="">
+  <p class="lightbox-cap"><strong></strong><span></span></p>
+</dialog>
+{% endif %}

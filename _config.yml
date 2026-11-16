@@ -14,6 +14,7 @@ linkedin: "https://www.linkedin.com/in/yuvinkang"
 github: ""
 scholar: ""
 resume: ""          # e.g. /assets/files/resume.pdf  (upload the PDF to that folder first)
+strava: ""          # your Strava profile URL — makes the running stickman's bubble a link
 
 # ─────────────────────────────────────────────────────────────
 #  Technical settings — you normally won't need to touch these.
@@ -28,6 +29,12 @@ collections:
   projects:
     output: true
     permalink: /projects/:name/
+defaults:
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: project
 exclude:
   - README.md
   - CLAUDE.md

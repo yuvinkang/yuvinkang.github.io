@@ -17,7 +17,11 @@ You can edit everything right on GitHub: open a file, click the ✏️ pencil ic
 | Work experience (and its animations) | `_data/experience.yml` |
 | Projects (card + its own page) | one file per project in `_projects/` — edit the text under the `---` lines; set `image:` for the cover photo |
 | Personal (music, soccer, taekwondo…) + hover photos | `_data/personal.yml` |
-| Landing-page photo carousel | `_data/gallery.yml` |
+| Ferris-wheel photos + what each stickman says on hover | `_data/gallery.yml` |
+| "Currently" line and stat chips under your name | `_data/hero.yml` |
+| Prari Robotics page content | `_data/prari.yml` (your own notes: `_projects/prari-rover.md`) |
+| Education logos | upload PNGs to `assets/images/logos/` and set `logo:` in `_data/profile.yml` |
+| Strava link for the running stickman | `strava:` in `_config.yml` |
 | Blog posts | add a file in `_posts/` (see the sample post for instructions) |
 | Colors, fonts, spacing | the top section of `assets/css/style.css` |
 | Scroll / fade animations | `assets/js/site.js` |
@@ -27,11 +31,13 @@ You can edit everything right on GitHub: open a file, click the ✏️ pencil ic
 
 ## Adding your photos
 
-1. Open the right folder on GitHub — `assets/images/gallery/` (carousel), `assets/images/personal/` (hover popouts), or `assets/images/projects/` (project pages).
+1. Open the right folder on GitHub — `assets/images/gallery/` (Ferris wheel), `assets/images/personal/` (hover popouts), or `assets/images/projects/` (project pages).
 2. **Add file → Upload files**, drag your photo in, and commit.
 3. Point to it: in `_data/gallery.yml`, `_data/personal.yml`, or the project's file in `_projects/`, change the path to your file, e.g. `/assets/images/gallery/orchestra.jpg`.
 
-Tip: JPGs under ~500 KB load fastest. Portrait photos suit the carousel; landscape suits projects.
+Tip: JPGs under ~500 KB load fastest. Square photos suit the Ferris wheel; landscape suits projects.
+
+The education logos are clean monogram stand-ins. To use official ones, upload a PNG with the same file name to `assets/images/logos/`.
 
 ## Putting it online (one-time setup)
 

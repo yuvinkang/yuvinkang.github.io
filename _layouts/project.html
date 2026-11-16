@@ -1,21 +1,53 @@
 ---
 layout: default
 ---
-<article class="page project-page reveal">
-  <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a><span>{{ page.year }}</span></p>
-  <h1 class="page-title">{{ page.title }}</h1>
-  {% if page.summary %}<p class="lede">{{ page.summary }}</p>{% endif %}
-  {% if page.tags %}<div class="tags">{% for t in page.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
+{% assign all = site.projects | sort: "order" %}
+{% for p in all %}{% if p.url == page.url %}{% assign pos = forloop.index0 %}{% endif %}{% endfor %}
+{% assign prev_i = pos | minus: 1 %}{% assign next_i = pos | plus: 1 %}
 
-  <figure class="project-cover">
-    {% if page.image and page.image != "" %}
-      <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
-    {% else %}
-      <img src="{{ '/assets/images/placeholder.svg' | relative_url }}" alt="Placeholder — add a photo for {{ page.title }}">
-    {% endif %}
-  </figure>
+<article class="project">
+  <header class="project-hero reveal">
+    <div class="project-hero-text">
+      <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a></p>
+      <p class="mono project-kicker">Project 0{{ pos | plus: 1 }} · {{ page.year }}</p>
+      <h1 class="page-title">{{ page.title }}</h1>
+      {% if page.summary %}<p class="lede">{{ page.summary }}</p>{% endif %}
+      {% if page.tags %}<div class="tags">{% for t in page.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
+    </div>
+    {% if page.scene %}{% assign entry_scene = page.scene %}<div class="project-scene">{% include entry-scene.html %}</div>{% endif %}
+  </header>
 
-  <div class="prose">
-    {{ content }}
+  <dl class="facts reveal">
+    {% if page.role %}<div><dt class="mono">Role</dt><dd>{{ page.role }}</dd></div>{% endif %}
+    <div><dt class="mono">Year</dt><dd>{{ page.year }}</dd></div>
+    {% if page.tools %}<div><dt class="mono">Tools</dt><dd>{{ page.tools | join: " · " }}</dd></div>{% endif %}
+    {% if page.status %}<div><dt class="mono">Status</dt><dd><span class="status-dot"></span>{{ page.status }}</dd></div>{% endif %}
+  </dl>
+
+  {% if page.metrics %}
+  <div class="metrics reveal">
+    {% for m in page.metrics %}
+    <div class="metric" style="--i: {{ forloop.index }}"><p class="metric-value">{{ m.value }}</p><p class="mono metric-label">{{ m.label }}</p></div>
+    {% endfor %}
   </div>
+  {% endif %}
+
+  {% if page.image and page.image != "" %}
+  <figure class="project-cover reveal"><img src="{{ page.image | relative_url }}" alt="{{ page.title }}"></figure>
+  {% endif %}
+
+  <div class="project-body reveal">
+    <div class="prose project-prose">
+      {{ content }}
+    </div>
+  </div>
+
+  <nav class="project-nav" aria-label="More projects">
+    {% if pos > 0 %}{% assign pp = all[prev_i] %}
+    <a class="pn-card" href="{{ pp.url | relative_url }}"><span class="mono">← Previous</span><span class="pn-title">{{ pp.title }}</span></a>
+    {% else %}<span></span>{% endif %}
+    {% if next_i < all.size %}{% assign np = all[next_i] %}
+    <a class="pn-card pn-next" href="{{ np.url | relative_url }}"><span class="mono">Next →</span><span class="pn-title">{{ np.title }}</span></a>
+    {% endif %}
+  </nav>
 </article>

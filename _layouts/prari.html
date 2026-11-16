@@ -1,0 +1,242 @@
+---
+layout: default
+---
+{% assign d = site.data.prari %}
+{% assign all = site.projects | sort: "order" %}
+{% for p in all %}{% if p.url == page.url %}{% assign pos = forloop.index0 %}{% endif %}{% endfor %}
+{% assign next_i = pos | plus: 1 %}
+
+<article class="px">
+
+  <!-- HERO -->
+  <header class="px-hero">
+    <img class="px-hero-img" src="{{ '/assets/images/projects/prari/field.webp' | relative_url }}" alt="The Prari rover driving between rows of young corn">
+    <div class="px-hero-shade"></div>
+    <div class="px-hero-text">
+      <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a></p>
+      <p class="mono px-kicker">Project 01 · {{ page.year }}</p>
+      <h1 class="px-title">{{ page.title }}</h1>
+      <p class="px-tag">{{ d.tagline }}</p>
+      <div class="px-chips">{% for c in d.chips %}<span class="px-chip">{{ c }}</span>{% endfor %}</div>
+    </div>
+  </header>
+
+  <dl class="facts reveal">
+    <div><dt class="mono">My role</dt><dd>{{ page.role }}</dd></div>
+    <div><dt class="mono">Team</dt><dd>{% for t in d.team %}{{ t.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}</dd></div>
+    <div><dt class="mono">Built with</dt><dd>SolidWorks CAD · {{ page.year }}</dd></div>
+    <div><dt class="mono">Status</dt><dd><span class="status-dot"></span>{{ page.status }}</dd></div>
+  </dl>
+
+  <!-- PROBLEM -->
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">01 — Problem</p>
+    <h2 class="px-h">Every patch of a farm needs different care.<br><span>Most get treated the same.</span></h2>
+    <div class="px-problem">
+      <div>
+        <div class="px-toggle" data-toggle-group>
+          <button type="button" data-show="treated">How each patch is treated</button>
+          <button type="button" data-show="needs">What each patch needs</button>
+        </div>
+        <div class="patch-grid" aria-label="Field grid: uniform treatment vs. varied needs">
+          {% for i in (0..99) %}{% assign r = i | divided_by: 10 %}{% assign c = i | modulo: 10 %}{% assign v = c | times: 7 | plus: r | times: 13 | plus: r | modulo: 5 %}<span class="patch n{{ v }}" style="--d: {{ c | plus: r | times: 18 }}ms"></span>{% endfor %}
+        </div>
+        <div class="patch-legend mono"><span>more attention needed</span><i></i><span>less</span></div>
+      </div>
+      <div class="px-stats">
+        {% for s in d.problem_stats %}
+        <div class="px-stat"><p class="px-stat-v" data-count="{{ s.value }}" data-pre="{{ s.pre }}" data-suf="{{ s.suf }}">{{ s.pre }}{{ s.value }}{{ s.suf }}</p><p class="px-stat-t">{{ s.text }}</p></div>
+        {% endfor %}
+        <p class="mono px-src">Sources: {{ d.problem_sources }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION + TURNTABLE -->
+  <section class="px-sec reveal">
+    <p class="px-num mono">02 — Solution</p>
+    <h2 class="px-h">Module-based autonomous rovers<br><span>for high-resolution soil data.</span></h2>
+    <div class="px-solution">
+      <div class="turntable-wrap">
+        <div class="turntable" data-turntable title="Drag to turn the rover">
+          <img src="{{ '/assets/images/projects/prari/quarter-left.webp' | relative_url }}" alt="Prari rover, front-left three-quarter view" draggable="false">
+          <img src="{{ '/assets/images/projects/prari/front.webp' | relative_url }}" alt="Prari rover, front view" draggable="false">
+          <img src="{{ '/assets/images/projects/prari/quarter-right.webp' | relative_url }}" alt="Prari rover, front-right three-quarter view" draggable="false">
+          <img class="tt-studio" src="{{ '/assets/images/projects/prari/studio.webp' | relative_url }}" alt="Prari rover studio render" draggable="false">
+        </div>
+        <label class="tt-control mono"><span>↺ drag or slide to turn</span><input type="range" min="0" max="3" step="1" value="0" aria-label="Rotate rover view"></label>
+      </div>
+      <div class="px-features">
+        <p class="mono px-cad"><span class="cad-dot"></span>Designed in SolidWorks · 2026</p>
+        <ul class="bullets">{% for f in d.features %}<li>{{ f }}</li>{% endfor %}</ul>
+        <div class="px-ground">
+          <p class="mono">Why ground-level?</p>
+          <p>Unlike drones, rovers measure the soil itself — at higher resolution, under the canopy, and with higher accuracy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE EXPLORER -->
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">03 — Modules</p>
+    <h2 class="px-h">One base rover.<br><span>Swap modules for every crop, field and season.</span></h2>
+    <div class="px-modules">
+      <div class="mod-list" data-toggle-group data-hover>
+        {% for m in d.modules %}
+        <button type="button" class="mod-btn" data-show="m{{ forloop.index }}"><span class="mono">0{{ forloop.index }}</span><strong>{{ m.name }}</strong><em>{{ m.short }}</em></button>
+        {% endfor %}
+      </div>
+      <div class="mod-stage">
+        <div class="mod-img">
+        <img src="{{ '/assets/images/projects/prari/modules.webp' | relative_url }}" alt="Exploded view of the rover with its six modules labeled" draggable="false">
+        {% for m in d.modules %}
+        <button type="button" class="hotspot" data-panel="m{{ forloop.index }}" style="left: {{ m.x }}%; top: {{ m.y }}%" aria-label="{{ m.name }}"
+                onclick="this.closest('[data-toggle-scope]').querySelector('[data-show=m{{ forloop.index }}]').click()"><span></span></button>
+        {% endfor %}
+        </div>
+        {% for m in d.modules %}
+        <div class="mod-card" data-panel="m{{ forloop.index }}"><p class="mono">Module 0{{ forloop.index }}</p><p class="mod-card-t">{{ m.name }}</p><p>{{ m.detail }}</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT FARMERS ASKED FOR -->
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">04 — What it measures</p>
+    <h2 class="px-h">The data farmers asked us to collect.</h2>
+    <div class="measure-chips" data-toggle-group data-hover>
+      {% for m in d.measures %}<button type="button" class="measure" data-show="ms{{ forloop.index }}">{{ m.name }}</button>{% endfor %}
+    </div>
+    <div class="measure-notes">
+      {% for m in d.measures %}<p class="measure-note" data-panel="ms{{ forloop.index }}"><strong>{{ m.name }}.</strong> {{ m.note }}</p>{% endfor %}
+    </div>
+  </section>
+
+  <!-- VALUE CALCULATOR -->
+  <section class="px-sec reveal">
+    <p class="px-num mono">05 — Value</p>
+    <h2 class="px-h">What it's worth to a farm.<br><span>Slide to your acreage.</span></h2>
+    <div class="calc" data-calc>
+      <label class="calc-input"><span class="mono">Farm size</span><strong><span data-out="acres">500</span> acres</strong>
+        <input type="range" min="100" max="2500" step="25" value="500" aria-label="Farm size in acres"></label>
+      <div class="calc-grid">
+        <div class="calc-card hi"><p class="mono">Farmer value / yr</p><p class="calc-v" data-out="value">$17,500</p><p class="calc-s">~$35 per acre</p></div>
+        <div class="calc-card"><p class="mono">Prari service / yr</p><p class="calc-v" data-out="cost">$7,500</p><p class="calc-s">$15/acre · $4,500 minimum</p></div>
+        <div class="calc-card"><p class="mono">Farmer return</p><p class="calc-v" data-out="ratio">2.3×</p><p class="calc-s">value ÷ service</p></div>
+        <div class="calc-card"><p class="mono">Rovers</p><p class="calc-v" data-out="rovers">1 × $5,000</p><p class="calc-s">upfront, incl. solar dock & soil probe</p></div>
+        <div class="calc-card green"><p class="mono">Nitrogen saved / yr</p><p class="calc-v" data-out="n">5.8 t</p><p class="calc-s">~25.5 lb N per acre</p></div>
+        <div class="calc-card green"><p class="mono">CO₂e avoided / yr</p><p class="calc-v" data-out="co2">33 t</p><p class="calc-s">from reduced N₂O</p></div>
+      </div>
+      <div class="calc-bar"><span class="calc-bar-fill"></span><span class="mono calc-bar-l">Prari's share of the value it creates</span></div>
+      <p class="mono px-src">Estimates from our Sobotka proposal (USDA NASS 2025; IPCC 2006; Zhang et al. 2021). Pricing to be validated in the South Mountain pilot. Rover count assumes the ~100 acres/day design target with weekly rescans.</p>
+    </div>
+  </section>
+
+  <!-- COMPETITORS -->
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">06 — Landscape</p>
+    <h2 class="px-h">Where Prari fits.</h2>
+    <div class="comp">
+      <div class="comp-map" aria-label="Competitor map: data fidelity versus modularity">
+        <span class="axis-x mono">Data fidelity →</span><span class="axis-y mono">Modularity →</span>
+        {% for c in d.competitors %}{% if c.x %}
+        <button type="button" class="comp-dot" style="left: {{ c.x }}%; bottom: {{ c.y }}%" onclick="this.closest('[data-toggle-scope]').querySelector('[data-show=c{{ forloop.index }}]').click()"><i></i>{{ c.name }}</button>
+        {% endif %}{% endfor %}
+        <span class="comp-dot me" style="left: 86%; bottom: 88%"><i></i>Prari</span>
+      </div>
+      <div>
+        <div class="comp-tabs" data-toggle-group data-hover>
+          {% for c in d.competitors %}<button type="button" data-show="c{{ forloop.index }}">{{ c.name }}</button>{% endfor %}
+        </div>
+        {% for c in d.competitors %}
+        <div class="comp-card" data-panel="c{{ forloop.index }}">
+          <p><span class="mono">What they do</span>{{ c.what }}</p>
+          <p><span class="mono">Where they fall short</span>{{ c.short }}</p>
+          <p class="edge"><span class="mono">Prari's edge</span>{{ c.edge }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- FARMER VOICES + PILOT -->
+  <section class="px-sec reveal">
+    <p class="px-num mono">07 — Customer discovery</p>
+    <h2 class="px-h">22 farmer conversations.<br><span>One paid pilot.</span></h2>
+    <div class="voices" data-quotes>
+      {% for q in d.quotes %}<blockquote class="quote"><p>“{{ q.text }}”</p><footer class="mono">— {{ q.who }}</footer></blockquote>{% endfor %}
+      <div class="qdots">{% for q in d.quotes %}<button type="button" class="qdot" aria-label="Quote {{ forloop.index }}"></button>{% endfor %}</div>
+    </div>
+    <div class="pilots">
+      <div class="pilot paid">
+        <p class="pilot-tag mono">✓ Paid pilot agreed</p>
+        <p class="pilot-t">South Mountain Farms</p>
+        <p class="pilot-s">Cleveland County, North Carolina</p>
+        <p>565 acres of soybeans and oats, once our first rover is field-ready. Tracks nitrate for oats; pH, lime and P/K for soybeans.</p>
+        <p class="pilot-terms mono">$5,000 · 3 months</p>
+      </div>
+      <div class="pilot">
+        <p class="pilot-tag mono">Interest in pilot</p>
+        <p class="pilot-t">University College Dublin</p>
+        <p class="pilot-s">School of Biology and Environmental Science</p>
+        <p>UCD works with farmers in Cork, Derry and Mayo; pasture dairy farmers have expressed interest in paid pilots — our second market after U.S. row crops.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUSINESS + MARKET -->
+  <section class="px-sec reveal">
+    <p class="px-num mono">08 — Model &amp; market</p>
+    <h2 class="px-h">Rover-as-a-Service.</h2>
+    <div class="biz">
+      <div class="biz-card"><p class="mono">Hardware</p><p class="biz-v">$5,000</p><p>per rover upfront, incl. solar dock &amp; soil probe · +$3/acre/yr per optional module</p></div>
+      <div class="biz-plus" aria-hidden="true">+</div>
+      <div class="biz-card"><p class="mono">Service</p><p class="biz-v">$15<small>/acre/yr</small></p><p>maps, alerts &amp; nitrogen prescriptions · minimum $4,500/farm/yr</p></div>
+    </div>
+    <div class="market">
+      <div class="market-tam"><p class="mono">Addressable market</p><p class="tam-v" data-count="4.5" data-pre="$" data-suf="B">$4.5B</p><p class="mono px-src">446,675 U.S. farms ≥ 260 acres · 301.3M acres of cropland × $15/acre/yr</p></div>
+      <div class="market-bars">
+        {% for m in d.market %}
+        <div class="mbar"><p class="mono">{{ m.label }}</p><div class="mbar-track"><span style="--w: {{ m.acres | divided_by: 5.369 }}%"></span><em style="--w: {{ m.acres | divided_by: 5.369 }}%">{{ m.acres }}M acres</em></div></div>
+        {% endfor %}
+        <p class="mono px-src">USDA 2022 Census of Agriculture, Table 8.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="px-sec reveal">
+    <p class="px-num mono">09 — Roadmap</p>
+    <h2 class="px-h">From CAD to first contracts.</h2>
+    <ol class="roadmap">
+      {% for r in d.roadmap %}
+      <li style="--i: {{ forloop.index }}"><span class="rm-dot"></span><p class="mono rm-when">{{ r.when }}</p><p class="rm-t">{{ r.title }}</p><p class="rm-x">{{ r.text }}</p></li>
+      {% endfor %}
+    </ol>
+    <div class="rm-rover" aria-hidden="true">{% include scenes/rover.html %}</div>
+  </section>
+
+  <!-- TEAM + MY PART -->
+  <section class="px-sec reveal">
+    <p class="px-num mono">10 — Team</p>
+    <h2 class="px-h">Co-founded at Yale with my friends.</h2>
+    <div class="team">
+      {% for t in d.team %}
+      <div class="mate{% if t.me %} me{% endif %}"><span class="avatar">{{ t.initials }}</span><p class="mate-n">{{ t.name }}{% if t.me %} <span class="mono">(me)</span>{% endif %}</p><p class="mono">{{ t.role }} · Co-founder</p></div>
+      {% endfor %}
+    </div>
+    <div class="prose px-mine">
+      <p class="label">My part</p>
+      {{ content }}
+    </div>
+  </section>
+
+  <nav class="project-nav" aria-label="More projects">
+    <span></span>
+    {% if next_i < all.size %}{% assign np = all[next_i] %}
+    <a class="pn-card pn-next" href="{{ np.url | relative_url }}"><span class="mono">Next project →</span><span class="pn-title">{{ np.title }}</span></a>
+    {% endif %}
+  </nav>
+</article>

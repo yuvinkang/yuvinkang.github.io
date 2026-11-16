@@ -2,6 +2,7 @@
 <div class="cards">
   {% for p in projects %}
   <a class="card" href="{{ p.url | relative_url }}" style="--i: {{ forloop.index }}">
+    <span class="peek" aria-hidden="true">{% include scenes/peeker.html %}</span>
     <p class="mono card-meta"><span>{{ p.year }}</span><span class="card-go" aria-hidden="true">→</span></p>
     <p class="card-title">{{ p.title }}</p>
     {% if p.summary %}<p class="card-body">{{ p.summary }}</p>{% endif %}

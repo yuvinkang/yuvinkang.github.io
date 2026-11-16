@@ -1,0 +1,150 @@
+# PRARI ROBOTICS — content for the interactive project page (/projects/prari-rover/).
+# Everything here comes from the Sobotka Seed Prize deck (Nov 2026). Edit freely.
+
+tagline: "Autonomous rovers for foundational agricultural intelligence"
+chips: ["Co-founded at Yale · 2026", "Designed in SolidWorks", "Sobotka Seed Prize proposal · Nov 2026"]
+
+team:
+  - name: "Tony Gao"
+    role: "Hardware & Compliance"
+    initials: "TG"
+  - name: "Yuvin Kang"
+    role: "Biology & Plant Science"
+    initials: "YK"
+    me: true
+  - name: "Hunter Yang"
+    role: "Data & Strategy"
+    initials: "HY"
+
+problem_stats:
+  - value: 46
+    pre: "Only "
+    suf: "%"
+    text: "of nitrogen added to cropland reaches the harvest worldwide"
+  - value: 273
+    suf: "×"
+    text: "more potent than CO₂: the nitrous oxide inefficient fertilizing releases"
+  - value: 24
+    suf: "M t"
+    text: "of excess nitrogen from fertilizer and manure enter freshwater each year"
+problem_sources: "USDA NASS 2025; Zhang et al., Nature Food 2021; UGA Extension C1297; Mekonnen & Hoekstra 2015"
+
+features:
+  - "Precise soil and crop health maps"
+  - "Scheduled, pilot-less field scanning"
+  - "Swappable modules for each land type"
+  - "Solar dock for automatic recharging"
+
+modules:
+  - name: "Soil probe"
+    short: "Soil conditions and sampling"
+    detail: "A linear actuator pushes moisture, pH and nitrate sensors into the ground at every stop — multiple probe stops per acre."
+    x: 24.6
+    y: 25.9
+  - name: "Regrowth scanner"
+    short: "Pasture height and recovery"
+    detail: "Tracks how pasture grows back between grazing rotations — built for the dairy farmers UCD works with."
+    x: 59.9
+    y: 24.5
+  - name: "Imaging module"
+    short: "Crop and ripeness views"
+    detail: "Depth camera while driving for crop vigor, stand count and canopy stress; lidar and multispectral in phase 2."
+    x: 69.0
+    y: 28.2
+  - name: "Base rover"
+    short: "Drive, power, and navigation"
+    detail: "RTK GPS for centimeter-level navigation, a depth camera for rows and obstacles, and a 24 V 50 Ah battery."
+    x: 67.9
+    y: 49.2
+  - name: "Extended battery"
+    short: "More range on large farms"
+    detail: "Bolt-on capacity so one rover can cover ~100 acres a day (design target)."
+    x: 35.1
+    y: 63.2
+  - name: "Spectral sensor"
+    short: "Plant health and stress"
+    detail: "Reads plant stress before it's visible, under the canopy where drones can't see."
+    x: 45.6
+    y: 68.5
+
+measures:
+  - name: "Labile carbon"
+    note: "Active carbon available to microbes — responds to change much faster than total organic carbon."
+  - name: "Soil pH"
+    note: "Controls the rate of nutrient availability. Ion-selective electrode at each probe stop."
+  - name: "Nitrogen"
+    note: "Nitrate via ion-selective electrode, plus loss risk flagged from saturation history."
+  - name: "Phosphorus"
+    note: "Rover maps where values differ and targets lab cores there."
+  - name: "Potassium"
+    note: "Mapped alongside phosphorus; lab cores only where the map says they matter."
+  - name: "Total organic carbon"
+    note: "Long-term soil health baseline, requested by farmers."
+
+competitors:
+  - name: "Rogo"
+    what: "Robotic soil sampling service; cores sent to labs"
+    short: "Sampling is periodic, often once a season or less; lab turnaround delays decisions"
+    edge: "In-field readings repeated all season; lab cores only where the map says they matter"
+    x: 62
+    y: 22
+  - name: "Taranis"
+    what: "Aerial crop imagery, up to 50,000 acres a day"
+    short: "Sees from above; no soil samples; costly; pilots required"
+    edge: "Ground-level and under-canopy data; fully autonomous"
+    x: 14
+    y: 12
+  - name: "EarthSense"
+    what: "Small under-canopy robots collecting crop data for breeders"
+    short: "Built for research plots, not commercial farms; no soil sensing"
+    edge: "Soil + crop data for production farms, priced per acre"
+    x: 56
+    y: 58
+  - name: "Solix"
+    what: "Solar robot that scouts and sprays; $50,000"
+    short: "Fixed configuration; large upfront cost"
+    edge: "Swappable modules; $5,000 per rover vs. $50,000 upfront"
+  - name: "Aigen"
+    what: "Weeding robot with plant data; $50,000"
+    short: "Built for weeding; high cost"
+    edge: "Data-first; informs farmers without changing how they work"
+  - name: "Amiga"
+    what: "Modular electric platform kit; ≈ $23,000"
+    short: "Needs an operator; no data collection; replaces manual labor only"
+    edge: "Data for informed labor, not replacing it; no operator"
+
+quotes:
+  - text: "I tell them [workers] to put a little extra fertilizer if there's a bad patch … nothing is really measured."
+    who: "Drew, soybean farmer, North Carolina"
+  - text: "Labile carbon responds to changes much faster [than total organic carbon]. In wet climates like Ireland's, soil changes quickly, so frequent measurement is highly useful."
+    who: "Connor, wheat & dairy farmer, PhD at UCD, Dublin"
+  - text: "For the longest time, we went field-by-field … It's an average of the field, for better or worse. I prefer to [err] on the side of 'knowing.'"
+    who: "Winter wheat farmer, Kansas"
+  - text: "Soil testing may be 'expensive,' but it's less expensive than applying too much, too little, or the wrong fertilizers … And decreased crop yields are expensive."
+    who: "Okra farmer, Texas"
+  - text: "Makes no sense to apply expensive fertilizers you may not need. I assumed I needed lime, soil tests said I was over limed … saved me lots of money."
+    who: "Tomato farmer, Pennsylvania"
+
+market:
+  - label: "260–499 acres · 166,600 farms"
+    acres: 59.5
+  - label: "500–999 acres · 120,456 farms"
+    acres: 83.7
+  - label: "1,000–1,999 acres · 76,311 farms"
+    acres: 105.2
+  - label: "2,000+ acres · 83,308 farms"
+    acres: 536.9
+
+roadmap:
+  - when: "Now"
+    title: "Validation"
+    text: "Use case defined, prototype designed in CAD, 22 farmer interviews, $5,000 paid pilot agreed."
+  - when: "Months 1–3"
+    title: "Prototype"
+    text: "Build one rover (~$5.1K in parts) with nitrate, pH and moisture sensing; test RTK navigation."
+  - when: "Months 3–6"
+    title: "Pilot"
+    text: "South Mountain pilot: 3 site visits, 70 lab tests to validate rover readings."
+  - when: "Months 6–12"
+    title: "First contracts"
+    text: "Convert the pilot to a service contract; add solar dock and lidar; sign 3–5 Southeast row-crop farms; scope the UCD pasture pilot."

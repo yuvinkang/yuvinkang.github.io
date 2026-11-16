@@ -1,17 +1,34 @@
 ---
 layout: default
 ---
+{% assign h = site.data.hero %}
 <section class="hero" id="top">
-  <div class="hero-inner">
-    <p class="hero-kicker">{{ site.tagline }}</p>
-    <h1 class="hero-name">{{ site.name }}</h1>
-    {% if site.intro and site.intro != "" %}<p class="hero-intro">{{ site.intro }}</p>{% endif %}
+  <div class="hero-grid">
+    <div class="hero-inner">
+      <p class="hero-kicker">{{ site.tagline }}</p>
+      <h1 class="hero-name">{{ site.name }}</h1>
+      {% if site.intro and site.intro != "" %}<p class="hero-intro">{{ site.intro }}</p>{% endif %}
+      {% if h.currently %}
+      <p class="currently"><span class="pulse" aria-hidden="true"></span><span class="mono">Currently</span>
+        {% for c in h.currently %}<span class="cur-item">{{ c }}</span>{% unless forloop.last %}<span class="cur-sep">·</span>{% endunless %}{% endfor %}
+      </p>
+      {% endif %}
+      {% if h.stats %}
+      <div class="stat-chips">
+        {% for s in h.stats %}<div class="stat-chip"><span class="stat-v">{{ s.value }}</span><span class="mono stat-l">{{ s.label }}</span></div>{% endfor %}
+      </div>
+      {% endif %}
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#profile">About me <span aria-hidden="true">↓</span></a>
+        {% if site.email != "" %}<a class="btn" href="mailto:{{ site.email }}">Email</a>{% endif %}
+        {% if site.linkedin != "" %}<a class="btn" href="{{ site.linkedin }}">LinkedIn</a>{% endif %}
+      </div>
+    </div>
+    <div class="hero-wheel">{% include ferris.html %}</div>
   </div>
   <div class="hero-scene">{% include scenes/hero.html %}</div>
-  <a class="scroll-cue" href="#gallery" aria-label="Scroll down"><span>Scroll</span><i></i></a>
+  <a class="scroll-cue" href="#profile" aria-label="Scroll down"><span>Scroll</span><i></i></a>
 </section>
-
-<div id="gallery">{% include gallery.html %}</div>
 
 {% for item in site.data.navigation %}
 <section class="section reveal" id="{{ item.id }}">
@@ -30,4 +47,5 @@ layout: default
     {% else %}{% if item.content %}<div class="prose">{{ item.content | markdownify }}</div>{% endif %}
   {% endcase %}
 </section>
+{% if item.id == "experience" %}{% include interlude-run.html %}{% endif %}
 {% endfor %}

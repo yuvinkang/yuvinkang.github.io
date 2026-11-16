@@ -4,7 +4,7 @@
   <li class="entry{% if job.scene and job.scene != 'none' %} has-scene{% endif %}" style="--i: {{ forloop.index }}">
     <div class="entry-text">
       <p class="mono entry-dates">{{ job.dates }}</p>
-      <h3 class="entry-title">{{ job.role }}</h3>
+      <h3 class="entry-title">{% if job.link and job.link != "" %}<a class="ext" href="{% if job.link contains "://" %}{{ job.link }}{% else %}{{ job.link | relative_url }}{% endif %}">{{ job.role }} <span aria-hidden="true">→</span></a>{% else %}{{ job.role }}{% endif %}</h3>
       <p class="entry-org">{{ job.organization }}{% if job.location %}<span> · {{ job.location }}</span>{% endif %}</p>
       {% if job.summary %}<p class="entry-summary">{{ job.summary | markdownify | remove: '<p>' | remove: '</p>' }}</p>{% endif %}
       {% if job.highlights %}<ul class="bullets">{% for h in job.highlights %}<li>{{ h | markdownify | remove: '<p>' | remove: '</p>' }}</li>{% endfor %}</ul>{% endif %}
