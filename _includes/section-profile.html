@@ -13,7 +13,7 @@
   <li class="row" style="--i: {{ forloop.index }}">
     <p class="mono row-meta">{{ e.dates }}</p>
     <div class="edu">
-      {% if e.logo %}<img class="edu-logo" src="{{ e.logo | relative_url }}" alt="{{ e.school }} logo" width="48" height="48" loading="lazy">{% endif %}
+      {% if e.logo %}<img class="edu-logo" src="{{ e.logo | relative_url }}" alt="{{ e.school }} logo" width="54" height="54" loading="lazy">{% endif %}
       <div>
         <p class="row-title">{{ e.school }}</p>{% if e.degree %}<p class="row-sub">{{ e.degree }}</p>{% endif %}
         {% if e.details %}<ul class="bullets bullets-sm">{% for d in e.details %}<li>{{ d | markdownify | remove: '<p>' | remove: '</p>' }}</li>{% endfor %}</ul>{% endif %}

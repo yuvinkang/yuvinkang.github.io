@@ -657,3 +657,4 @@ body { background: var(--page); }
   .tab.active .tab-icon { background: var(--brand); color: #fff; }
   .tab.active .tab-label { color: var(--brand); }
 }
+.edu-logo { width: 54px; height: 54px; background: #fff; border: 1px solid var(--line); object-fit: contain; box-shadow: none; }
