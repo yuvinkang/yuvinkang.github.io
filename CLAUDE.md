@@ -9,9 +9,8 @@ This is the owner's personal website: a Jekyll site built by GitHub Pages direct
 - `_data/` — `navigation.yml` (tabs + section order), `icons.yml` (inline SVG inner markup, 24×24, stroke-only), `profile.yml` (bio/education/awards), `personal.yml` (text, scene, hover `image`), `gallery.yml` (Ferris-wheel photos + blurbs), `timeline.yml`, `research.yml`, `experience.yml` (each entry has `scene:` and `highlights` with **bold** lead verbs, rendered via markdownify).
 - `_projects/*.md` — Jekyll collection (`output: true`, `/projects/:name/`), layout `project.html`; front matter `title, year, order, tags, summary, image`. Cards on the home page come from `site.projects | sort: "order"`.
 - `_includes/ferris.html` — hero Ferris wheel: static `scenes/wheel-frame.html` (frame, rotor `.rotor`, operator + lever, queue) + HTML `.gondola` buttons (photo cabins, `rider-N` stickman, `.blurb`). site.js animates it (rotor angle, cabin positions on R=158 around hub 250,232 in a 500×540 box, spring sway, hover pause, drag with inertia, `.is-fast` lever, lightbox `<dialog>`). Photos/blurbs from `_data/gallery.yml`.
-- `_data/hero.yml` — "Currently" chips and stat chips in the hero.
 - `_layouts/project.html` — generic project showcase (hero + scene, facts, metrics, prose, prev/next); project files get it via `defaults` in `_config.yml` (GitHub Pages does NOT infer layouts — keep that default).
-- `_layouts/prari.html` + `_data/prari.yml` — the bespoke interactive Prari Robotics page (patch-grid toggle, turntable of renders, module hotspots, measures, value calculator, competitor map, quote rotator, pilots, market bars, roadmap, team). Renders live in `assets/images/projects/prari/`. Widgets are generic in site.js: `[data-count]`, `[data-toggle-group]`/`[data-panel]`, `[data-turntable]`, `[data-calc]`, `[data-quotes]`.
+- `_layouts/prari.html` + `_data/prari.yml` — the Prari Robotics design-showcase page (idea, drag-to-turn renders + design notes, module hotspots, research/measures + one farmer quote, my part + skill chips). Renders live in `assets/images/projects/prari/`. Widgets are generic in site.js: `[data-count]`, `[data-toggle-group]`/`[data-panel]`, `[data-turntable]`.
 - `_includes/interlude-run.html` — Strava jogger lane after Experience; footer pizza eater; `climber` on the sidenav progress line; `peeker` on project cards.
 - `_includes/entry-scene.html` — maps an entry's `scene` (bioscaffold, biolistics, rover, clinic, design) to its SVG; set `entry_scene` before including.
 - `_includes/sidenav.html` — fixed left icon tabs with always-visible labels; becomes a bottom bar (icons + small labels) under 1080px.
@@ -27,7 +26,11 @@ This is the owner's personal website: a Jekyll site built by GitHub Pages direct
 - Scenes pause when off-screen (`.scene.in-view` toggled in site.js). The owner chose to keep animations running even when the OS requests reduced motion — only smooth scrolling is disabled then.
 
 ## Design language
-White with light turquoise washes (#B2DFDB: --tint, --tint-soft) and deep royal blue accents (--accent / --tint-deep #1D3A8A), navy stick-figure ink, small gold/coral/GFP-green touches, "biotech/lab" feel: Geist for text, Geist Mono for labels/dates/numbers, hairline dividers (--line), thin-stroke line icons, rounded 12–16px corners, restrained motion with `--ease`.
+Comic-book, still clean: dark turquoise page (--page #0D5C59) with white marbling and halftone stipple dots (body::before/::after); every section/page is a white panel with a 3px ink outline and hard offset shadow (--shadow). Fonts: Bangers (--font-comic) for titles, buttons, tab labels and sound effects; Nunito body; Space Mono labels. Accents: comic yellow --pop, red --pop-2, light turquoise --tint, royal blue --accent for emphasis. Sound-effect starbursts: `_includes/sfx.html` (set `sfx_word`/`sfx_class`; section words come from `sfx:` in navigation.yml) and `sfx()`/`pop_css()` in scenes.py for in-animation POW!/OOPS!/ZAP!/CRACK!/GOAL!/CHOMP!; WHOOSH! on a fast Ferris wheel. Avoid soft "AI website" styling: no blurry glows, pill chips, or gradient blobs on panels. The comic theme lives in the COMIC-BOOK THEME block at the end of style.css.
+
+Landing page is intentionally minimal: name, About me / Email / LinkedIn, the activity strip, and the Ferris wheel. Don't add stats or chips there.
+
+The Prari page is a design showcase (idea, SolidWorks renders, modules, research, my part + skills), not a pitch — keep market/pricing/competitor material off it.
 
 ## Conventions
 - Always use `| relative_url` for internal links.

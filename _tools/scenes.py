@@ -111,6 +111,23 @@ def write(name, content):
     with open(os.path.join(INC, name + ".html"), "w") as f:
         f.write(content)
 
+
+def sfx(x, y, word, cls, scale=1.0, rot=-8, color="var(--pop)"):
+    """Comic sound-effect starburst (e.g. POW!) that pops on a keyframe schedule set via CSS class `cls`."""
+    pts = []
+    for k in range(24):
+        a = math.radians(k * 15 - 90); r = 40 if k % 2 == 0 else 27
+        pts.append(f"{r * math.cos(a) * 1.35:.1f},{r * math.sin(a):.1f}")
+    tl = min(78, 14 * len(word) + 6)
+    return (f'<g class="sfx-pop {cls}" style="transform-origin:{x:g}px {y:g}px"><g transform="translate({x:g} {y:g}) rotate({rot}) scale({scale})">'
+            f'<polygon class="sfx-burst" points="{" ".join(pts)}" style="fill:{color}"/>'
+            f'<text class="sfx-text" x="0" y="7" text-anchor="middle" textLength="{tl}" lengthAdjust="spacingAndGlyphs">{word}</text></g></g>')
+
+def pop_css(cls, start, end, period):
+    """Keyframes: hidden → pop in at start% → hold → out by end%."""
+    CSS.append(f"@keyframes {cls}{{0%,{start:g}%{{opacity:0;transform:scale(.2) rotate(-20deg)}}{start+3:g}%{{opacity:1;transform:scale(1.15) rotate(4deg)}}{start+6:g}%{{transform:scale(1) rotate(0)}}{end-3:g}%{{opacity:1;transform:scale(1)}}{end:g}%,100%{{opacity:0;transform:scale(.6)}}}}"
+               f".scene .{cls}{{animation:{cls} {period}s infinite}}")
+
 GROUND = lambda x1, x2, y: L(x1, y, x2, y, "ground")
 CAP = lambda x, y, t, anchor="middle": f'<text class="cap" x="{x:g}" y="{y:g}" text-anchor="{anchor}">{t}</text>'
 
@@ -151,7 +168,7 @@ def scientist(x, y, s):
 
 # ── Juggler (keeps it up 5 times, drops it, restarts) ──
 def juggler(x, y, s):
-    ex = dict(front='<g class="jbx"><g class="jby"><g class="spinner">' + ball() + '</g></g></g>')
+    ex = dict(front='<g class="jbx"><g class="jby"><g class="spinner">' + ball() + '</g></g></g>' + sfx(30, -62, 'OOPS!', 'oops', .5, 6, 'var(--pop-2)'))
     body = fig("juggler", x, y, s, dict(aL=50, aR=-50, lR=-60, sR=60), ex)
     T = 7
     contacts = [0, 1.2, 2.4, 3.6]
@@ -162,6 +179,7 @@ def juggler(x, y, s):
         ball_y += [(p0, 16.5, "cubic-bezier(.2,.6,.4,1)"), (pa, -45, "cubic-bezier(.6,0,.8,.4)")]
     leg_frames += [(66, -15, "ease-out"), (68.6, -32, "ease-in"), (72, -15), (92, -15, "ease-in-out"), (100, -60)]
     ball_y += [(70.4, 24.5, "ease-out"), (73.5, 18, "ease-in"), (76.5, 24.5), (90, 24.5), (90.4, -70, "cubic-bezier(.6,0,.8,.4)"), (100, 16.5)]
+    pop_css("oops", 72, 90, T)
     kf("jugLeg", leg_frames)
     kf("jugShin", [(f[0], -f[1]) + tuple(f[2:]) for f in leg_frames])
     kf("jugBy", ball_y, "ty")
@@ -225,9 +243,10 @@ def kicker_bag(x, y, s):
     bag = ('<g class="bag" style="transform-origin:36px -80px">' + L(36, -80, 36, -64, "thin")
            + '<rect class="fill" x="30" y="-64" width="12" height="54" rx="4"/></g>')
     belt = '<rect class="fill" x="-4" y="-3.5" width="8" height="2.2"/>'
-    body = fig("kicker", x, y, s, STANCE, dict(behind=frame, front=bag + burst(29, -2), back=belt))
+    body = fig("kicker", x, y, s, STANCE, dict(behind=frame, front=bag + burst(29, -2) + sfx(52, -58, 'POW!', 'pow-bag', .55), back=belt))
     kick_css("kicker")
     kf("bagSwing", [(0, 0), (40, 0, "ease-out"), (48, -14, "ease-in-out"), (58, 7, "ease-in-out"), (68, -3, "ease-in-out"), (78, 1), (86, 0), (100, 0)])
+    pop_css("pow-bag", 40, 62, 3)
     CSS.append(".kicker .bag{animation:bagSwing 3s infinite}"
                "@keyframes burst{0%,38%{opacity:0;transform:scale(.6)}42%{opacity:1;transform:scale(1)}52%,100%{opacity:0;transform:scale(1.3)}}"
                ".scene .burst{animation:burst 3s infinite}")
@@ -242,8 +261,9 @@ def kicker_board(x, y, s):
              '<g class="board-bot" style="transform-origin:33px -3px"><rect class="woodboard" x="30.5" y="-3" width="3.2" height="10"/></g>')
     chips = "".join(f'<rect class="chip c{i}" x="31" y="-4" width="1.6" height="1.6"/>' for i in range(4))
     belt = '<rect class="fill" x="-4" y="-3.5" width="8" height="2.2"/>'
-    kicker = fig("kicker2", x, y, s, STANCE, dict(back=belt, front=board + chips))
+    kicker = fig("kicker2", x, y, s, STANCE, dict(back=belt, front=board + chips + sfx(40, -46, 'CRACK!', 'crack', .62)))
     kick_css("kicker2")
+    pop_css("crack", 40, 66, 3)
     CSS.append("@keyframes boardTop{0%,40%{transform:none;opacity:1}55%{transform:translate(7px,-9px) rotate(-40deg);opacity:1}"
                "75%{transform:translate(12px,18px) rotate(-70deg);opacity:0}92%{transform:none;opacity:0}100%{opacity:1}}"
                "@keyframes boardBot{0%,40%{transform:none;opacity:1}55%{transform:translate(8px,6px) rotate(40deg);opacity:1}"
@@ -272,7 +292,7 @@ def biolistics():
            '<rect class="gold-fill" x="1.8" y="-1" width="3" height="7" rx="1.2"/>')
     aL = arm((20, -27))
     puff = '<circle class="puff" cx="37" cy="-28" r="3"/>'
-    body = fig("gunner", x, y, s, dict(aR=-90, fR=0, aL=aL[0], fL=aL[1], lL=16, lR=-14), dict(hR=gun, front=puff))
+    body = fig("gunner", x, y, s, dict(aR=-90, fR=0, aL=aL[0], fL=aL[1], lL=16, lR=-14), dict(hR=gun, front=puff + sfx(44, -52, 'ZAP!', 'zap', .5, -10)))
     mx, my = x + 37 * s, y - 28 * s
     px = 252
     plant = (f'<path class="pot" d="M{px-17} {G-22} L{px+17} {G-22} L{px+13} {G} L{px-13} {G} Z"/>'
@@ -288,6 +308,7 @@ def biolistics():
         parts += (f'<circle class="au p{i}" cx="{mx:.1f}" cy="{my:.1f}" r="2" '
                   f'style="--dx:{dx:.0f}px;--dy:{dy:.0f}px;animation-delay:{i * 0.045:.2f}s"/>')
     b = GROUND(10, 310, G) + plant + parts + body + CAP(14, 22, "Au → Nicotiana / Allium", "start")
+    pop_css("zap", 0, 22, 2.8)
     CSS.append("@keyframes recoil{0%{transform:rotate(-90deg)}4%{transform:rotate(-99deg)}18%,100%{transform:rotate(-90deg)}}"
                ".gunner .aR{animation:recoil 1.4s infinite ease-out}"
                "@keyframes puff{0%{opacity:.55;transform:scale(.4)}30%,100%{opacity:0;transform:scale(2.4)}}"
@@ -601,7 +622,8 @@ def pizza():
                f".scene .crumb{{fill:#d9a441;animation:crumb {T/3:.1f}s infinite}}.scene .cr1{{animation-delay:.15s}}.scene .cr2{{animation-delay:.3s}}"
                ".scene .slice{fill:#ffd36b;stroke:var(--ink);stroke-width:.8}.scene .crust{fill:none;stroke:#c98b3c;stroke-width:2.4;stroke-linecap:round}"
                ".scene .pep{fill:#e0533d}.scene .crate{fill:#e9d5b5;stroke:var(--ink);stroke-width:1}.scene .box{fill:#e9d5b5;stroke:var(--ink);stroke-width:1}.scene .pie{fill:#ffd36b;stroke:#c98b3c;stroke-width:2}.scene .cut{stroke:#c98b3c;stroke-width:.8;fill:none}")
-    write("pizza", mini_svg("pizza", "0 0 210 82", ledge + box + body + crumbs, "Stick figure eating pizza"))
+    pop_css("chomp", 24, 36, T / 3)
+    write("pizza", mini_svg("pizza", "0 0 210 82", ledge + box + body + crumbs + sfx(96, 18, 'CHOMP!', 'chomp', .42, 8), "Stick figure eating pizza"))
 
 def climber():
     body = fig("climber", 0, 0, 1, dict(aL=-170, fL=10, aR=-150, fR=-20, lL=-40, sL=70, lR=-10, sR=30))
@@ -652,7 +674,7 @@ def soccer():
             + "".join(L(405 + k * 8, 86, 405 + k * 8 + (k * 8) * 20 / 41, 140, "hair") for k in range(1, 6))
             + "".join(L(405, 86 + k * 9, 446 + (k * 9) * 20 / 54, 86 + k * 9, "hair") for k in range(1, 6)) + '</g>')
     bl = f'<g class="sball-x"><g class="sball-y"><g class="spinner">{ball(5)}</g></g></g>'
-    goaltxt = '<text class="goal-txt" x="425" y="72" text-anchor="middle">GOAL!</text>'
+    goaltxt = sfx(424, 62, 'GOAL!', 'goal-pop', .9, -6, 'var(--pop)')
     b = GROUND(0, 480, G) + goal + runner + striker + bl + goaltxt
     kf("runLeg", [(0, 35), (50, -45), (100, 35)]); kf("runShin", [(0, 80), (30, 60), (50, 20), (75, 50), (100, 80)])
     kf("runArm", [(0, -45), (50, 40), (100, -45)])
@@ -679,8 +701,8 @@ def soccer():
                ".scene .spinner{animation:spin .6s linear infinite}"
                f"@keyframes net{{0%,66%{{transform:none}}70%{{transform:translateX(5px) scaleX(1.12)}}78%,100%{{transform:none}}}}"
                f".scene .net{{animation:net {T}s infinite ease-out}}"
-               f"@keyframes goalTxt{{0%,67%{{opacity:0;transform:translateY(6px)}}71%,88%{{opacity:1;transform:none}}93%,100%{{opacity:0}}}}"
-               f".scene .goal-txt{{animation:goalTxt {T}s infinite ease-out}}")
+               "")
+    pop_css("goal-pop", 68, 90, T)
     write("soccer", svg("soccer", "0 0 480 165", b, "Animated stick figure dribbling a soccer ball across the page and scoring a goal"))
 
 def bass_scene():
@@ -771,7 +793,8 @@ BASE = """/* GENERATED by _tools/scenes.py — edit that file, then re-run it. *
 .scene .sleaf{fill:var(--bg);stroke:var(--ink);stroke-width:1.1}
 .scene .note .fill{fill:var(--ink)}.scene .note{opacity:0}
 .scene .burst line{stroke:var(--gold);stroke-width:1.6}.scene .burst{opacity:0}
-.scene .goal-txt{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.12em;fill:var(--bio);opacity:0}
+.scene .sfx-pop{opacity:0}.scene .sfx-burst{stroke:var(--ink);stroke-width:2.6;stroke-linejoin:round}
+.scene .sfx-text{font-family:var(--font-comic,Bangers),Impact,sans-serif;font-size:24px;fill:var(--ink);letter-spacing:1px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .scene .spinner{transform-box:fill-box;transform-origin:center}
 .scene:not(.in-view) *{animation-play-state:paused!important}

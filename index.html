@@ -1,33 +1,20 @@
 ---
 layout: default
 ---
-{% assign h = site.data.hero %}
 <section class="hero" id="top">
   <div class="hero-grid">
-    <div class="hero-inner">
-      <p class="hero-kicker">{{ site.tagline }}</p>
-      <h1 class="hero-name">{{ site.name }}</h1>
-      {% if site.intro and site.intro != "" %}<p class="hero-intro">{{ site.intro }}</p>{% endif %}
-      {% if h.currently %}
-      <p class="currently"><span class="pulse" aria-hidden="true"></span><span class="mono">Currently</span>
-        {% for c in h.currently %}<span class="cur-item">{{ c }}</span>{% unless forloop.last %}<span class="cur-sep">·</span>{% endunless %}{% endfor %}
-      </p>
-      {% endif %}
-      {% if h.stats %}
-      <div class="stat-chips">
-        {% for s in h.stats %}<div class="stat-chip"><span class="stat-v">{{ s.value }}</span><span class="mono stat-l">{{ s.label }}</span></div>{% endfor %}
-      </div>
-      {% endif %}
+    <div class="hero-left">
+      <h1 class="hero-name"><span>{{ site.name | split: " " | first }}</span> <span>{{ site.name | split: " " | last }}</span></h1>
+      {% assign sfx_word = "HEY!" %}{% assign sfx_class = "sfx-hero" %}{% include sfx.html %}
       <div class="hero-actions">
-        <a class="btn btn-solid" href="#profile">About me <span aria-hidden="true">↓</span></a>
+        <a class="btn btn-solid" href="#profile">About me</a>
         {% if site.email != "" %}<a class="btn" href="mailto:{{ site.email }}">Email</a>{% endif %}
         {% if site.linkedin != "" %}<a class="btn" href="{{ site.linkedin }}">LinkedIn</a>{% endif %}
       </div>
+      <div class="hero-scene panel">{% include scenes/hero.html %}</div>
     </div>
-    <div class="hero-wheel">{% include ferris.html %}</div>
+    <div class="hero-wheel panel">{% include ferris.html %}</div>
   </div>
-  <div class="hero-scene">{% include scenes/hero.html %}</div>
-  <a class="scroll-cue" href="#profile" aria-label="Scroll down"><span>Scroll</span><i></i></a>
 </section>
 
 {% for item in site.data.navigation %}
@@ -36,6 +23,7 @@ layout: default
     <span class="section-icon"><svg viewBox="0 0 24 24" aria-hidden="true">{{ site.data.icons[item.icon] }}</svg></span>
     <span class="section-num">0{{ forloop.index }}</span>
     <h2 class="section-title">{{ item.title }}</h2>
+    {% if item.sfx %}{% assign sfx_word = item.sfx %}{% assign sfx_class = "sfx-section" %}{% include sfx.html %}{% endif %}
   </header>
   {% case item.id %}
     {% when "profile" %}{% include section-profile.html %}

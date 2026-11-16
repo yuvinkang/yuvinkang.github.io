@@ -9,7 +9,7 @@ You can edit everything right on GitHub: open a file, click the ✏️ pencil ic
 | To change… | Edit this file |
 |---|---|
 | Your name, tagline, intro line, email, LinkedIn, résumé link | `_config.yml` |
-| Side tabs + section order (reorder, rename, remove) | `_data/navigation.yml` |
+| Side tabs, section order, and each panel's comic sound effect (`sfx:`) | `_data/navigation.yml` |
 | Section icons | `_data/icons.yml` |
 | Profile bio, education, awards | `_data/profile.yml` |
 | Personal history timeline | `_data/timeline.yml` |
@@ -18,7 +18,6 @@ You can edit everything right on GitHub: open a file, click the ✏️ pencil ic
 | Projects (card + its own page) | one file per project in `_projects/` — edit the text under the `---` lines; set `image:` for the cover photo |
 | Personal (music, soccer, taekwondo…) + hover photos | `_data/personal.yml` |
 | Ferris-wheel photos + what each stickman says on hover | `_data/gallery.yml` |
-| "Currently" line and stat chips under your name | `_data/hero.yml` |
 | Prari Robotics page content | `_data/prari.yml` (your own notes: `_projects/prari-rover.md`) |
 | Education logos | upload PNGs to `assets/images/logos/` and set `logo:` in `_data/profile.yml` |
 | Strava link for the running stickman | `strava:` in `_config.yml` |

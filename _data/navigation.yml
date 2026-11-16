@@ -1,20 +1,26 @@
 # The side tabs AND the order of sections on the home page.
-# Reorder these blocks to reorder the page. "icon" must match a name in _data/icons.yml.
+# Reorder these blocks to reorder the page. "sfx" is the comic sound-effect sticker on that panel. "icon" must match a name in _data/icons.yml.
 - title: Profile
   id: profile
+  sfx: "HI!"
   icon: profile
 - title: Research
   id: research
+  sfx: "ZAP!"
   icon: research
 - title: Experience
   id: experience
+  sfx: "POW!"
   icon: experience
 - title: Projects
   id: projects
+  sfx: "BOOM!"
   icon: projects
 - title: Personal
   id: personal
+  sfx: "WHOOSH!"
   icon: personal
 - title: Blog
   id: blog
+  sfx: "SCRIBBLE!"
   icon: blog

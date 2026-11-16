@@ -221,39 +221,4 @@
     set(0);
   });
 
-  // 6d. value calculator
-  document.querySelectorAll('[data-calc]').forEach(function (c) {
-    var input = c.querySelector('input[type=range]');
-    var out = function (k) { return c.querySelector('[data-out="' + k + '"]'); };
-    function fmt(v) { return Math.round(v).toLocaleString(); }
-    function run() {
-      var acres = +input.value;
-      out('acres').textContent = fmt(acres);
-      var value = acres * 35, service = Math.max(4500, acres * 15), rovers = Math.max(1, Math.ceil(acres / 600));
-      out('value').textContent = '$' + fmt(value);
-      out('cost').textContent = '$' + fmt(service);
-      out('rovers').textContent = rovers + ' × $5,000';
-      out('ratio').textContent = (value / service).toFixed(1) + '×';
-      out('n').textContent = (acres * 25.5 / 2204.6).toFixed(1) + ' t';
-      out('co2').textContent = (acres * 33 / 500).toFixed(0) + ' t';
-      var bar = c.querySelector('.calc-bar-fill');
-      if (bar) bar.style.width = Math.min(100, (service / value) * 100) + '%';
-    }
-    input.addEventListener('input', run); run();
-  });
-
-  // 6e. auto-rotating quotes
-  document.querySelectorAll('[data-quotes]').forEach(function (q) {
-    var items = q.querySelectorAll('.quote'), dots = q.querySelectorAll('.qdot'), i = 0, timer;
-    function show(k) {
-      i = (k + items.length) % items.length;
-      items.forEach(function (it, j) { it.classList.toggle('on', j === i); });
-      dots.forEach(function (d, j) { d.classList.toggle('on', j === i); });
-    }
-    function auto() { clearInterval(timer); timer = setInterval(function () { show(i + 1); }, 6000); }
-    dots.forEach(function (d, j) { d.addEventListener('click', function () { show(j); auto(); }); });
-    q.addEventListener('mouseenter', function () { clearInterval(timer); });
-    q.addEventListener('mouseleave', auto);
-    show(0); auto();
-  });
 })();
