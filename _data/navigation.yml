@@ -1,0 +1,20 @@
+# The side tabs AND the order of sections on the home page.
+# Reorder these blocks to reorder the page. "icon" must match a name in _data/icons.yml.
+- title: Profile
+  id: profile
+  icon: profile
+- title: Research
+  id: research
+  icon: research
+- title: Experience
+  id: experience
+  icon: experience
+- title: Projects
+  id: projects
+  icon: projects
+- title: Personal
+  id: personal
+  icon: personal
+- title: Blog
+  id: blog
+  icon: blog

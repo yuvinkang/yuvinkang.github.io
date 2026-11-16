@@ -1,0 +1,25 @@
+# RESEARCH — interests at the top; positions below (newest first).
+
+interests: "Biomaterials and wound healing, and plant biotechnology — from ECM bioscaffolds for diabetic and burn wounds to biolistic gene delivery for plant metabolic engineering."
+
+entries:
+  - title: "Undergraduate Research Assistant"
+    lab: "Kyriakides Lab, Yale University"
+    location: "New Haven, CT"
+    dates: "Sep 2026 – Present"
+    summary: "Leading an independent project on the biocompatibility and host tissue response of a porcine-derived ECM bioscaffold for diabetic and burn wound repair."
+    highlights:
+      - "Investigating how apical vs. basal ECM surface properties (scaffold sidedness) shape host integration, fibrotic scarring, and wound-closure kinetics."
+      - "Assessing in vivo regeneration with H&E and Masson's trichrome histology, immunohistochemistry, and quantitative image analysis."
+    link: ""
+
+  - title: "Research Assistant"
+    lab: "Ng Lab, University College Dublin"
+    location: "Dublin, Ireland"
+    dates: "May 2025 – Aug 2026"
+    summary: "Biolistic transformation and plant metabolic engineering."
+    highlights:
+      - "Increased biolistic transformation efficiency by 43% by optimizing gold microcarrier size, helium burst pressure, and target distance in Allium cepa epidermis and Nicotiana benthamiana callus."
+      - "Contributed to heterologous production of galantamine — an FDA-approved acetylcholinesterase inhibitor for Alzheimer's disease — in plant cell culture."
+      - "Aseptic tissue and callus culture, plasmid prep, microcarrier coating, and GFP/GUS reporter screening."
+    link: ""

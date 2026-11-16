@@ -1,0 +1,18 @@
+<div class="personal">
+  {% for it in site.data.personal %}
+  <article class="personal-item">
+    <div class="personal-scene">
+      {% case it.scene %}
+        {% when "bass" %}{% include scenes/bass.html %}
+        {% when "soccer" %}{% include scenes/soccer.html %}
+        {% when "taekwondo" %}{% include scenes/taekwondo.html %}
+      {% endcase %}
+    </div>
+    <div class="personal-text">
+      <p class="mono">0{{ forloop.index }}</p>
+      <h3 class="personal-title">{{ it.title }}</h3>
+      <div class="prose">{{ it.text | markdownify }}</div>
+    </div>
+  </article>
+  {% endfor %}
+</div>

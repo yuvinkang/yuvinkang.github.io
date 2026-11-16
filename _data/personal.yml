@@ -1,0 +1,24 @@
+# PERSONAL — one block per interest. Write as much as you like in "text"
+# (leave a blank line between paragraphs). "scene" picks the animation: bass, soccer, taekwondo, or none.
+# To add a new interest, copy a block and set scene: none.
+
+- title: "Music · Double Bass"
+  scene: bass
+  text: |
+    Principal bassist of the Yale Symphony Orchestra. Two-time Interlochen Arts Camp full orchestral scholar — one of three bassists selected internationally — and concerto competition winner, performing with full orchestra at Gas South Arena.
+
+    *Write about what you love playing, your favorite pieces, or how you started.*
+
+- title: "Soccer"
+  scene: soccer
+  text: |
+    Yale C1 Club Soccer. In high school, varsity soccer — 6A state semifinalists.
+
+    *Write about your position, your team, or a favorite match.*
+
+- title: "Taekwondo"
+  scene: taekwondo
+  text: |
+    Social chair of Yale Club Taekwondo.
+
+    *Write about your belt, how long you've trained, or what it's taught you.*

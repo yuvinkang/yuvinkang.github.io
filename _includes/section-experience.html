@@ -1,0 +1,27 @@
+{% if site.resume != "" %}<p class="section-lede"><a class="ext" href="{{ site.resume | relative_url }}">Download résumé (PDF) ↗</a></p>{% endif %}
+<div class="section-scene">{% include scenes/experience.html %}</div>
+<ul class="rows">
+  {% for job in site.data.experience %}
+  <li class="row" style="--i: {{ forloop.index }}">
+    <p class="mono row-meta">{{ job.dates }}</p>
+    <div>
+      <p class="row-title">{{ job.role }}</p>
+      <p class="row-sub">{{ job.organization }}{% if job.location %} · {{ job.location }}{% endif %}</p>
+      {% if job.summary %}<p class="row-body">{{ job.summary }}</p>{% endif %}
+      {% if job.highlights %}<ul class="bullets">{% for h in job.highlights %}<li>{{ h }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+{% if site.data.skills %}
+<p class="label label-gap">Skills</p>
+<div class="skills">
+  {% for g in site.data.skills %}
+  <div class="skill-group">
+    <p class="mono">{{ g.group }}</p>
+    <div class="tags">{% for t in g.items %}<span class="tag">{{ t }}</span>{% endfor %}</div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

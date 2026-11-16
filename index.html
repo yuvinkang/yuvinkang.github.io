@@ -1,0 +1,31 @@
+---
+layout: default
+---
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <p class="hero-kicker">{{ site.tagline }}</p>
+    <h1 class="hero-name">{{ site.name }}</h1>
+    {% if site.intro and site.intro != "" %}<p class="hero-intro">{{ site.intro }}</p>{% endif %}
+  </div>
+  <div class="hero-scene">{% include scenes/hero.html %}</div>
+  <a class="scroll-cue" href="#{{ site.data.navigation[0].id }}" aria-label="Scroll down"><span>Scroll</span><i></i></a>
+</section>
+
+{% for item in site.data.navigation %}
+<section class="section reveal" id="{{ item.id }}">
+  <header class="section-head">
+    <span class="section-icon"><svg viewBox="0 0 24 24" aria-hidden="true">{{ site.data.icons[item.icon] }}</svg></span>
+    <span class="section-num">0{{ forloop.index }}</span>
+    <h2 class="section-title">{{ item.title }}</h2>
+  </header>
+  {% case item.id %}
+    {% when "profile" %}{% include section-profile.html %}
+    {% when "research" %}{% include section-research.html %}
+    {% when "experience" %}{% include section-experience.html %}
+    {% when "blog" %}{% include section-blog.html %}
+    {% when "projects" %}{% include section-projects.html %}
+    {% when "personal" %}{% include section-personal.html %}
+    {% else %}{% if item.content %}<div class="prose">{{ item.content | markdownify }}</div>{% endif %}
+  {% endcase %}
+</section>
+{% endfor %}

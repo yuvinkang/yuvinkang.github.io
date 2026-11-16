@@ -1,0 +1,16 @@
+{% assign r = site.data.research %}
+{% if r.interests %}<p class="section-lede">{{ r.interests }}</p>{% endif %}
+<div class="section-scene">{% include scenes/research.html %}</div>
+<ul class="rows">
+  {% for e in r.entries %}
+  <li class="row" style="--i: {{ forloop.index }}">
+    <p class="mono row-meta">{{ e.dates }}{% if e.venue %}{{ e.venue }}{% endif %}</p>
+    <div>
+      <p class="row-title">{% if e.link and e.link != "" %}<a class="ext" href="{{ e.link }}">{{ e.title }} <span aria-hidden="true">↗</span></a>{% else %}{{ e.title }}{% endif %}</p>
+      <p class="row-sub">{{ e.lab }}{% if e.location %} · {{ e.location }}{% endif %}{% if e.authors %}{{ e.authors }}{% endif %}</p>
+      {% if e.summary %}<p class="row-body">{{ e.summary }}</p>{% endif %}
+      {% if e.highlights %}<ul class="bullets">{% for h in e.highlights %}<li>{{ h }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>

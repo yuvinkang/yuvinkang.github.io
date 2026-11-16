@@ -1,0 +1,40 @@
+{% assign p = site.data.profile %}
+<div class="profile-grid">
+  <div class="prose lead-prose">{{ p.bio | markdownify }}</div>
+  <div class="profile-side">
+    <div class="profile-scene">{% include scenes/profile.html %}</div>
+  </div>
+</div>
+
+{% if p.education %}
+<p class="label">Education</p>
+<ul class="rows rows-tight">
+  {% for e in p.education %}
+  <li class="row" style="--i: {{ forloop.index }}">
+    <p class="mono row-meta">{{ e.dates }}</p>
+    <div><p class="row-title">{{ e.school }}</p>{% if e.degree %}<p class="row-sub">{{ e.degree }}</p>{% endif %}</div>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if p.awards %}
+<p class="label label-gap">Awards</p>
+<ul class="rows rows-tight">
+  {% for a in p.awards %}
+  <li class="row" style="--i: {{ forloop.index }}">
+    <p class="mono row-meta">{{ a.date }}</p>
+    <p class="row-plain">{{ a.name }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if site.data.timeline %}
+<p class="label label-gap">Personal history</p>
+<ol class="timeline">
+  {% for t in site.data.timeline %}
+  <li style="--i: {{ forloop.index }}"><span class="mono">{{ t.year }}</span><span>{{ t.text }}</span></li>
+  {% endfor %}
+</ol>
+{% endif %}

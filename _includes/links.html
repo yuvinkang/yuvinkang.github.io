@@ -1,0 +1,7 @@
+<p class="contact-links">
+  {% if site.email != "" %}<a href="mailto:{{ site.email }}">Email</a>{% endif %}
+  {% if site.linkedin != "" %}<a href="{{ site.linkedin }}">LinkedIn</a>{% endif %}
+  {% if site.github != "" %}<a href="{{ site.github }}">GitHub</a>{% endif %}
+  {% if site.scholar != "" %}<a href="{{ site.scholar }}">Scholar</a>{% endif %}
+  {% if site.resume != "" %}<a href="{{ site.resume | relative_url }}">Résumé</a>{% endif %}
+</p>

@@ -1,0 +1,10 @@
+<nav class="sidenav" aria-label="Sections">
+  <span class="sidenav-track" aria-hidden="true"><span class="sidenav-progress"></span></span>
+  {% for item in site.data.navigation %}
+  {% assign home = '/' | relative_url %}
+  <a class="tab{% if item.id == 'blog' and page.url contains '/blog' %} active{% endif %}" href="{{ home }}#{{ item.id }}" data-target="{{ item.id }}">
+    <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true">{{ site.data.icons[item.icon] }}</svg></span>
+    <span class="tab-label"><span class="tab-num">0{{ forloop.index }}</span>{{ item.title }}</span>
+  </a>
+  {% endfor %}
+</nav>

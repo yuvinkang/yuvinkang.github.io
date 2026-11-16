@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────────────────────
+#  SITE SETTINGS — edit these and the whole site updates.
+#  (After editing on GitHub, the live site refreshes in ~1 minute.)
+# ─────────────────────────────────────────────────────────────
+
+name: "Yuvin Kang"
+tagline: "Biomedical Engineering · Yale University"      # small line above your name
+intro: "Tissue engineering, plant biotech, and hardware — plus a lot of double bass."  # under your name; "" to hide
+description: "Yuvin Kang — biomedical engineering at Yale. Research, experience, projects, and writing."
+
+# Contact & links (leave a value as "" to hide it)
+email: "yuvin.kang@yale.edu"
+linkedin: "https://www.linkedin.com/in/yuvinkang"
+github: ""
+scholar: ""
+resume: ""          # e.g. /assets/files/resume.pdf  (upload the PDF to that folder first)
+
+# ─────────────────────────────────────────────────────────────
+#  Technical settings — you normally won't need to touch these.
+# ─────────────────────────────────────────────────────────────
+title: "Yuvin Kang"
+url: ""
+baseurl: ""
+permalink: /blog/:year/:title/
+markdown: kramdown
+timezone: America/New_York
+exclude:
+  - README.md
+  - CLAUDE.md

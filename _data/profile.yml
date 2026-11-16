@@ -1,0 +1,32 @@
+# PROFILE — your bio, education, and awards.
+# The bio is plain text: leave a blank line between paragraphs. **bold**, *italics* and [links](https://...) work.
+bio: |
+  I'm a biomedical engineering student at Yale, from Duluth, Georgia. My work sits where tissue engineering, plant biotechnology, and hardware meet.
+
+  Right now I'm in the **Kyriakides Lab**, studying how ECM bioscaffolds integrate with host tissue in diabetic and burn wounds. Before that, I optimized biolistic gene delivery in the **Ng Lab** at University College Dublin. I also co-founded **Prairi Robotics**, an autonomous rover for plant and soil health.
+
+  Outside the lab I'm principal bassist of the Yale Symphony Orchestra, and I play club soccer and train in taekwondo.
+
+education:
+  - school: "Yale University"
+    degree: "B.S. Biomedical Engineering · Certificate in Statistics & Data Science · GPA 3.86"
+    dates: "Expected May 2029"
+  - school: "Georgia Institute of Technology"
+    degree: "Mathematics dual enrollment · GPA 4.0"
+    dates: "2024 – 2025"
+  - school: "Gwinnett Technical College"
+    degree: "Allied Healthcare Certificate · GPA 4.0"
+    dates: "2024 – 2025"
+  - school: "Gwinnett School of Mathematics, Science & Technology"
+    degree: "GPA 4.25"
+    dates: "2021 – 2025"
+
+awards:
+  - name: "National Merit Scholar (top 0.5% nationally)"
+    date: "Mar 2025"
+  - name: "QuestBridge National College Match Finalist"
+    date: "Oct 2025"
+  - name: "Interlochen Arts Camp Full Orchestral Scholarship (×2) — 1 of 3 bassists selected internationally"
+    date: "2024, 2025"
+  - name: "Concerto Competition Winner — performed with full orchestra at Gas South Arena"
+    date: "2025"

@@ -1,0 +1,17 @@
+<div class="section-scene section-scene-sm">{% include scenes/blog.html %}</div>
+{% if site.posts.size == 0 %}
+<p class="section-lede">No posts yet.</p>
+{% else %}
+<ul class="rows">
+  {% for post in site.posts limit: 3 %}
+  <li class="row row-link" style="--i: {{ forloop.index }}">
+    <p class="mono row-meta">{{ post.date | date: "%Y.%m.%d" }}</p>
+    <a href="{{ post.url | relative_url }}">
+      <p class="row-title">{{ post.title }} <span class="arrow" aria-hidden="true">→</span></p>
+      {% if post.description %}<p class="row-sub">{{ post.description }}</p>{% endif %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+<p class="more"><a href="{{ '/blog/' | relative_url }}">All posts <span aria-hidden="true">→</span></a></p>
+{% endif %}
