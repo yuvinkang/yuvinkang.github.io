@@ -60,6 +60,54 @@ Nearly always the path. Check the file name matches character for character,
 that it starts with `/assets/`, and that the file really did commit (open its
 folder on GitHub and look). Then hard-refresh the page: **Ctrl/Cmd + Shift + R**.
 
+## Adding a file to download — a PDF, a CV, a CAD model
+
+Same two steps as a photo, with one extra rule: the link text has to live
+somewhere that accepts a link.
+
+**1. Upload it to `assets/files/`.** That folder already holds the biolistics
+paper and the two STEP models.
+
+**2. Link to it.** Where depends on the page:
+
+- **In any prose** — a project write-up in `_projects/`, a blog post in
+  `_posts/`, a `text:` or `summary:` field in `_data/` — write it as Markdown:
+
+  ```markdown
+  [Read the paper (PDF)](/assets/files/biolistics-paper.pdf)
+  ```
+
+  Keep the leading `/`. The text in square brackets is what people see.
+
+- **On the biolistics page**, there is a button already wired up. Set
+  `paper:` in `_projects/biolistic-optimization.md` to the file's path and the
+  button appears; leave it empty and it does not.
+
+- **In the facts row of a project page** (where "STEP file ↓" sits on the
+  shower chair and the dispenser), the link is in that page's layout in
+  `_layouts/`. Copy the line that is already there and change the file name.
+
+### Linking your résumé from the landing page
+
+Upload `resume.pdf` to `assets/files/`, then in `_config.yml` fill in the
+`resume:` line that is already there:
+
+```yaml
+resume: "/assets/files/resume.pdf"
+```
+
+A **Résumé** button appears next to Email and LinkedIn on the landing page.
+Leave it as `""` and the button stays hidden.
+
+### Notes
+
+- Keep PDFs under about 10 MB; anything larger is slow to open on a phone.
+- Lower-case names, hyphens instead of spaces: `yuvin-kang-cv.pdf`.
+- Replacing a file but keeping the same name means every existing link keeps
+  working — that is the easy way to update a CV.
+- Anything in `assets/` is public to anyone with the link, the same as the rest
+  of the site.
+
 ## Everything else
 
 Text lives in `_data/*.yml` and `_projects/*.md`. Each file opens with a comment

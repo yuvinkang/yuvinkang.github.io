@@ -10,6 +10,7 @@ layout: default
         <a class="btn btn-solid" href="#profile">About me</a>
         {% if site.email != "" %}<a class="btn" href="mailto:{{ site.email }}">Email</a>{% endif %}
         {% if site.linkedin != "" %}<a class="btn" href="{{ site.linkedin }}">LinkedIn</a>{% endif %}
+        {% if site.resume != "" %}<a class="btn" href="{{ site.resume | relative_url }}">Résumé</a>{% endif %}
       </div>
       <div class="hero-scene block">{% include scenes/hero.html %}</div>
     </div>
