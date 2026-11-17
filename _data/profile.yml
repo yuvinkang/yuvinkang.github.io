@@ -1,11 +1,17 @@
 # PROFILE — bio, education, awards.
 # The bio is plain text: leave a blank line between paragraphs. **bold**, *italics* and [links](https://...) work.
 bio: |
-  Biomedical engineering student at Yale, from Duluth, Georgia.
+  Hi! My name is Yuvin, a biomedical engineering student at Yale, originally from Duluth, Georgia.
 
-  I work in the **Kyriakides Lab** on how ECM bioscaffolds integrate with host tissue in diabetic and burn wounds. Previously in the **Ng Lab** at University College Dublin on biolistic gene delivery. I co-founded **Prari Robotics**, an autonomous rover for soil and plant health.
+  I work in the **Kyriakides Lab** working on optimizing ECM bioscaffold integration with host tissue in diabetic and burn wounds. Previously in the **Ng Lab** at University College Dublin on biolistic gene delivery. I co-founded **Prari Robotics**, an autonomous rover for soil and plant health.
 
-  Principal bassist of the Yale Symphony Orchestra. Club soccer and taekwondo.
+  I also love to play music in various chamber groups, composition ensembles, and the Yale Symphony Orchestra! I also like to explore sports, playing on Yale's club soccer first team, Social Chair for Yale Taekwondo, and basketball with friends!
+
+  Intellectually, I love thinking about evolutionary biology - how crazy it is for us to be here, how genes evolved, how cellular machinery so advanced could self-evolve. (One of my favorite facts is how the reason we crave sugars/carbohydrates like candy and burgers is because of the seasonal scarcity of these essential resources in our ancestral times)
+
+  I hope to innovate in biomedical engineering in wide fields from drug delivery to product design to research technology to further explore what blows my mind. I envision a future of medicine based in nature - afterall, if it can make us, it can repair us.
+  
+  From using native T and B cells to deliver therapeutics, enabling the body to iterate its own adaptive cancer therapy, or simply creating conditions for better orthopedic healing through medical products, my curiosity for evolution, biology, and its intersection with engineering drives me in everything I do!
 
 education:
   - school: "Yale University"
@@ -14,7 +20,7 @@ education:
     dates: "Expected May 2029"
   - school: "Georgia Institute of Technology"
     logo: /assets/images/logos/georgia-tech.png
-    degree: "Mathematics dual enrollment · GPA 4.0"
+    degree: "Mathematics Dual Enrollment · GPA 4.0"
     dates: "2024 – 2025"
   - school: "Gwinnett Technical College"
     logo: /assets/images/logos/gwinnett-tech.png
