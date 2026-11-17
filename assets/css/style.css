@@ -693,12 +693,17 @@ body { background: var(--page); }
 /* ───────────── Ambient background field ───────────── */
 .ambient { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
 .ambient-field { position: absolute; inset: 0; }
-.am { position: absolute; top: 0; left: 0; will-change: transform; color: var(--accent); opacity: .13; }
+.am { position: absolute; top: 0; left: 0; will-change: transform; opacity: .3; }
 .am svg { display: block; fill: currentColor; stroke: currentColor; }
 .am svg [fill="none"] { fill: none; }
-.am:nth-child(3n) { color: var(--brand); opacity: .11; }
-.am:nth-child(4n) { color: var(--bio); opacity: .10; }
-.am:nth-child(7n) { color: var(--gold); opacity: .12; }
+/* colour by what the object is */
+.am.c-music { color: #7E57C2; }    /* notes — violet */
+.am.c-ball  { color: #2E3A59; opacity: .26; }   /* soccer — ink */
+.am.c-plant { color: #2E9E5B; }    /* plant cells — green */
+.am.c-cell  { color: #E07A5F; }    /* animal cells, DNA — coral */
+.am.c-tool  { color: #5B7A99; }    /* hand tools — steel */
+.am.c-lab   { color: #00897B; }    /* glassware — teal */
+.am.c-math  { color: #1D3A8A; opacity: .26; }   /* math — blue */
 
 /* ───────────── New stickmen placements ───────────── */
 .debate-lane { max-width: var(--width); margin: 0 auto; padding: 1rem 0 0; }

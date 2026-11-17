@@ -262,8 +262,7 @@ def burst(x, y, cls="burst"):
             + L(x + 3, y + 6, x + 6, y + 10) + '</g>')
 
 def kicker_bag(x, y, s):
-    """Tornado kick: crouch, leap, 360 spin, round kick into the bag, land.
-    The bag and frame live in scene space so the spin mirrors only the figure."""
+    """A clean roundhouse kick: chamber the knee, extend into the bag, retract, reset."""
     X = lambda u: x + u * s
     Y = lambda v: y + v * s
     frame = L(X(20), Y(-80), X(56), Y(-80)) + L(X(56), Y(-80), X(56), Y(29))
@@ -271,54 +270,38 @@ def kicker_bag(x, y, s):
            + L(X(36), Y(-80), X(36), Y(-64), "thin")
            + f'<rect class="fill" x="{X(30):g}" y="{Y(-64):g}" width="{12*s:g}" height="{54*s:g}" rx="{4*s:g}"/>'
            + f'<path class="bag-crease" d="M{X(31.5):g} {Y(-46):g} h{9*s:g} M{X(31.5):g} {Y(-34):g} h{9*s:g}"/></g>')
-    spark = burst(X(27), Y(-6))
-    arc = f'<path class="whoosh-arc" d="M{X(16):g} {Y(-40):g} Q{X(40):g} {Y(-26):g} {X(18):g} {Y(-8):g}"/>'
+    spark = burst(X(26), Y(-30))
     belt = '<rect class="belt" x="-4.6" y="-4" width="9.2" height="2.6"/>' + L(4, -3, 9, 2, "thin") + L(4, -3, 8, 4, "thin")
     dobok = '<path class="dobok" d="M-5.5 -30 L5.5 -30 L7 -2 L-7 -2 Z"/>'
     body = fig("kicker", x, y, s, STANCE, dict(back=dobok + belt))
-    T = 3.6
-    CSS.append(
-        "@keyframes tornadoBody{"
-        "0%,12%{transform:translateY(0) scaleX(1)}"
-        f"20%{{transform:translateY(2.5px) scaleX(1);animation-timing-function:{EASE_IN}}}"
-        f"28%{{transform:translateY(-9px) scaleX(.55);animation-timing-function:linear}}"
-        "36%{transform:translateY(-16px) scaleX(-.45)}"
-        f"44%{{transform:translateY(-18px) scaleX(-1);animation-timing-function:{EASE_OUT}}}"
-        "52%{transform:translateY(-15px) scaleX(-1)}"
-        f"60%{{transform:translateY(-8px) scaleX(-.5);animation-timing-function:linear}}"
-        "68%{transform:translateY(-1px) scaleX(.6)}"
-        f"74%{{transform:translateY(3.5px) scaleX(1);animation-timing-function:{EASE_OUT}}}"
-        "82%,100%{transform:translateY(0) scaleX(1)}}"
-        f".scene .kicker-move{{animation:tornadoBody {T}s infinite}}")
-    kf("tkLegR", [(0, -12), (12, -12, EASE_IN), (20, 22), (28, -40, "linear"), (36, -78),
-                  (44, -96, EASE_OUT), (52, -92), (60, -60, "linear"), (68, -20), (74, -6, EASE_OUT), (82, -12), (100, -12)])
-    kf("tkShinR", [(0, 0), (12, 0), (20, 30), (28, 70, "linear"), (36, 40), (44, 4, EASE_OUT),
-                   (52, 6), (60, 40, "linear"), (68, 20), (74, 2), (82, 0), (100, 0)])
-    kf("tkLegL", [(0, 25), (12, 25, EASE_IN), (20, 34), (28, -6, "linear"), (36, -30),
-                  (44, -36), (52, -34), (60, -14, "linear"), (68, 18), (74, 34, EASE_OUT), (82, 25), (100, 25)])
-    kf("tkShinL", [(0, 0), (12, 0), (20, 16), (28, 72, "linear"), (36, 96), (44, 100),
-                   (52, 98), (60, 70, "linear"), (68, 26), (74, 44, EASE_OUT), (82, 0), (100, 0)])
-    kf("tkArmL", [(0, -30), (12, -34, EASE_IN), (20, -84), (28, -128, "linear"), (36, -140),
-                  (44, -138), (52, -136), (60, -104, "linear"), (68, -56), (74, -26, EASE_OUT), (82, -30), (100, -30)])
-    kf("tkForeL", [(0, -110), (12, -112), (20, -96), (28, -70), (36, -58), (44, -56), (52, -58), (60, -76), (68, -100), (74, -114), (82, -110), (100, -110)])
-    kf("tkArmR", [(0, -50), (12, -46, EASE_IN), (20, -10), (28, 44, "linear"), (36, 66),
-                  (44, 70), (52, 68), (60, 40, "linear"), (68, -8), (74, -44, EASE_OUT), (82, -50), (100, -50)])
-    kf("tkForeR", [(0, -100), (12, -104), (20, -92), (28, -62), (36, -48), (44, -46), (52, -50), (60, -70), (68, -92), (74, -108), (82, -100), (100, -100)])
-    kf("tkUp", [(0, 0), (12, -2), (20, 6), (28, -8, "linear"), (36, -16), (44, -20, EASE_OUT),
-                (52, -18), (60, -10, "linear"), (68, 2), (74, 7, EASE_OUT), (82, 0), (100, 0)])
-    kf("bagSwing", [(0, 0), (44, 0, EASE_OUT), (50, -17, EASE_BOTH), (60, 9, EASE_BOTH),
-                    (70, -4.5, EASE_BOTH), (80, 2), (88, -0.8), (94, 0), (100, 0)])
-    CSS.append(f".kicker .lR{{animation:tkLegR {T}s infinite}}.kicker .sR{{animation:tkShinR {T}s infinite}}"
-               f".kicker .lL{{animation:tkLegL {T}s infinite}}.kicker .sL{{animation:tkShinL {T}s infinite}}"
-               f".kicker .aL{{animation:tkArmL {T}s infinite}}.kicker .fL{{animation:tkForeL {T}s infinite}}"
-               f".kicker .aR{{animation:tkArmR {T}s infinite}}.kicker .fR{{animation:tkForeR {T}s infinite}}"
-               f".kicker .up{{animation:tkUp {T}s infinite}}"
+    T = 2.8
+    # hip: settle → chamber → drive through → retract → settle
+    kf("rkLegR", [(0, -12, EASE_BOTH), (18, -4, EASE_IN), (32, -62, EASE_OUT), (44, -84, EASE_OUT),
+                  (54, -84, EASE_IN), (66, -58, EASE_BOTH), (78, -12, EASE_OUT), (100, -12)])
+    # knee: tight chamber, snap straight on impact, re-chamber on the way back
+    kf("rkShinR", [(0, 0, EASE_BOTH), (18, 10, EASE_IN), (32, 86, EASE_OUT), (44, 8, EASE_OUT),
+                   (54, 10, EASE_IN), (66, 74, EASE_BOTH), (78, 4, EASE_OUT), (100, 0)])
+    # support leg pivots and straightens as the hip turns over
+    kf("rkLegL", [(0, 25, EASE_BOTH), (18, 29), (32, 20), (44, 14, EASE_OUT), (54, 14), (66, 22), (78, 26), (100, 25)])
+    kf("rkShinL", [(0, 0, EASE_BOTH), (18, 4), (32, 0), (44, -4), (54, -4), (66, 0), (78, 2), (100, 0)])
+    # arms: guard up, lead arm drops across on impact for balance
+    kf("rkArmL", [(0, -30, EASE_BOTH), (18, -24), (32, -52, EASE_OUT), (44, -64), (54, -62), (66, -40), (78, -28), (100, -30)])
+    kf("rkArmR", [(0, -50, EASE_BOTH), (18, -56), (32, -20, EASE_OUT), (44, 2), (54, 0), (66, -30), (78, -52), (100, -50)])
+    kf("rkForeL", [(0, -110), (32, -96), (44, -88), (54, -90), (66, -104), (100, -110)])
+    kf("rkForeR", [(0, -100), (32, -112), (44, -118), (54, -116), (66, -106), (100, -100)])
+    # torso leans back over the support leg as the kick extends
+    kf("rkUp", [(0, 0, EASE_BOTH), (18, 2), (32, 10, EASE_OUT), (44, 15), (54, 14), (66, 7), (78, 1), (100, 0)])
+    kf("bagSwing", [(0, 0), (43, 0, EASE_OUT), (50, -19, EASE_BOTH), (60, 10, EASE_BOTH),
+                    (70, -5, EASE_BOTH), (80, 2.2), (88, -0.9), (94, 0), (100, 0)])
+    CSS.append(f".kicker .lR{{animation:rkLegR {T}s infinite}}.kicker .sR{{animation:rkShinR {T}s infinite}}"
+               f".kicker .lL{{animation:rkLegL {T}s infinite}}.kicker .sL{{animation:rkShinL {T}s infinite}}"
+               f".kicker .aL{{animation:rkArmL {T}s infinite}}.kicker .fL{{animation:rkForeL {T}s infinite}}"
+               f".kicker .aR{{animation:rkArmR {T}s infinite}}.kicker .fR{{animation:rkForeR {T}s infinite}}"
+               f".kicker .up{{animation:rkUp {T}s infinite}}"
                f".scene .bag{{animation:bagSwing {T}s infinite}}"
-               f"@keyframes burst{{0%,43%{{opacity:0;transform:scale(.5)}}46%{{opacity:1;transform:scale(1.05)}}56%,100%{{opacity:0;transform:scale(1.5)}}}}"
-               f".scene .burst{{animation:burst {T}s infinite}}"
-               f"@keyframes whooshArc{{0%,26%{{opacity:0;stroke-dashoffset:40}}34%{{opacity:.7;stroke-dashoffset:0}}48%{{opacity:.45}}56%,100%{{opacity:0;stroke-dashoffset:-40}}}}"
-               f".scene .whoosh-arc{{fill:none;stroke:var(--tint-deep);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:40;animation:whooshArc {T}s infinite linear}}")
-    return (frame + f'<g class="kicker-move" style="transform-origin:{x:g}px {y + 29 * s:g}px">{body}</g>' + bag + arc + spark)
+               f"@keyframes burst{{0%,41%{{opacity:0;transform:scale(.5)}}45%{{opacity:1;transform:scale(1.05)}}55%,100%{{opacity:0;transform:scale(1.45)}}}}"
+               f".scene .burst{{animation:burst {T}s infinite}}")
+    return frame + body + bag + spark
 
 def kicker_board(x, y, s):
     # holder stands 50 units in front, facing back toward the kicker

@@ -242,30 +242,36 @@
   (function ambient() {
     var host = document.querySelector('[data-ambient] .ambient-field');
     if (!host) return;
+    // [symbol, px size, mass, colour class]
     var KINDS = [
-      ['note', 30, .9], ['beam', 36, .9], ['ball', 34, 1.15], ['ball', 26, 1.15],
-      ['plantcell', 42, 1.0], ['cell', 40, 1.0], ['dna', 32, .85],
-      ['screwdriver', 30, .8], ['wrench', 34, .95], ['caliper', 34, .9],
-      ['flask', 30, .85], ['pipette', 26, .7], ['gear', 32, 1.0],
-      ['sigma', 30, .8], ['integral', 32, .75], ['pi', 28, .7],
-      ['delta', 32, .8], ['pval', 40, .8], ['sd', 28, .7], ['euler', 46, .85], ['mu', 26, .7]
+      ['note', 30, .9, 'c-music'], ['beam', 36, .9, 'c-music'],
+      ['ball', 34, 1.15, 'c-ball'], ['ball', 26, 1.15, 'c-ball'],
+      ['plantcell', 42, 1.0, 'c-plant'], ['cell', 40, 1.0, 'c-cell'], ['dna', 32, .85, 'c-cell'],
+      ['screwdriver', 30, .8, 'c-tool'], ['wrench', 34, .95, 'c-tool'], ['caliper', 34, .9, 'c-tool'],
+      ['gear', 32, 1.0, 'c-tool'],
+      ['flask', 30, .85, 'c-lab'], ['pipette', 26, .7, 'c-lab'],
+      ['sigma', 30, .8, 'c-math'], ['integral', 32, .75, 'c-math'], ['pi', 28, .7, 'c-math'],
+      ['delta', 32, .8, 'c-math'], ['pval', 40, .8, 'c-math'], ['sd', 28, .7, 'c-math'],
+      ['euler', 46, .85, 'c-math'], ['mu', 26, .7, 'c-math']
     ];
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var count = innerWidth < 760 ? 11 : (innerWidth < 1200 ? 16 : 21);
+    var count = innerWidth < 760 ? 12 : (innerWidth < 1200 ? 17 : 23);
     var items = [], W = innerWidth, H = innerHeight;
     var mouse = { x: -9999, y: -9999, active: false };
 
     for (var i = 0; i < count; i++) {
       var k = KINDS[i % KINDS.length];
       var el = document.createElement('span');
-      el.className = 'am';
+      el.className = 'am ' + k[3];
       el.innerHTML = '<svg viewBox="0 0 40 34" width="' + k[1] + '" height="' + (k[1] * .85) + '"><use href="#am-' + k[0] + '"/></svg>';
       host.appendChild(el);
+      var ang = Math.random() * Math.PI * 2, sp = 16 + Math.random() * 20;
       items.push({
         el: el, r: k[1] * .5, m: k[2],
         x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - .5) * 15, vy: (Math.random() - .5) * 15,
-        a: Math.random() * 360, va: (Math.random() - .5) * 10
+        vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+        a: Math.random() * 360, va: (Math.random() - .5) * 16,
+        // each one wanders on its own slow heading
+        wa: Math.random() * Math.PI * 2, ws: 0.18 + Math.random() * 0.3
       });
     }
 
@@ -280,38 +286,37 @@
       requestAnimationFrame(step);
       if (!running) { last = 0; return; }
       var dt = last ? Math.min(0.05, (t - last) / 1000) : 0.016; last = t;
-      var R = 150, R2 = R * R;
+      var R = 170, R2 = R * R;
       for (var i = 0; i < items.length; i++) {
         var p = items[i];
         if (mouse.active) {
           var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
           if (d2 < R2 && d2 > 1) {
-            var d = Math.sqrt(d2), f = (1 - d / R);
-            var push = f * f * 2600 / p.m;
+            var d = Math.sqrt(d2), f = 1 - d / R;
+            var push = f * f * 3400 / p.m;
             p.vx += (dx / d) * push * dt;
             p.vy += (dy / d) * push * dt;
-            p.va += (dx / d) * f * 14 * dt * 60 / 60;
+            p.va += (dx / d) * f * 90 * dt;
           }
         }
-        // gentle drift so nothing ever comes fully to rest
-        p.vx += Math.sin(t / 2600 + i * 1.7) * 3.2 * dt;
-        p.vy += Math.cos(t / 3100 + i * 2.3) * 3.2 * dt;
-        // drag
-        var drag = Math.exp(-0.75 * dt);
-        p.vx *= drag; p.vy *= drag; p.va *= Math.exp(-0.6 * dt);
-        // clamp
-        var sp = Math.hypot(p.vx, p.vy), MAX = 260;
-        if (sp > MAX) { p.vx *= MAX / sp; p.vy *= MAX / sp; }
+        // slow wandering heading keeps everything drifting instead of settling
+        p.wa += (Math.random() - .5) * 1.6 * dt + p.ws * dt;
+        p.vx += Math.cos(p.wa) * 26 * dt;
+        p.vy += Math.sin(p.wa) * 26 * dt;
+        // light drag only — enough to damp a cursor hit, not enough to stop the drift
+        var drag = Math.exp(-0.22 * dt);
+        p.vx *= drag; p.vy *= drag; p.va *= Math.exp(-0.35 * dt);
+        var sp = Math.hypot(p.vx, p.vy);
+        if (sp > 300) { p.vx *= 300 / sp; p.vy *= 300 / sp; }
+        else if (sp < 9) { var s2 = 9 / (sp || 1); p.vx *= s2; p.vy *= s2; }   // never fully stall
         p.x += p.vx * dt; p.y += p.vy * dt; p.a += p.va * dt;
-        // bounce off the viewport edges, losing a little energy
-        if (p.x < p.r) { p.x = p.r; p.vx = Math.abs(p.vx) * .72; p.va += 8; }
-        else if (p.x > W - p.r) { p.x = W - p.r; p.vx = -Math.abs(p.vx) * .72; p.va -= 8; }
-        if (p.y < p.r) { p.y = p.r; p.vy = Math.abs(p.vy) * .72; }
-        else if (p.y > H - p.r) { p.y = H - p.r; p.vy = -Math.abs(p.vy) * .72; }
+        if (p.x < p.r) { p.x = p.r; p.vx = Math.abs(p.vx) * .8; p.va += 10; }
+        else if (p.x > W - p.r) { p.x = W - p.r; p.vx = -Math.abs(p.vx) * .8; p.va -= 10; }
+        if (p.y < p.r) { p.y = p.r; p.vy = Math.abs(p.vy) * .8; }
+        else if (p.y > H - p.r) { p.y = H - p.r; p.vy = -Math.abs(p.vy) * .8; }
         p.el.style.transform = 'translate3d(' + (p.x - p.r) + 'px,' + (p.y - p.r * .85) + 'px,0) rotate(' + p.a + 'deg)';
       }
     }
-    if (!reduce) requestAnimationFrame(step);
-    else items.forEach(function (p) { p.el.style.transform = 'translate3d(' + p.x + 'px,' + p.y + 'px,0)'; });
+    requestAnimationFrame(step);
   })();
 })();
