@@ -16,6 +16,7 @@
 #   side:  right or left to pin the panel to that side; otherwise blocks
 #          alternate down the page.
 #   note:  the pull quote, when aside is `quote`.
+#   quote: a quotation set above the text, with `cite:` underneath it.
 
 bio:
   - lead: true
@@ -37,6 +38,11 @@ bio:
       Intellectually, I love thinking about <b class="t-bio">evolutionary biology</b> — how crazy it is for us to be here, how genes evolved, how cellular machinery this advanced could self-evolve. One of my favourite facts: we crave sugars and carbohydrates because those resources were seasonally scarce in our ancestral environment.
 
       I hope to innovate in **biomedical engineering** across <b class="t-delivery">drug delivery</b>, <b class="t-design">product design</b> and <b class="t-research">research technology</b>, and I envision a future of medicine based in nature. In the **Ng Lab** I worked on bringing <b class="t-bio">galantamine</b>, a moderate Alzheimer's therapeutic, into viable cell-culture manufacturing — Galantamine is produced naturally in daffodil glandular trichomes, just one example of how nature holds our therapeutic secrets, just waiting to be discovered!
+
+  - quote: "I know how to reorient the spirit to better heal the body."
+    cite: "Doctor Strange (2016)"
+    text: |
+      This is my favourite quote from one of my favourite movies: not just fiction, I hope medicine never grows to be synthetic or artificial. I hope it roots itself in where we come from, where we exist, and where we will return.
 
   - aside: quote
     note: "If nature can make us, it can repair us."
