@@ -1,6 +1,6 @@
 ---
 layout: showerchair
-title: "Accessible Shower Chair"
+title: "Accessible Shower Chair for Injured/Disabled Patients"
 year: "2024"
 order: 3
 role: "Industrial Design Intern · Product Quickstart"
