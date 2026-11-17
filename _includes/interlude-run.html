@@ -1,7 +1,8 @@
-<div class="run-lane" aria-label="Stickmen jogging across the page">
+{% assign r = site.data.runners | first %}
+{% if r %}
+<div class="run-lane" aria-label="Stickman jogging across the page">
   <div class="lane-track" aria-hidden="true"></div>
-  {% for r in site.data.runners %}
-  <div class="jog" style="--dur: {{ r.speed | default: 24 }}s; --delay: -{{ forloop.index0 | times: 7 }}s; --gait: {{ r.speed | divided_by: 34.0 | plus: 0.42 }}s; --lane: {{ forloop.index0 | modulo: 3 }}">
+  <div class="jog" style="--dur: {{ r.speed | default: 22 }}s; --gait: {{ r.speed | divided_by: 34.0 | plus: 0.42 }}s">
     {% if r.link and site.strava and site.strava != "" %}
     <a class="jog-bubble" href="{{ site.strava }}">{{ r.says | markdownify | remove: '<p>' | remove: '</p>' }} ↗</a>
     {% else %}
@@ -13,5 +14,5 @@
       {% else %}{% include scenes/runner-plain.html %}
     {% endcase %}
   </div>
-  {% endfor %}
 </div>
+{% endif %}

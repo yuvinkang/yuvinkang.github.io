@@ -1,20 +1,9 @@
-# RUNNERS — the lane of stickmen that jogs across the page after Experience.
-# "says" is the speech bubble. "kind" is plain, ball (dribbling) or book (reading).
-# "speed" is seconds to cross the page — larger is slower. Copy a block to add another.
-
+# The lone runner that jogs across the page after Experience.
+# says:  the text in the speech bubble (flashes briefly each lap)
+# kind:  plain | ball | book
+# speed: seconds to cross the page
+# link:  true to link the bubble to site.strava
 - says: "i love to run too! add me on strava **@Yuvin Kang**"
   kind: plain
-  speed: 20
-  link: true          # uses site.strava if it is set in _config.yml
-
-- says: "life-long **Arsenal** fan"
-  kind: ball
-  speed: 26
-
-- says: "favorite classical composer: **Ravel**"
-  kind: book
-  speed: 32
-
-- says: "still think the 6A semifinal was ours"
-  kind: ball
-  speed: 23
+  speed: 22
+  link: true
