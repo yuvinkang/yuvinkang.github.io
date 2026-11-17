@@ -3,21 +3,21 @@
 # then change "src" to the new file name. "blurb" is what the stickman on that cabin says
 # when someone hovers over the photo. 5–8 photos works best.
 
-- src: /assets/images/gallery/photo-1.svg
+- src: assets/images/gallery/ysobasses.HEIC
   caption: "Yale Symphony Orchestra"
-  blurb: "Principal bassist, Yale Symphony Orchestra."
+  blurb: "Love my bass section! Post-concert pic!"
 - src: /assets/images/projects/prari/field.webp
   caption: "Prari Robotics"
   blurb: "Prari rover prototype, designed in SolidWorks."
-- src: /assets/images/gallery/photo-3.svg
+- src: assets/images/gallery/clubsoccer.JPG
   caption: "Club soccer"
-  blurb: "Yale C1 Club Soccer."
-- src: /assets/images/gallery/photo-4.svg
-  caption: "Kyriakides Lab"
-  blurb: "ECM bioscaffolds and histology at Yale."
-- src: /assets/images/gallery/photo-5.svg
+  blurb: "Yale C1 at the Club Soccer Ivy Tournament!"
+- src: assets/images/gallery/arsenal.heic
+  caption: "Biiiigg Arsenal Fan"
+  blurb: "Come on you gooners!! Fan since birth"
+- src: assets/images/gallery/IMG_2787.HEIC
   caption: "Club Taekwondo"
-  blurb: "Yale Club Taekwondo."
-- src: /assets/images/gallery/photo-2.svg
+  blurb: "at the 2026 MIT Tournament!"
+- src: assets/images/gallery/biolistic.jpg
   caption: "Ng Lab, Dublin"
-  blurb: "Biolistic transformation at UCD."
+  blurb: "Shooting the gene gun at allium samples. Ballistic!"
