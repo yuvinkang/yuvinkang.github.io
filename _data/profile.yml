@@ -18,6 +18,11 @@
 #   note:  the pull quote, when aside is `quote`.
 #   dialogue: a list of quoted lines. They fade in and float up one after
 #          another beside the block's text, with `cite:` under them.
+#          Each line needs SIX spaces before its dash, deeper than the
+#          `dialogue:` key above it — YAML will not parse otherwise:
+#              - dialogue:
+#                  - "first line"
+#                  - "second line"
 #   class: film  to set the block as the closing quote block.
 
 bio:
@@ -47,14 +52,10 @@ bio:
       From using native **T and B cells** to deliver therapeutics, letting the body iterate its own adaptive cancer therapy, to creating the conditions for better orthopedic healing through medical products — **my curiosity for evolution, biology and its intersection with engineering drives everything I do.**
 
   - dialogue:
- -  "When you reattach a severed nerve, is it you who heals it back together or the body?"
- -  "It's the **cells.**"
- -  "And cells are only programmed to put themselves back together in very specific ways. What if I told you that your own body could be convinced to put itself back together in all sorts of ways?"
- -  "I know how to reorient the spirit to better heal the body."
+      - "I know how to reorient the spirit to better heal the body."
     cite: "Doctor Strange (2016)"
     class: film
     text: |
-    
       This is my favourite quote from one of my favourite movies: not just fiction, I hope medicine never grows to be synthetic or artificial. I hope it roots itself in where we come from, where we exist, and where we will return.
 
 education:
