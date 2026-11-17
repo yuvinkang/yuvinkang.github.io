@@ -1,0 +1,15 @@
+{%- comment -%}
+Music / soccer / taekwondo switcher, reusing the personal scenes.
+{%- endcomment -%}
+<div class="itr" data-toggle-scope>
+  <div class="itr-stage">
+    <div class="itr-scene" data-panel="i1">{% include scenes/bass.html %}</div>
+    <div class="itr-scene" data-panel="i2">{% include scenes/soccer.html %}</div>
+    <div class="itr-scene" data-panel="i3">{% include scenes/taekwondo.html %}</div>
+  </div>
+  <div class="itr-tabs" data-toggle-group data-hover>
+    <button type="button" class="itr-tab" data-show="i1">Double bass</button>
+    <button type="button" class="itr-tab" data-show="i2">Soccer</button>
+    <button type="button" class="itr-tab" data-show="i3">Taekwondo</button>
+  </div>
+</div>

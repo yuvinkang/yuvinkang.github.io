@@ -1,0 +1,56 @@
+{%- comment -%}
+The three fields of biomedical engineering, each in its own colour, with a
+small drawing and one line. Uses the generic [data-toggle-group] widget.
+{%- endcomment -%}
+<div class="fld" data-toggle-scope>
+  <svg class="fld-svg" viewBox="0 0 300 150" role="img" aria-label="Drug delivery, product design and research technology">
+    <!-- drug delivery: a carrier releasing its payload into a vessel -->
+    <g data-panel="f1" class="fld-stage fld-delivery">
+      <path class="fld-vessel" d="M18 36 C 92 24 206 48 282 34"/>
+      <path class="fld-vessel" d="M18 108 C 92 120 206 96 282 110"/>
+      <circle class="fld-carrier" cx="150" cy="72" r="24"/>
+      <circle class="fld-carrier-in" cx="150" cy="72" r="13"/>
+      {% for a in (0..5) %}
+      <circle class="fld-dose" cx="150" cy="72" r="4" style="--i: {{ forloop.index }}; --a: {{ a | times: 60 }}deg"/>
+      {% endfor %}
+    </g>
+
+    <!-- product design: a part taking shape on the drafting grid -->
+    <g data-panel="f2" class="fld-stage fld-design">
+      {% for n in (0..5) %}
+      <line class="fld-grid" x1="{{ n | times: 52 | plus: 22 }}" y1="20" x2="{{ n | times: 52 | plus: 22 }}" y2="128"/>
+      {% endfor %}
+      {% for n in (0..3) %}
+      <line class="fld-grid" x1="22" y1="{{ n | times: 36 | plus: 20 }}" x2="282" y2="{{ n | times: 36 | plus: 20 }}"/>
+      {% endfor %}
+      <path class="fld-part" d="M96 104 L96 60 a28 28 0 0 1 28 -28 L176 32 a28 28 0 0 1 28 28 L204 104Z"/>
+      <circle class="fld-hole" cx="128" cy="72" r="9"/>
+      <circle class="fld-hole" cx="172" cy="72" r="9"/>
+      <path class="fld-dim" d="M96 118 h108 m-108 -5 v10 m108 -10 v10"/>
+    </g>
+
+    <!-- research technology: a trace coming out of an instrument -->
+    <g data-panel="f3" class="fld-stage fld-research">
+      <rect class="fld-box" x="20" y="34" width="72" height="82"/>
+      <circle class="fld-led" cx="56" cy="52" r="5"/>
+      <line class="fld-slot" x1="34" y1="100" x2="78" y2="100"/>
+      <line class="fld-slot" x1="34" y1="88" x2="78" y2="88"/>
+      <path class="fld-axis" d="M110 36 v82 h166"/>
+      <path class="fld-trace" d="M110 110 L134 104 L150 62 L166 100 L190 52 L214 96 L238 74 L276 68"/>
+      {% for n in (0..3) %}
+      <circle class="fld-pt" cx="{{ n | times: 40 | plus: 150 }}" cy="{{ 62 | plus: n | times: 4 }}" r="3.4"
+              style="--i: {{ forloop.index }}"/>
+      {% endfor %}
+    </g>
+  </svg>
+
+  <div class="fld-tabs" data-toggle-group data-hover>
+    <button type="button" class="fld-tab fld-t-delivery" data-show="f1">Drug delivery</button>
+    <button type="button" class="fld-tab fld-t-design" data-show="f2">Product design</button>
+    <button type="button" class="fld-tab fld-t-research" data-show="f3">Research technology</button>
+  </div>
+
+  <p class="fld-note" data-panel="f1">Carriers that put a therapeutic where it is needed and nowhere else.</p>
+  <p class="fld-note" data-panel="f2">Devices people actually use — a shower chair, a tapering dispenser.</p>
+  <p class="fld-note" data-panel="f3">Instruments and methods that make the next experiment possible.</p>
+</div>

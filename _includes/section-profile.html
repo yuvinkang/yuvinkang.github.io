@@ -1,13 +1,27 @@
 {% assign p = site.data.profile %}
-<div class="profile-grid">
-  <div class="prose lead-prose">{{ p.bio | markdownify }}</div>
-  <div class="profile-side">
-    <div class="profile-scene">{% include scenes/profile.html %}</div>
+
+<div class="bio">
+  {% for b in p.bio %}
+  <div class="bio-block{% if b.aside %} has-aside{% else %} no-aside{% endif %}{% if b.lead %} is-lead{% endif %}" style="--i: {{ forloop.index }}">
+    <div class="bio-text prose">{{ b.text | markdownify }}</div>
+    {% if b.aside %}
+    <div class="bio-aside">
+      {% case b.aside %}
+        {% when "waver" %}<div class="bio-fig">{% include scenes/profile.html %}</div>
+        {% when "bioscaffold" %}<div class="bio-fig">{% include scenes/bioscaffold.html %}</div>
+        {% when "interests" %}{% include interests.html %}
+        {% when "galantamine" %}{% include galantamine.html %}
+        {% when "fields" %}{% include fields.html %}
+        {% when "quote" %}<blockquote class="bio-quote">{{ b.note }}</blockquote>
+      {% endcase %}
+    </div>
+    {% endif %}
   </div>
+  {% endfor %}
 </div>
 
 {% if p.education %}
-<p class="label">Education</p>
+<p class="label label-gap">Education</p>
 <ul class="rows rows-tight">
   {% for e in p.education %}
   <li class="row" style="--i: {{ forloop.index }}">

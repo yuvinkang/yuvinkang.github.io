@@ -789,3 +789,122 @@ body { background: transparent; }
 .dr-sheet figcaption { margin-top: .7rem; color: var(--muted); font-size: .76rem; }
 .dr-tabs .mod-btn { white-space: nowrap; width: auto; flex: 0 0 auto; padding: 9px 16px; }
 .sc-tabs .mod-btn { white-space: nowrap; }
+
+/* ═════════════════════════════════════════════════════════════
+   PROFILE — bio blocks, coloured terms, and the two widgets
+   ═════════════════════════════════════════════════════════════ */
+.bio { display: flex; flex-direction: column; }
+.bio-block { display: grid; gap: 2.6rem; align-items: center; padding: 2.6rem 0; border-top: 1px solid var(--line); }
+.bio-block:first-child { border-top: 0; padding-top: 0; }
+.bio-block.has-aside { grid-template-columns: minmax(0, 1fr) 320px; }
+.bio-block:nth-of-type(even).has-aside { grid-template-columns: 320px minmax(0, 1fr); }
+.bio-block:nth-of-type(even) .bio-aside { order: -1; }
+.bio-block.no-aside { grid-template-columns: minmax(0, 720px); }
+.bio-text p { font-weight: 300; line-height: 1.75; }
+.bio-text p + p { margin-top: .9rem; }
+.bio-block.is-lead .bio-text p { font-size: 1.45rem; line-height: 1.45; letter-spacing: -0.02em; }
+.bio-text strong { font-weight: 500; color: var(--tint-deep); }
+.bio-fig { display: flex; align-items: center; justify-content: center; }
+.bio-fig svg { width: 100%; height: auto; max-width: 320px; }
+.bio-quote {
+  margin: 0; padding: 0 0 0 1.1rem; border-left: 3px solid var(--tint);
+  font-size: 1.22rem; font-weight: 300; line-height: 1.45; color: var(--brand); letter-spacing: -0.015em;
+}
+
+/* coloured terms, so a sentence that names several things reads as several things */
+.t-delivery { color: #0E7C86; font-weight: 500; }
+.t-design   { color: #B07408; font-weight: 500; }
+.t-research { color: #6D4BC4; font-weight: 500; }
+.t-bio      { color: #1E8E4E; font-weight: 500; }
+
+/* ───────────── Galantamine walkthrough ───────────── */
+.gal, .fld, .itr { width: 100%; }
+.gal-svg, .fld-svg { width: 100%; height: auto; display: block; }
+.gal-stage, .fld-stage { opacity: 0; visibility: hidden; transition: opacity .4s var(--ease); }
+.gal-stage.on, .fld-stage.on { opacity: 1; visibility: visible; }
+.gal-svg { fill: none; stroke: var(--ink-strong); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.gal-ground, .gal-surface { stroke: var(--line); }
+.gal-surface { fill: var(--tint-soft); stroke: var(--tint); }
+.gal-stem, .gal-stalk { stroke: #1E8E4E; stroke-width: 2.2; }
+.gal-leaf { fill: #E4F3E7; stroke: #1E8E4E; }
+.gal-petal { fill: #FFF6DA; stroke: var(--gold); }
+.gal-corona { fill: #FFE6A8; stroke: var(--gold); }
+.gal-corona-in { fill: #FFD36B; stroke: var(--gold); }
+.gal-head { transform-origin: 158px 86px; animation: galSway 5.5s ease-in-out infinite; }
+@keyframes galSway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+.gal-ring { stroke: var(--accent); stroke-dasharray: 5 7; opacity: .55; transform-origin: 158px 86px; animation: galSpin 16s linear infinite; }
+.gal-ring-2 { transform-origin: 134px 107px; }
+@keyframes galSpin { to { transform: rotate(360deg); } }
+.gal-gland { fill: #E4F3E7; stroke: #1E8E4E; }
+.gal-drop { fill: var(--gold); stroke: none; animation: galPulse 2.6s ease-in-out infinite; animation-delay: calc(var(--i) * .22s); transform-origin: center; }
+@keyframes galPulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+.gal-tri { animation: galLean 4s ease-in-out infinite; animation-delay: calc(var(--i) * .3s); transform-origin: bottom; }
+@keyframes galLean { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+.gal-glass { stroke: #7C93AE; }
+.gal-liquid { fill: #FFE6A8; stroke: var(--gold); }
+.gal-bub { fill: var(--gold); stroke: none; animation: galRise 2.8s linear infinite; animation-delay: calc(var(--i) * .4s); }
+@keyframes galRise { 0% { transform: translate(var(--bx), 170px); opacity: 0; } 15% { opacity: .9; } 100% { transform: translate(var(--bx), 104px); opacity: 0; } }
+.gal-arrow, .fld-dim { stroke: var(--accent); }
+.gal-tank { fill: none; stroke: #7C93AE; }
+.gal-broth { fill: #E6F4F2; stroke: none; }
+.gal-shaft, .gal-impeller line { stroke: #7C93AE; }
+.gal-impeller { transform-origin: 138px 146px; animation: galStir 1.6s linear infinite; }
+@keyframes galStir { to { transform: rotateY(360deg); } }
+.gal-cell { fill: #1E8E4E; stroke: none; opacity: .75; animation: galDrift 5s ease-in-out infinite; animation-delay: calc(var(--i) * .5s); }
+@keyframes galDrift { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(6px, -12px); } }
+.gal-cap { fill: var(--brand); stroke: none; }
+.gal-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 1rem; }
+.gal-step, .fld-tab, .itr-tab {
+  display: flex; align-items: baseline; gap: 8px; text-align: left;
+  padding: 9px 12px; border: 1px solid var(--line); background: transparent;
+  font: inherit; font-size: .84rem; color: var(--text); cursor: pointer;
+  transition: border-color .25s, color .25s;
+}
+.gal-step .mono { color: var(--accent); font-size: .72rem; }
+.gal-step:hover, .fld-tab:hover, .itr-tab:hover { border-color: var(--tint); }
+.gal-step.on, .itr-tab.on { border-color: var(--accent); color: var(--brand); }
+.gal-note, .fld-note { display: none; margin: .85rem 0 0; color: var(--muted); font-size: .85rem; }
+.gal-note.on, .fld-note.on { display: block; }
+
+/* ───────────── Three fields ───────────── */
+.fld-svg { fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.fld-vessel { stroke: var(--tint); stroke-width: 2.4; }
+.fld-carrier { fill: #E3F4F3; stroke: #0E7C86; }
+.fld-carrier-in { fill: none; stroke: #0E7C86; stroke-dasharray: 4 5; }
+.fld-dose { fill: #0E7C86; stroke: none; animation: fldRelease 3s ease-out infinite; animation-delay: calc(var(--i) * .25s); transform-origin: 150px 72px; }
+@keyframes fldRelease { 0% { transform: rotate(var(--a)) translateX(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: rotate(var(--a)) translateX(78px); opacity: 0; } }
+.fld-grid { stroke: var(--line); }
+.fld-part { fill: #FDF3DD; stroke: #B07408; stroke-dasharray: 440; animation: fldDraw 4s ease-in-out infinite; }
+@keyframes fldDraw { 0% { stroke-dashoffset: 440; } 45%, 100% { stroke-dashoffset: 0; } }
+.fld-hole { stroke: #B07408; }
+.fld-dim { stroke: #B07408; }
+.fld-box { fill: #F0ECFB; stroke: #6D4BC4; }
+.fld-led { fill: var(--bio); stroke: none; animation: galPulse 1.8s ease-in-out infinite; }
+.fld-slot { stroke: #6D4BC4; }
+.fld-axis { stroke: var(--line); stroke-width: 1.4; }
+.fld-trace { stroke: #6D4BC4; stroke-width: 2; stroke-dasharray: 420; animation: fldDraw 4.5s ease-in-out infinite; }
+.fld-pt { fill: #6D4BC4; stroke: none; animation: galPulse 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * .3s); }
+.fld-tabs { display: flex; flex-direction: column; gap: 6px; margin-top: 1rem; }
+.fld-tab { border-left-width: 3px; }
+.fld-t-delivery { border-left-color: #0E7C86; }
+.fld-t-design   { border-left-color: #B07408; }
+.fld-t-research { border-left-color: #6D4BC4; }
+.fld-t-delivery.on { border-color: #0E7C86; color: #0E7C86; }
+.fld-t-design.on   { border-color: #B07408; color: #B07408; }
+.fld-t-research.on { border-color: #6D4BC4; color: #6D4BC4; }
+
+/* ───────────── Interests switcher ───────────── */
+.itr-stage { position: relative; }
+.itr-scene { display: none; }
+.itr-scene.on { display: block; }
+.itr-scene svg { width: 100%; height: auto; }
+.itr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: .9rem; }
+
+@media (max-width: 900px) {
+  .bio-block.has-aside,
+  .bio-block:nth-of-type(even).has-aside { grid-template-columns: 1fr; gap: 1.6rem; }
+  .bio-block:nth-of-type(even) .bio-aside { order: 0; }
+  .bio-block.is-lead .bio-text p { font-size: 1.2rem; }
+  .bio-aside { max-width: 420px; }
+  .gal-steps { grid-template-columns: 1fr; }
+}

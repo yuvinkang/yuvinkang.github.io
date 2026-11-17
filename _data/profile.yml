@@ -1,17 +1,52 @@
 # PROFILE — bio, education, awards.
-# The bio is plain text: leave a blank line between paragraphs. **bold**, *italics* and [links](https://...) work.
-bio: |
-  Hi! My name is Yuvin, a biomedical engineering student at Yale, originally from Duluth, Georgia.
+#
+# The bio is a list of blocks. Each block is one idea, laid out beside its own
+# panel; blocks alternate sides down the page.
+#   text:  Markdown. **bold**, *italics*, [links](https://...) all work.
+#          For a coloured term use <b class="t-NAME">…</b> — the names are
+#          delivery (teal), design (gold), research (violet), bio (green).
+#   lead:  true to set this block in the larger opening type.
+#   aside: what goes in the panel beside it —
+#            waver        the stick figure
+#            bioscaffold  the Kyriakides Lab scene
+#            interests    music / soccer / taekwondo switcher
+#            galantamine  the daffodil → galantamine walkthrough
+#            fields       the three fields of biomedical engineering
+#            quote        a pull quote, set in `note:`
+#          leave it out for a full-width block.
+#   note:  the pull quote, when aside is `quote`.
 
-  I work in the **Kyriakides Lab** working on optimizing ECM bioscaffold integration with host tissue in diabetic and burn wounds. Previously in the **Ng Lab** at University College Dublin on biolistic gene delivery.
+bio:
+  - lead: true
+    aside: waver
+    text: |
+      Hi! My name is **Yuvin**, a biomedical engineering student at **Yale**, originally from Duluth, Georgia.
 
-  I also love to play music in various chamber groups, composition ensembles, and the **Yale Symphony Orchestra**! I also like to explore sports, playing on Yale's club soccer first team, Social Chair for **Yale Taekwondo**, and basketball with friends!
+  - aside: bioscaffold
+    text: |
+      I work in the **Kyriakides Lab** on optimizing ECM bioscaffold integration with host tissue in diabetic and burn wounds. Previously in the **Ng Lab** at University College Dublin on biolistic gene delivery.
 
-  Intellectually, I love thinking about **evolutionary biology** - how crazy it is for us to be here, how genes evolved, how cellular machinery so advanced could self-evolve. (One of my favorite facts is how the reason we crave sugars/carbohydrates like candy and burgers is because of the seasonal scarcity of these essential resources in our ancestral times)
+  - aside: interests
+    text: |
+      I also love to play music in various chamber groups, composition ensembles, and the **Yale Symphony Orchestra**. I like to explore sports too — Yale's club soccer first team, Social Chair for **Yale Taekwondo**, and basketball with friends.
 
-  I hope to innovate in **biomedical engineering** in wide fields from drug delivery to product design to research technology to further explore what blows my mind. I envision a future of medicine based in nature - afterall, if it can make us, it can repair us. (For Example, in the **Ng Lab**, I worked on bringing galantamine, a moderate alzeimer's therapeutic into viable cell culture manufacturing. Galantamine is produced naturally in daffodil glandular trichomes! (Nature Rocks!)
-  
-  From using native T and B cells to deliver therapeutics, enabling the body to iterate its own adaptive cancer therapy, or simply creating conditions for better orthopedic healing through medical products, my curiosity for evolution, biology, and its intersection with engineering drives me in everything I do!
+  - text: |
+      Intellectually, I love thinking about <b class="t-bio">evolutionary biology</b> — how crazy it is for us to be here, how genes evolved, how cellular machinery this advanced could self-evolve.
+
+      One of my favourite facts: we crave sugars and carbohydrates because those resources were seasonally scarce in our ancestral environment.
+
+  - aside: fields
+    text: |
+      I hope to innovate in **biomedical engineering** across <b class="t-delivery">drug delivery</b>, <b class="t-design">product design</b> and <b class="t-research">research technology</b>, to keep exploring what blows my mind.
+
+  - aside: galantamine
+    text: |
+      I envision a future of medicine based in nature. In the **Ng Lab** I worked on bringing <b class="t-bio">galantamine</b>, a moderate Alzheimer's therapeutic, into viable cell-culture manufacturing. Galantamine is produced naturally in daffodil glandular trichomes.
+
+  - aside: quote
+    note: "If nature can make us, it can repair us."
+    text: |
+      From using native **T and B cells** to deliver therapeutics, letting the body iterate its own adaptive cancer therapy, to creating the conditions for better orthopedic healing through medical products — my curiosity for evolution, biology and its intersection with engineering drives everything I do.
 
 education:
   - school: "Yale University"
