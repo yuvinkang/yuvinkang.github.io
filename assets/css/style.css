@@ -811,11 +811,23 @@ body { background: transparent; }
 .bio-text strong { font-weight: 500; color: var(--tint-deep); }
 .bio-fig { display: flex; align-items: center; justify-content: center; }
 .bio-fig svg { width: 100%; height: auto; max-width: 320px; }
-/* a quotation set above its own commentary */
-.bio-film { margin: 0 0 1rem; padding: 0 0 0 1.1rem; border-left: 3px solid var(--tint); }
-.bio-film blockquote { margin: 0; padding: 0; background: transparent; border-left: 0; font-size: 1.22rem; font-weight: 300; line-height: 1.45;
-  color: var(--brand); letter-spacing: -0.015em; }
-.bio-film figcaption { margin-top: .45rem; color: var(--muted); font-size: .76rem; }
+/* the closing film quote: lines fade in and float up one after another,
+   with the commentary beside them */
+.bio-block.has-film { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+.bio-film { margin: 0; padding: 0 0 0 1.1rem; border-left: 3px solid var(--tint); }
+.film-line {
+  margin: 0 0 .7rem; font-size: 1.18rem; font-weight: 300; line-height: 1.5;
+  color: var(--brand); letter-spacing: -0.015em;
+}
+.film-line:last-of-type { margin-bottom: .9rem; }
+.film-cite { color: var(--muted); font-size: .76rem; }
+.js .film-line, .js .film-cite { opacity: 0; transform: translateY(16px); }
+.js .reveal.is-visible .film-line,
+.js .reveal.is-visible .film-cite {
+  animation: filmIn .85s var(--ease) forwards;
+  animation-delay: calc(var(--i) * 700ms + 200ms);
+}
+@keyframes filmIn { to { opacity: 1; transform: none; } }
 .bio-quote {
   margin: 0; padding: 0 0 0 1.1rem; border-left: 3px solid var(--tint);
   font-size: 1.22rem; font-weight: 300; line-height: 1.45; color: var(--brand); letter-spacing: -0.015em;
@@ -893,6 +905,7 @@ body { background: transparent; }
 
 @media (max-width: 900px) {
   .bio-block.has-aside,
+  .bio-block.has-film,
   .bio-block:nth-of-type(even).has-aside { grid-template-columns: 1fr; gap: 1.6rem; }
   .bio-block:nth-of-type(even) .bio-aside { order: 0; }
   .bio-block.is-lead .bio-text p { font-size: 1.2rem; }
