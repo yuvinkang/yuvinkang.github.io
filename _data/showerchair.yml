@@ -1,7 +1,7 @@
 # ACCESSIBLE SHOWER CHAIR — content for /projects/accessible-shower-chair/.
 # Renders come from the CAD model in _tools/cad/shower_chair.py.
 
-tagline: "Powered transfer chair that straddles the tub wall and carries the user into the shower."
+tagline: "Powered shower transfer chair for disabled or injured independence."
 chips: ["Product Quickstart · 2024", "Modelled in SolidWorks", "STEP model below"]
 
 idea: "Getting over a tub wall is the hardest part of showering with limited mobility, and it is where most falls happen. The frame stands half outside the tub and half inside it. The user boards at the outboard end on a level floor; a gearmotor and cable loop then draw the seat carriage along the rails and into the shower while a powered leg lift swings the calf support up and over the wall."
