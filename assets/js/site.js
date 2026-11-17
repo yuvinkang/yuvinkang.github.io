@@ -41,6 +41,19 @@
     scenes.forEach(function (s) { s.classList.add('in-view'); });
   }
 
+  // 2c. The closing film quote replays: its lines fade in and float up when it
+  //     comes into view, and fade back out when it leaves, either direction.
+  var film = document.querySelector('.bio-film');
+  if (film) {
+    if (IO) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { e.target.classList.toggle('in-view', e.isIntersecting); });
+      }, { threshold: 0.4 }).observe(film);
+    } else {
+      film.classList.add('in-view');
+    }
+  }
+
   // 3. Progress line, climbing stickman, gentle hero fade
   var climbTimer;
   function onScroll() {

@@ -813,7 +813,7 @@ body { background: transparent; }
 .bio-fig svg { width: 100%; height: auto; max-width: 320px; }
 /* the closing film quote: lines fade in and float up one after another,
    with the commentary beside them */
-.bio-block.has-film { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+.bio-block.has-film { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
 .bio-film { margin: 0; padding: 0 0 0 1.1rem; border-left: 3px solid var(--tint); }
 .film-line {
   margin: 0 0 .7rem; font-size: 1.18rem; font-weight: 300; line-height: 1.5;
@@ -821,13 +821,18 @@ body { background: transparent; }
 }
 .film-line:last-of-type { margin-bottom: .9rem; }
 .film-cite { color: var(--muted); font-size: .76rem; }
-.js .film-line, .js .film-cite { opacity: 0; transform: translateY(16px); }
-.js .reveal.is-visible .film-line,
-.js .reveal.is-visible .film-cite {
-  animation: filmIn .85s var(--ease) forwards;
-  animation-delay: calc(var(--i) * 700ms + 200ms);
+/* transitions, not keyframes, so the lines reverse when you scroll back up.
+   The stagger lives on .in-view, so they leave together and arrive one by one. */
+.js .film-line, .js .film-cite {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 1.1s var(--ease), transform 1.1s var(--ease);
+  transition-delay: 0s;
 }
-@keyframes filmIn { to { opacity: 1; transform: none; } }
+.js .bio-film.in-view .film-line,
+.js .bio-film.in-view .film-cite {
+  opacity: 1; transform: none;
+  transition-delay: calc(var(--i) * 1.1s + .25s);
+}
 .bio-quote {
   margin: 0; padding: 0 0 0 1.1rem; border-left: 3px solid var(--tint);
   font-size: 1.22rem; font-weight: 300; line-height: 1.45; color: var(--brand); letter-spacing: -0.015em;

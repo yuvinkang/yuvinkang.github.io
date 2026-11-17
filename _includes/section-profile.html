@@ -6,7 +6,7 @@
     {% if b.dialogue %}
     <figure class="bio-film">
       {% for line in b.dialogue %}
-      <p class="film-line" style="--i: {{ forloop.index }}">{{ line }}</p>
+      <p class="film-line" style="--i: {{ forloop.index }}">{{ line | markdownify | remove: '<p>' | remove: '</p>' }}</p>
       {% endfor %}
       {% if b.cite %}<figcaption class="mono film-cite" style="--i: {{ b.dialogue | size | plus: 1 }}">{{ b.cite }}</figcaption>{% endif %}
     </figure>
