@@ -459,21 +459,77 @@
     });
   }
 
-  // 4h. Exploded-view scrubber: drag across the assembly, or use the slider,
-  //     to pull it apart and put it back together.
+  // 4h. Exploded-view scrubber. Double-buffered: two <img> layers take turns,
+  //     and a frame is only swapped in once it has decoded, so a frame never
+  //     paints half-drawn and the two layers never cross-fade through the
+  //     background. The markup ships all the frames as plain <img> tags (so
+  //     they work with no JS); here they become the preload list.
   document.querySelectorAll('[data-explode]').forEach(function (box) {
-    var imgs = box.querySelectorAll('img');
+    var srcs = [].map.call(box.querySelectorAll('img'), function (im) {
+      return im.currentSrc || im.src;
+    });
+    if (!srcs.length) return;
+    var alts = [].map.call(box.querySelectorAll('img'), function (im) { return im.alt; });
     var range = box.parentNode.querySelector('input[type=range]');
     var readout = box.parentNode.querySelector('[data-explode-read]');
-    var last = imgs.length - 1, i = 0, startX = null, startI = 0;
-    if (range) range.max = last;
+    var last = srcs.length - 1;
+
+    box.innerHTML = '';
+    var buf = [new Image(), new Image()];
+    buf.forEach(function (b, k) {
+      b.className = 'xp-buf';
+      b.draggable = false;
+      b.decoding = 'sync';
+      b.alt = k === 0 ? (alts[0] || '') : '';
+      box.appendChild(b);
+    });
+    var front = 0;
+    buf[0].src = srcs[0];
+    buf[0].classList.add('on');
+
+    // hold every frame in memory, so a swap is only a src change on a
+    // cached image and never a network round trip mid-drag
+    var cache = srcs.map(function (src) {
+      var im = new Image();
+      im.src = src;
+      return im;
+    });
+    var ready = 0;
+    cache.forEach(function (im) {
+      function done() {
+        if (++ready === cache.length) box.classList.add('xp-ready');
+      }
+      if (im.complete) done(); else { im.onload = done; im.onerror = done; }
+    });
+
+    var i = 0, startX = null, startI = 0, pending = null;
+    function paint(n) {
+      var back = buf[1 - front];
+      function flip() {
+        back.classList.add('on');
+        buf[front].classList.remove('on');
+        front = 1 - front;
+        if (pending !== null) { var p = pending; pending = null; paint(p); }
+      }
+      if (back.src === cache[n].src && back.complete) { flip(); return; }
+      back.src = srcs[n];
+      if (back.decode) {
+        back.decode().then(flip, flip);
+      } else if (back.complete) {
+        flip();
+      } else {
+        back.onload = flip;
+      }
+    }
     function set(n) {
-      i = Math.max(0, Math.min(last, Math.round(n)));
-      imgs.forEach(function (im, k) { im.classList.toggle('on', k === i); });
-      if (range) range.value = i;
-      if (readout) readout.textContent = i === 0 ? 'assembled'
-        : i === last ? 'fully exploded'
-        : Math.round(i / last * 100) + '%';
+      var k = Math.max(0, Math.min(last, Math.round(n)));
+      if (range) range.value = k;
+      if (readout) readout.textContent = k === 0 ? 'assembled'
+        : k === last ? 'fully exploded'
+        : Math.round(k / last * 100) + '%';
+      if (k === i) return;
+      i = k;
+      paint(k);
     }
     box.addEventListener('pointerdown', function (e) {
       startX = e.clientX; startI = i;
@@ -489,7 +545,7 @@
     function stop() { startX = null; box.classList.remove('grabbing'); }
     box.addEventListener('pointerup', stop);
     box.addEventListener('pointercancel', stop);
-    if (range) range.addEventListener('input', function () { set(+range.value); });
+    if (range) { range.max = last; range.addEventListener('input', function () { set(+range.value); }); }
     set(0);
   });
 

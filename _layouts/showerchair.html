@@ -62,7 +62,7 @@ layout: default
       <div class="xp" data-explode title="Drag to take the chair apart">
         {% for n in (0..17) %}
         <img src="{{ img | append: 'explode-' | append: n | append: '.webp' | relative_url }}"
-             alt="Shower chair assembly, step {{ forloop.index }} of 18" draggable="false" loading="lazy">
+             alt="Shower chair assembly, step {{ forloop.index }} of 18" draggable="false">
         {% endfor %}
       </div>
       <label class="xp-control mono">

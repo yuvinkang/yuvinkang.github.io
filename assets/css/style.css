@@ -1036,9 +1036,11 @@ body { background: transparent; }
 .xp { position: relative; aspect-ratio: 60 / 49; background: var(--tint-soft);
   cursor: ew-resize; touch-action: pan-y; user-select: none; overflow: hidden; }
 .xp.grabbing { cursor: grabbing; }
-.xp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transition: opacity .09s linear; }
-.xp img.on { opacity: 1; }
+/* two buffers take turns; no transition, so frames never cross-fade through
+   the background on the way past each other */
+.xp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.xp .xp-buf { visibility: hidden; }
+.xp .xp-buf.on { visibility: visible; }
 .xp-control { display: flex; align-items: center; gap: 14px; margin-top: .9rem;
   color: var(--muted); font-size: .74rem; }
 .xp-control input[type=range] { flex: 1; accent-color: var(--accent); }
