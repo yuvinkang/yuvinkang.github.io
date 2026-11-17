@@ -368,6 +368,8 @@
     var hint = pk.querySelector('[data-pk-hint]');
     var goalsEl = pk.querySelector('[data-pk-goals]');
     var shotsEl = pk.querySelector('[data-pk-shots]');
+    var fx = pk.querySelector('[data-pk-fx]');
+    var score = pk.querySelector('.pk-score');
     var SPOT = { x: 260, y: 244 };
     var goals = 0, shots = 0, busy = false, dragging = false;
 
@@ -414,22 +416,37 @@
       var inGoal = tx > 136 && tx < 384 && ty > 66 && ty < 222;
       var saved = Math.abs(tx - (260 + dive)) < 34 && Math.abs(ty - (150 + (third ? 22 : 0))) < 52;
       setTimeout(function () {
-        if (inGoal && !saved) {
+        var outcome = (inGoal && !saved) ? 'goal' : saved ? 'save' : 'wide';
+        // burst at the point of impact
+        fx.setAttribute('transform', 'translate(' + tx.toFixed(0) + ' ' + ty.toFixed(0) + ')');
+        fx.classList.remove('goal', 'save', 'wide');
+        void fx.getBoundingClientRect();          // restart the animations
+        fx.classList.add(outcome);
+        pk.classList.add('is-' + outcome);
+
+        if (outcome === 'goal') {
           goals++;
           hint.textContent = 'Goal.';
-          pk.classList.add('scored');
-        } else if (saved) {
+          score.classList.add('pop');
+        } else if (outcome === 'save') {
           hint.textContent = 'Saved.';
+          // the keeper pushes it away
+          setTimeout(function () {
+            ball.style.transition = 'transform .5s cubic-bezier(.2,.7,.3,1)';
+            place(tx + (tx < 260 ? -74 : 74), ty + 52);
+          }, 90);
         } else {
           hint.textContent = 'Wide.';
         }
         goalsEl.textContent = goals;
         shotsEl.textContent = shots;
         setTimeout(function () {
-          pk.classList.remove('scored');
+          pk.classList.remove('is-goal', 'is-save', 'is-wide');
+          fx.classList.remove('goal', 'save', 'wide');
+          score.classList.remove('pop');
           hint.textContent = 'Drag the ball to aim, let go to shoot.';
           reset();
-        }, 1100);
+        }, 1400);
       }, 460);
     }
 

@@ -32,6 +32,20 @@ let go to shoot; the keeper guesses. All the motion is in site.js.
     </g>
     <!-- aim line -->
     <line class="pk-aim" data-pk-aim x1="260" y1="244" x2="260" y2="244"/>
+    <!-- impact burst, parked until a shot lands -->
+    <g class="pk-fx" data-pk-fx>
+      <circle class="pk-ring" cx="0" cy="0" r="10"/>
+      <circle class="pk-ring pk-ring-2" cx="0" cy="0" r="10"/>
+      {% for n in (0..11) %}
+      <line class="pk-spark" x1="0" y1="0" x2="0" y2="-13"
+            style="--a: {{ n | times: 30 }}deg; --i: {{ n }}"/>
+      {% endfor %}
+      {% for n in (0..7) %}
+      <circle class="pk-bit" cx="0" cy="0" r="2.6"
+              style="--a: {{ n | times: 45 | plus: 22 }}deg; --i: {{ n }}"/>
+      {% endfor %}
+    </g>
+
     <!-- ball -->
     <g class="pk-ball" data-pk-ball>
       <circle cx="0" cy="0" r="9"/>

@@ -1046,3 +1046,61 @@ body { background: transparent; }
 .xp-control input[type=range] { flex: 1; accent-color: var(--accent); }
 .xp-read { color: var(--accent); min-width: 8ch; text-align: right; }
 @media (max-width: 760px) { .xp-control span:first-child { display: none; } }
+
+
+/* ───────────── Penalty: impact burst ───────────── */
+.pk-fx { opacity: 0; pointer-events: none; }
+.pk-fx.goal, .pk-fx.save, .pk-fx.wide { opacity: 1; }
+
+.pk-ring { fill: none; stroke-width: 2.6; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.pk-fx.goal .pk-ring { stroke: var(--bio); animation: pkRing .62s var(--ease) forwards; }
+.pk-fx.goal .pk-ring-2 { stroke: var(--gold); animation: pkRing .78s var(--ease) .09s forwards; }
+.pk-fx.save .pk-ring { stroke: var(--coral); animation: pkRing .5s var(--ease) forwards; }
+.pk-fx.save .pk-ring-2 { stroke: var(--coral); animation: pkRing .62s var(--ease) .08s forwards; opacity: .5; }
+.pk-fx.wide .pk-ring { stroke: var(--faint); animation: pkRing .5s var(--ease) forwards; }
+.pk-fx.wide .pk-ring-2 { display: none; }
+@keyframes pkRing {
+  0% { opacity: .95; transform: scale(.25); }
+  70% { opacity: .5; }
+  100% { opacity: 0; transform: scale(3.6); }
+}
+
+.pk-spark, .pk-bit { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.pk-spark { stroke-width: 3; stroke-linecap: round; }
+.pk-fx.goal .pk-spark { animation: pkSpark .72s var(--ease) forwards; animation-delay: calc(var(--i) * 12ms); }
+.pk-fx.goal .pk-spark:nth-child(3n) { stroke: var(--gold); }
+.pk-fx.goal .pk-spark:nth-child(3n + 1) { stroke: var(--bio); }
+.pk-fx.goal .pk-spark:nth-child(3n + 2) { stroke: var(--accent); }
+.pk-fx.save .pk-spark { stroke: var(--coral); animation: pkSparkShort .5s var(--ease) forwards; animation-delay: calc(var(--i) * 9ms); }
+.pk-fx.wide .pk-spark { display: none; }
+@keyframes pkSpark {
+  0% { opacity: 1; transform: rotate(var(--a)) translateY(0) scaleY(.4); }
+  35% { opacity: 1; transform: rotate(var(--a)) translateY(-16px) scaleY(1.15); }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-46px) scaleY(.5); }
+}
+@keyframes pkSparkShort {
+  0% { opacity: .9; transform: rotate(var(--a)) translateY(0) scaleY(.4); }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-24px) scaleY(.6); }
+}
+
+.pk-bit { stroke: none; }
+.pk-fx.goal .pk-bit { animation: pkBit 1.05s cubic-bezier(.2,.7,.4,1) forwards; animation-delay: calc(var(--i) * 26ms); }
+.pk-fx.goal .pk-bit:nth-child(even) { fill: var(--gold); }
+.pk-fx.goal .pk-bit:nth-child(odd) { fill: var(--accent); }
+.pk-fx.save .pk-bit, .pk-fx.wide .pk-bit { display: none; }
+@keyframes pkBit {
+  0% { opacity: 1; transform: rotate(var(--a)) translateY(-6px) scale(.5); }
+  60% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-62px) translateX(10px) scale(1.1); }
+}
+
+/* the goal itself reacts */
+.pk.is-goal .pk-net { stroke: var(--bio); animation: pkNet .9s var(--ease); }
+.pk.is-goal .pk-goal line:not(.pk-net) { stroke: var(--bio); transition: stroke .25s; }
+@keyframes pkNet { 0% { opacity: .35; } 25% { opacity: 1; } 100% { opacity: 1; } }
+.pk.is-save .pk-keeper { stroke: var(--coral); }
+.pk.is-save .pk-keeper .pk-arm { stroke-width: 3.4; }
+.pk.is-goal .pk-hint { color: var(--bio); font-weight: 500; }
+.pk.is-save .pk-hint { color: var(--coral); font-weight: 500; }
+.pk-score { transition: color .2s, transform .35s var(--ease); display: inline-block; }
+.pk-score.pop { color: var(--bio); transform: scale(1.22); }

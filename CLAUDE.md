@@ -20,7 +20,7 @@ This is the owner's personal website: a Jekyll site built by GitHub Pages direct
 - Coloured bio terms: `.t-delivery` (teal), `.t-design` (gold), `.t-research` (violet), `.t-bio` (green). Use them in `profile.yml` as `<b class="t-NAME">…</b>` so a sentence naming several things reads as several things.
 - `_includes/interests.html` — music / soccer / taekwondo switcher that reuses the personal scenes.
 - `_includes/journey.html` + `_data/journey.yml` — the Duluth → Dublin → New Haven arc in Profile. The SVG curve and the walker's path in site.js are the **same quadratic**: P0 (60,230), P1 (500,20), P2 (940,230) in a 1000×300 box. Change one and change the other.
-- `_includes/penalty.html` — penalty shootout at the end of Personal. Drag to aim, release to shoot; the keeper commits to a third at random.
+- `_includes/penalty.html` — penalty shootout at the end of Personal. Drag to aim, release to shoot; the keeper commits to a third at random. The outcome is animated: a goal fires a green/gold/turquoise starburst, turns the net green and pops the score; a save rings coral, turns the keeper coral and deflects the ball away; wide gets a faint ring only. The burst (`.pk-fx`) parks at the impact point and its classes are removed and re-added to restart the keyframes. Colour and motion only — no onomatopoeia, per the rejected comic theme.
 - `_data/now.yml` — the "Right now" strip at the end of Personal. Owner edits it whenever.
 - `_includes/entry-scene.html` — maps an entry's `scene` (bioscaffold, biolistics, rover, clinic, design) to its SVG; set `entry_scene` before including.
 - `_includes/sidenav.html` — fixed left icon tabs with always-visible labels; becomes a bottom bar (icons + small labels) under 1080px.
