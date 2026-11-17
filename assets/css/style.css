@@ -585,13 +585,13 @@ a.jog-bubble:hover { background: #fc4c02; }
 html { min-height: 100%;
   background: linear-gradient(180deg,
     #ffffff 0%,
-    #fcfefe 12%,
-    #f3fbfa 30%,
-    #eef8f6 45%,
-    #f3faf3 60%,
-    #fbf9f4 76%,
-    #f6fafc 90%,
-    #f2f7fb 100%);
+    #f7fcfc 12%,
+    #e9f7f5 30%,
+    #e0f3ef 45%,
+    #eaf6e7 60%,
+    #f9f3e4 76%,
+    #edf4fb 90%,
+    #e3edf9 100%);
   background-repeat: no-repeat;
 }
 body { background: transparent; }
