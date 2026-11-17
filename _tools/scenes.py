@@ -128,6 +128,30 @@ def pop_css(cls, start, end, period):
     CSS.append(f"@keyframes {cls}{{0%,{start:g}%{{opacity:0;transform:scale(.2) rotate(-20deg)}}{start+3:g}%{{opacity:1;transform:scale(1.15) rotate(4deg)}}{start+6:g}%{{transform:scale(1) rotate(0)}}{end-3:g}%{{opacity:1;transform:scale(1)}}{end:g}%,100%{{opacity:0;transform:scale(.6)}}}}"
                f".scene .{cls}{{animation:{cls} {period}s infinite}}")
 
+
+# ───────────────────────── animation helpers ─────────────────────────
+EASE_OUT = "cubic-bezier(.17,.84,.44,1)"
+EASE_IN = "cubic-bezier(.55,.06,.68,.19)"
+EASE_BOTH = "cubic-bezier(.45,.05,.55,.95)"
+SNAP = "cubic-bezier(.2,1.5,.4,1)"
+
+def hand(r=2.1, cls="hand"):
+    """A small hand so held tools read as held, not as a longer arm."""
+    return f'<circle class="{cls}" cx="0" cy="-3" r="{r}"/>'
+
+def idle(cls, amp=2.0, period=3.4, delay=0.0):
+    """Breathing + weight shift so a standing figure is never frozen."""
+    key = f"idle_{cls.replace(' ', '_').replace('.', '')}"
+    CSS.append(f"@keyframes {key}{{0%,100%{{transform:rotate(0deg) translateY(0)}}"
+               f"50%{{transform:rotate({amp:g}deg) translateY(-0.6px)}}}}"
+               f".{cls} .up{{animation:{key} {period:g}s {EASE_BOTH} infinite;animation-delay:{delay:g}s}}")
+
+def poke(cls, frames, period=1.1, target=".up"):
+    """A one-shot reaction played when the viewer clicks the scene (JS adds .is-poked)."""
+    key = f"poke_{cls.replace(' ', '_')}"
+    kf(key, frames)
+    CSS.append(f".scene.is-poked .{cls}{target}{{animation:{key} {period:g}s {SNAP} 1}}")
+
 GROUND = lambda x1, x2, y: L(x1, y, x2, y, "ground")
 CAP = lambda x, y, t, anchor="middle": f'<text class="cap" x="{x:g}" y="{y:g}" text-anchor="{anchor}">{t}</text>'
 
@@ -238,17 +262,63 @@ def burst(x, y, cls="burst"):
             + L(x + 3, y + 6, x + 6, y + 10) + '</g>')
 
 def kicker_bag(x, y, s):
-    frame = L(20, -80, 56, -80) + L(56, -80, 56, 29)
-    bag = ('<g class="bag" style="transform-origin:36px -80px">' + L(36, -80, 36, -64, "thin")
-           + '<rect class="fill" x="30" y="-64" width="12" height="54" rx="4"/></g>')
-    belt = '<rect class="fill" x="-4" y="-3.5" width="8" height="2.2"/>'
-    body = fig("kicker", x, y, s, STANCE, dict(behind=frame, front=bag + burst(29, -2), back=belt))
-    kick_css("kicker")
-    kf("bagSwing", [(0, 0), (40, 0, "ease-out"), (48, -14, "ease-in-out"), (58, 7, "ease-in-out"), (68, -3, "ease-in-out"), (78, 1), (86, 0), (100, 0)])
-    CSS.append(".kicker .bag{animation:bagSwing 3s infinite}"
-               "@keyframes burst{0%,38%{opacity:0;transform:scale(.6)}42%{opacity:1;transform:scale(1)}52%,100%{opacity:0;transform:scale(1.3)}}"
-               ".scene .burst{animation:burst 3s infinite}")
-    return body
+    """Tornado kick: crouch, leap, 360 spin, round kick into the bag, land.
+    The bag and frame live in scene space so the spin mirrors only the figure."""
+    X = lambda u: x + u * s
+    Y = lambda v: y + v * s
+    frame = L(X(20), Y(-80), X(56), Y(-80)) + L(X(56), Y(-80), X(56), Y(29))
+    bag = (f'<g class="bag" style="transform-origin:{X(36):g}px {Y(-80):g}px">'
+           + L(X(36), Y(-80), X(36), Y(-64), "thin")
+           + f'<rect class="fill" x="{X(30):g}" y="{Y(-64):g}" width="{12*s:g}" height="{54*s:g}" rx="{4*s:g}"/>'
+           + f'<path class="bag-crease" d="M{X(31.5):g} {Y(-46):g} h{9*s:g} M{X(31.5):g} {Y(-34):g} h{9*s:g}"/></g>')
+    spark = burst(X(27), Y(-6))
+    arc = f'<path class="whoosh-arc" d="M{X(16):g} {Y(-40):g} Q{X(40):g} {Y(-26):g} {X(18):g} {Y(-8):g}"/>'
+    belt = '<rect class="belt" x="-4.6" y="-4" width="9.2" height="2.6"/>' + L(4, -3, 9, 2, "thin") + L(4, -3, 8, 4, "thin")
+    dobok = '<path class="dobok" d="M-5.5 -30 L5.5 -30 L7 -2 L-7 -2 Z"/>'
+    body = fig("kicker", x, y, s, STANCE, dict(back=dobok + belt))
+    T = 3.6
+    CSS.append(
+        "@keyframes tornadoBody{"
+        "0%,12%{transform:translateY(0) scaleX(1)}"
+        f"20%{{transform:translateY(2.5px) scaleX(1);animation-timing-function:{EASE_IN}}}"
+        f"28%{{transform:translateY(-9px) scaleX(.55);animation-timing-function:linear}}"
+        "36%{transform:translateY(-16px) scaleX(-.45)}"
+        f"44%{{transform:translateY(-18px) scaleX(-1);animation-timing-function:{EASE_OUT}}}"
+        "52%{transform:translateY(-15px) scaleX(-1)}"
+        f"60%{{transform:translateY(-8px) scaleX(-.5);animation-timing-function:linear}}"
+        "68%{transform:translateY(-1px) scaleX(.6)}"
+        f"74%{{transform:translateY(3.5px) scaleX(1);animation-timing-function:{EASE_OUT}}}"
+        "82%,100%{transform:translateY(0) scaleX(1)}}"
+        f".scene .kicker-move{{animation:tornadoBody {T}s infinite}}")
+    kf("tkLegR", [(0, -12), (12, -12, EASE_IN), (20, 22), (28, -40, "linear"), (36, -78),
+                  (44, -96, EASE_OUT), (52, -92), (60, -60, "linear"), (68, -20), (74, -6, EASE_OUT), (82, -12), (100, -12)])
+    kf("tkShinR", [(0, 0), (12, 0), (20, 30), (28, 70, "linear"), (36, 40), (44, 4, EASE_OUT),
+                   (52, 6), (60, 40, "linear"), (68, 20), (74, 2), (82, 0), (100, 0)])
+    kf("tkLegL", [(0, 25), (12, 25, EASE_IN), (20, 34), (28, -6, "linear"), (36, -30),
+                  (44, -36), (52, -34), (60, -14, "linear"), (68, 18), (74, 34, EASE_OUT), (82, 25), (100, 25)])
+    kf("tkShinL", [(0, 0), (12, 0), (20, 16), (28, 72, "linear"), (36, 96), (44, 100),
+                   (52, 98), (60, 70, "linear"), (68, 26), (74, 44, EASE_OUT), (82, 0), (100, 0)])
+    kf("tkArmL", [(0, -30), (12, -34, EASE_IN), (20, -84), (28, -128, "linear"), (36, -140),
+                  (44, -138), (52, -136), (60, -104, "linear"), (68, -56), (74, -26, EASE_OUT), (82, -30), (100, -30)])
+    kf("tkForeL", [(0, -110), (12, -112), (20, -96), (28, -70), (36, -58), (44, -56), (52, -58), (60, -76), (68, -100), (74, -114), (82, -110), (100, -110)])
+    kf("tkArmR", [(0, -50), (12, -46, EASE_IN), (20, -10), (28, 44, "linear"), (36, 66),
+                  (44, 70), (52, 68), (60, 40, "linear"), (68, -8), (74, -44, EASE_OUT), (82, -50), (100, -50)])
+    kf("tkForeR", [(0, -100), (12, -104), (20, -92), (28, -62), (36, -48), (44, -46), (52, -50), (60, -70), (68, -92), (74, -108), (82, -100), (100, -100)])
+    kf("tkUp", [(0, 0), (12, -2), (20, 6), (28, -8, "linear"), (36, -16), (44, -20, EASE_OUT),
+                (52, -18), (60, -10, "linear"), (68, 2), (74, 7, EASE_OUT), (82, 0), (100, 0)])
+    kf("bagSwing", [(0, 0), (44, 0, EASE_OUT), (50, -17, EASE_BOTH), (60, 9, EASE_BOTH),
+                    (70, -4.5, EASE_BOTH), (80, 2), (88, -0.8), (94, 0), (100, 0)])
+    CSS.append(f".kicker .lR{{animation:tkLegR {T}s infinite}}.kicker .sR{{animation:tkShinR {T}s infinite}}"
+               f".kicker .lL{{animation:tkLegL {T}s infinite}}.kicker .sL{{animation:tkShinL {T}s infinite}}"
+               f".kicker .aL{{animation:tkArmL {T}s infinite}}.kicker .fL{{animation:tkForeL {T}s infinite}}"
+               f".kicker .aR{{animation:tkArmR {T}s infinite}}.kicker .fR{{animation:tkForeR {T}s infinite}}"
+               f".kicker .up{{animation:tkUp {T}s infinite}}"
+               f".scene .bag{{animation:bagSwing {T}s infinite}}"
+               f"@keyframes burst{{0%,43%{{opacity:0;transform:scale(.5)}}46%{{opacity:1;transform:scale(1.05)}}56%,100%{{opacity:0;transform:scale(1.5)}}}}"
+               f".scene .burst{{animation:burst {T}s infinite}}"
+               f"@keyframes whooshArc{{0%,26%{{opacity:0;stroke-dashoffset:40}}34%{{opacity:.7;stroke-dashoffset:0}}48%{{opacity:.45}}56%,100%{{opacity:0;stroke-dashoffset:-40}}}}"
+               f".scene .whoosh-arc{{fill:none;stroke:var(--tint-deep);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:40;animation:whooshArc {T}s infinite linear}}")
+    return (frame + f'<g class="kicker-move" style="transform-origin:{x:g}px {y + 29 * s:g}px">{body}</g>' + bag + arc + spark)
 
 def kicker_board(x, y, s):
     # holder stands 50 units in front, facing back toward the kicker
@@ -317,24 +387,35 @@ def biolistics():
     write("biolistics", svg("biolistics", "0 0 320 200", b, "Stick figure firing gold microcarriers from a gene gun at a plant, which glows green"))
 
 def bioscaffold():
-    G = 150; s = 1.2; y = G - 29 * s; x = 70; T = 7
-    t1, t2 = (28, -30), (30, -14)
-    a1, a2 = arm(t1), arm(t2)
+    """Surgeon lifts a scaffold with forceps (clearly a tool, not a longer arm) and sets it in the wound."""
+    G = 150; s = 1.25; y = G - 29 * s; x = 112; T = 7.6
+    # hand stays high and close; the forceps reach down and forward at a clear angle to the forearm
+    t1, t2 = (15, -30), (17, -22)
+    a1 = arm(t1, elbow="up"); a2 = arm(t2, elbow="up")
     tot2 = a2[0] + a2[1]
     sx0, sw, sh = 151, 41, 22
     top_final = 152
     hand2 = (x + t2[0] * s, y + t2[1] * s)
-    tip = (sx0 + sw / 2, top_final)
-    v = ((tip[0] - hand2[0]) / s, (tip[1] - hand2[1]) / s)       # hand → tip, figure-local units
+    tip = (sx0 + sw / 2, top_final - 3)
+    v = ((tip[0] - hand2[0]) / s, (tip[1] - hand2[1]) / s)      # hand → tip, in figure units
     lw, lh = sw / s, sh / s
     tipL = (v[0], v[1] - 3)
+    ux, uy = tipL[0] / math.hypot(tipL[0], tipL[1] + 3 + 3), (tipL[1] + 3) / math.hypot(tipL[0], tipL[1] + 3 + 3)
+    nx, ny = -uy, ux                                             # normal, to splay the two prongs
     carry = (f'<g class="carry"><rect class="scaf-carry" x="{tipL[0]-lw/2:.2f}" y="{tipL[1]:.2f}" width="{lw:.2f}" height="{lh:.2f}" rx="1.6"/>'
              + "".join(L(round(tipL[0] - lw / 2 + k * lw / 6, 2), round(tipL[1], 2), round(tipL[0] - lw / 2 + k * lw / 6, 2), round(tipL[1] + lh, 2), "mesh") for k in range(1, 6))
              + "".join(L(round(tipL[0] - lw / 2, 2), round(tipL[1] + k * lh / 4, 2), round(tipL[0] + lw / 2, 2), round(tipL[1] + k * lh / 4, 2), "mesh") for k in range(1, 4))
              + '</g>')
-    forceps = upright(L(0, -3, tipL[0] - 1, tipL[1], "thin") + L(0, -3, tipL[0] + 1, tipL[1], "thin") + carry, tot2)
-    body = fig("surgeon", x, y, s, dict(aR=a1[0], fR=a1[1], aL=12, fL=-10, lL=8, lR=-6),
-               dict(hR=forceps, back='<path class="coat" d="M-5 -30 L5 -30 L8 -1 L-8 -1 Z"/>'))
+    # forceps: two sprung arms from a hinge just past the hand, splayed then meeting at the tip
+    hx, hy = 0, -3
+    jx, jy = hx + ux * 4.5, hy + uy * 4.5                        # hinge
+    forceps = (f'<path class="forceps" d="M{jx:.2f} {jy:.2f} Q{jx + nx*3.4 + ux*6:.2f} {jy + ny*3.4 + uy*6:.2f} {tipL[0]:.2f} {tipL[1] - 0.6:.2f}"/>'
+               f'<path class="forceps" d="M{jx:.2f} {jy:.2f} Q{jx - nx*3.4 + ux*6:.2f} {jy - ny*3.4 + uy*6:.2f} {tipL[0]:.2f} {tipL[1] + 0.6:.2f}"/>'
+               f'<circle class="forceps-hinge" cx="{jx:.2f}" cy="{jy:.2f}" r="1.5"/>' + carry)
+    held = upright(hand(2.3) + forceps, tot2)
+    body = fig("surgeon", x, y, s, dict(aR=a1[0], fR=a1[1], aL=16, fL=-24, lL=8, lR=-6),
+               dict(hR=held, hL=hand(2.0), back='<path class="coat" d="M-5 -30 L5 -30 L8 -1 L-8 -1 Z"/>',
+                    head='<path class="mask" d="M3 -43 q6 2 5 7 l-5 -1 z"/>'))
     skin = (f'<rect class="dermis" x="10" y="{G+25}" width="300" height="30"/>'
             f'<rect class="dermis" x="10" y="{G+6}" width="141" height="20"/><rect class="dermis" x="192" y="{G+6}" width="118" height="20"/>'
             f'<rect class="epi" x="10" y="{G}" width="141" height="6"/><rect class="epi" x="192" y="{G}" width="118" height="6"/>'
@@ -346,24 +427,29 @@ def bioscaffold():
     starts = [(128, 170, "c-teal"), (138, 182, "c-gold"), (122, 160, "c-coral"), (206, 168, "c-teal"), (214, 182, "c-coral"), (200, 160, "c-gold")]
     ends = [(158, 160), (166, 168), (162, 156), (184, 160), (178, 168), (172, 156)]
     for i, ((cx, cy, c), (ex_, ey)) in enumerate(zip(starts, ends)):
-        cells += f'<circle class="cell {c}" cx="{cx}" cy="{cy}" r="3" style="--dx:{ex_-cx}px;--dy:{ey-cy}px;animation-delay:{i*0.12:.2f}s"/>'
+        cells += f'<circle class="cell {c}" cx="{cx}" cy="{cy}" r="3" style="--dx:{ex_-cx}px;--dy:{ey-cy}px;animation-delay:{i*0.14:.2f}s"/>'
     stain = f'<rect class="stain" x="10" y="{G}" width="300" height="55"/>'
     labels = (CAP(14, 22, "porcine ECM bioscaffold → wound bed", "start")
               + f'<text class="cap he" x="306" y="{G-8}" text-anchor="end">H&amp;E · day 14</text>')
     b = skin + placed + cells + stain + body + labels
-    kf("placeArm", [(0, a1[0], "ease-in-out"), (22, a2[0]), (30, a2[0], "ease-in-out"), (40, a1[0]), (100, a1[0])])
-    kf("placeFore", [(0, a1[1], "ease-in-out"), (22, a2[1]), (30, a2[1], "ease-in-out"), (40, a1[1]), (100, a1[1])])
+    kf("placeArm", [(0, a1[0], EASE_BOTH), (10, a1[0] - 5, EASE_IN), (24, a2[0], EASE_OUT),
+                    (30, a2[0] + 1.5), (36, a2[0], EASE_BOTH), (48, a1[0]), (100, a1[0])])
+    kf("placeFore", [(0, a1[1], EASE_BOTH), (10, a1[1] - 4, EASE_IN), (24, a2[1], EASE_OUT),
+                     (30, a2[1] + 2), (36, a2[1], EASE_BOTH), (48, a1[1]), (100, a1[1])])
+    kf("placeLean", [(0, 0, EASE_BOTH), (10, -2), (24, 5, EASE_OUT), (36, 4, EASE_BOTH), (48, 0), (70, 1), (100, 0)])
     CSS.append(f".surgeon .aR{{animation:placeArm {T}s infinite}}.surgeon .fR{{animation:placeFore {T}s infinite}}"
-               f"@keyframes carry{{0%,22%{{opacity:1}}22.5%,94%{{opacity:0}}98%,100%{{opacity:1}}}}.surgeon .carry{{animation:carry {T}s infinite}}"
-               f"@keyframes placed{{0%,22%{{opacity:0}}22.5%,92%{{opacity:1}}96%,100%{{opacity:0}}}}.scene .placed{{animation:placed {T}s infinite}}"
+               f".surgeon .up{{animation:placeLean {T}s infinite}}"
+               f"@keyframes carry{{0%,24%{{opacity:1}}26%,94%{{opacity:0}}98%,100%{{opacity:1}}}}.surgeon .carry{{animation:carry {T}s infinite}}"
+               f"@keyframes placed{{0%,24%{{opacity:0;transform:scale(1.04)}}26%{{opacity:1;transform:scale(1)}}92%{{opacity:1}}96%,100%{{opacity:0}}}}"
+               f".scene .placed{{transform-box:fill-box;transform-origin:center;animation:placed {T}s infinite {EASE_OUT}}}"
                f"@keyframes scafFill{{0%,40%{{fill:var(--tint-soft)}}70%,92%{{fill:#f6c9d6}}100%{{fill:var(--tint-soft)}}}}"
                f".scene .scaf{{animation:scafFill {T}s infinite}}"
                f"@keyframes cell{{0%,32%{{opacity:0;transform:none}}36%{{opacity:1;transform:none}}64%,90%{{opacity:1;transform:translate(var(--dx),var(--dy))}}95%,100%{{opacity:0;transform:translate(var(--dx),var(--dy))}}}}"
-               f".scene .cell{{animation:cell {T}s infinite ease-in-out}}"
+               f".scene .cell{{animation:cell {T}s infinite {EASE_BOTH}}}"
                f"@keyframes stain{{0%,72%{{opacity:0}}78%,90%{{opacity:.35}}96%,100%{{opacity:0}}}}"
                f".scene .stain{{fill:#b06ab3;animation:stain {T}s infinite}}"
                f"@keyframes he{{0%,72%{{opacity:0}}78%,90%{{opacity:1}}96%,100%{{opacity:0}}}}.scene .he{{fill:#8e3b91;animation:he {T}s infinite}}")
-    write("bioscaffold", svg("bioscaffold", "0 0 320 210", b, "Stick figure placing a porous bioscaffold into a skin wound; cells migrate in and the tissue integrates"))
+    write("bioscaffold", svg("bioscaffold", "0 0 320 210", b, "Stick figure placing a porous bioscaffold into a skin wound with forceps; cells migrate in"))
 
 def rover():
     G = 160; T = 9
@@ -788,13 +874,189 @@ BASE = """/* GENERATED by _tools/scenes.py — edit that file, then re-run it. *
 .scene .note .fill{fill:var(--ink)}.scene .note{opacity:0}
 .scene .burst line{stroke:var(--gold);stroke-width:1.6}.scene .burst{opacity:0}
 .scene .goal-txt{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.12em;fill:var(--bio);opacity:0}
+.scene .hand{fill:var(--bg);stroke:var(--ink);stroke-width:1.3}
+.scene .forceps{fill:none;stroke:#6b7a8f;stroke-width:1.5;stroke-linecap:round}
+.scene .forceps-hinge{fill:#6b7a8f}
+.scene .mask{fill:var(--bg);stroke:var(--ink);stroke-width:1}
+.scene .dobok{fill:var(--bg);stroke:var(--ink);stroke-width:1}
+.scene .belt{fill:var(--ink)}
+.scene .bag-crease{fill:none;stroke:var(--bg);stroke-width:1;opacity:.5}
+.scene .suit{fill:var(--tint-soft);stroke:var(--ink);stroke-width:1}
+.scene .podium{fill:var(--tint-soft);stroke:var(--ink);stroke-width:1.4}
+.scene .step{fill:var(--tint);stroke:var(--ink);stroke-width:1.3}
+.scene .step.second,.scene .step.third{fill:var(--tint-soft)}
+.scene .medal-disc{fill:var(--gold);stroke:var(--ink);stroke-width:1}
+
 @keyframes spin{to{transform:rotate(360deg)}}
 .scene .spinner{transform-box:fill-box;transform-origin:center}
 .scene:not(.in-view) *{animation-play-state:paused!important}
 """
 
+def debate():
+    """Public Forum debate: speaker at a podium, timer counting, rebuttal cards."""
+    G = 110; s = 1.25; y = G - 29 * s; x = 96
+    podium = (f'<path class="podium" d="M{x-20} {G} L{x-15} {G-30} L{x+15} {G-30} L{x+20} {G} Z"/>'
+              + L(x - 16, G - 20, x + 16, G - 20, "thin")
+              + f'<rect class="paper" x="{x-11}" y="{G-35}" width="22" height="6" rx="1" transform="rotate(-4 {x} {G-32})"/>'
+              + L(x + 11, G - 33, x + 20, G - 44, "thin") + f'<ellipse class="fill" cx="{x+21}" cy="{G-46}" rx="2.6" ry="3.4" transform="rotate(32 {x+21} {G-46})"/>')
+    g1, g2 = arm((16, -34)), arm((22, -24))
+    body = fig("speaker", x, y, s, dict(aR=g1[0], fR=g1[1], aL=-18, fL=-56, lL=6, lR=-6),
+               dict(hR=hand(), hL=hand()))
+    bars = "".join(f'<rect class="say s{i}" x="{x+34+i*8}" y="{G-56}" width="4.5" height="16" rx="2"/>' for i in range(5))
+    timer = (f'<rect class="paper" x="{x+84}" y="{G-64}" width="40" height="24" rx="2"/>'
+             f'<text class="cap timer" x="{x+104}" y="{G-48}" text-anchor="middle">4:00</text>')
+    b = GROUND(10, 300, G) + bars + timer + body + podium + CAP(14, 126, "public forum · rebuttal", "start")
+    kf("debArm", [(0, g1[0], EASE_BOTH), (28, g2[0]), (52, g1[0] - 6), (76, g2[0] + 4), (100, g1[0])])
+    kf("debFore", [(0, g1[1], EASE_BOTH), (28, g2[1]), (52, g1[1] - 8), (76, g2[1] + 6), (100, g1[1])])
+    kf("debLean", [(0, 0, EASE_BOTH), (25, 3.5), (55, -1.5), (80, 2.5), (100, 0)])
+    CSS.append(f".speaker .aR{{animation:debArm 3.1s infinite}}.speaker .fR{{animation:debFore 3.1s infinite}}"
+               f".speaker .up{{animation:debLean 3.1s infinite}}"
+               "@keyframes say{0%,100%{transform:scaleY(.35);opacity:.45}50%{transform:scaleY(1);opacity:1}}"
+               ".scene .say{fill:var(--tint-deep);transform-box:fill-box;transform-origin:center;animation:say .5s infinite ease-in-out}"
+               + "".join(f".scene .s{i}{{animation-delay:{i*0.09:.2f}s}}" for i in range(5))
+               + "@keyframes tick{0%,100%{opacity:1}50%{opacity:.35}}.scene .timer{fill:var(--coral);font-size:11px;animation:tick 1s steps(1) infinite}")
+    write("debate", mini_svg("debate", "0 0 300 130", b, "Stick figure speaking at a debate podium"))
+
+def stats():
+    """Statistics & data science: drawing a distribution on a board."""
+    G = 118; s = 1.1; y = G - 29 * s; x = 44
+    board = (f'<rect class="paper" x="74" y="18" width="150" height="86" rx="2"/>'
+             + L(80, 94, 218, 94, "thin") + L(84, 24, 84, 98, "thin"))
+    curve = '<path class="curve" pathLength="100" d="M86 94 C112 94 112 34 149 34 C186 34 186 94 214 94"/>'
+    bars = "".join(f'<rect class="hist h{i}" x="{92+i*17}" y="{94-hh}" width="13" height="{hh}" rx="1" style="--hh:{hh}px"/>'
+                   for i, hh in enumerate([8, 20, 38, 52, 38, 20, 8]))
+    p1, p2 = arm((20, -40)), arm((26, -30))
+    marker = upright(L(0, -3, 3, 3, "thin") + '<rect class="fill" x="-1.4" y="-6.5" width="2.8" height="4" rx="1"/>', p1[0] + p1[1])
+    body = fig("statto", x, y, s, dict(aR=p1[0], fR=p1[1], aL=14, fL=-20, lL=7, lR=-7),
+               dict(hR=marker, hL=hand()))
+    b = GROUND(8, 240, G) + board + bars + curve + body + CAP(234, 112, "n = 31", "end")
+    kf("drawArm", [(0, p1[0], EASE_BOTH), (50, p2[0]), (100, p1[0])])
+    kf("drawFore", [(0, p1[1], EASE_BOTH), (50, p2[1]), (100, p1[1])])
+    CSS.append(".statto .aR{animation:drawArm 2.6s infinite}.statto .fR{animation:drawFore 2.6s infinite}"
+               "@keyframes drawCurve{0%{stroke-dashoffset:100}55%,88%{stroke-dashoffset:0}96%,100%{stroke-dashoffset:100}}"
+               ".scene .curve{fill:none;stroke:var(--tint-deep);stroke-width:2;stroke-linecap:round;stroke-dasharray:100;animation:drawCurve 7s infinite ease-in-out}"
+               "@keyframes grow{0%,8%{transform:scaleY(0)}30%,88%{transform:scaleY(1)}98%,100%{transform:scaleY(0)}}"
+               ".scene .hist{fill:var(--tint);transform-box:fill-box;transform-origin:bottom;animation:grow 7s infinite cubic-bezier(.2,.8,.3,1)}"
+               + "".join(f".scene .h{i}{{animation-delay:{i*0.1:.2f}s}}" for i in range(7)))
+    idle("statto", 1.2, 4.0)
+    write("stats", mini_svg("stats", "0 0 250 130", b, "Stick figure drawing a distribution curve on a board"))
+
+def podium_scene():
+    """Awards: a stickman on the top step, arms up, medal swinging."""
+    G = 112; s = 1.1
+    steps = (f'<rect class="step" x="52" y="{G-34}" width="42" height="34"/>'
+             f'<rect class="step second" x="10" y="{G-22}" width="42" height="22"/>'
+             f'<rect class="step third" x="94" y="{G-16}" width="42" height="16"/>'
+             + f'<text class="cap" x="73" y="{G-22}" text-anchor="middle" style="font-size:9px">1</text>')
+    y = G - 34 - 29 * s
+    medal = ('<g class="medal" style="transform-origin:0px -30px">' + L(-3, -31, 0, -22, "thin") + L(3, -31, 0, -22, "thin")
+             + '<circle class="medal-disc" cx="0" cy="-19" r="3.6"/></g>')
+    body = fig("champ", 73, y, s, dict(aL=158, fL=14, aR=-158, fR=-14, lL=6, lR=-6),
+               dict(hL=hand(), hR=hand(), front=medal))
+    spark = "".join(f'<circle class="spark k{i}" cx="{73 + dx}" cy="{y - 52 + dy}" r="1.6"/>' for i, (dx, dy) in enumerate([(-20, 4), (18, -2), (-9, -10), (12, 8)]))
+    b = GROUND(0, 150, G) + steps + body + spark
+    kf("champL", [(0, 152, EASE_BOTH), (50, 166), (100, 152)])
+    kf("champR", [(0, -152, EASE_BOTH), (50, -166), (100, -152)])
+    CSS.append(".champ .aL{animation:champL .9s infinite}.champ .aR{animation:champR .9s infinite}"
+               "@keyframes champHop{0%,100%{transform:translateY(0)}45%{transform:translateY(-2.5px)}}"
+               ".champ{animation:champHop .9s infinite cubic-bezier(.4,.05,.5,.95)}"
+               "@keyframes medalSwing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}"
+               ".champ .medal{animation:medalSwing .9s infinite ease-in-out}"
+               "@keyframes spark{0%,100%{opacity:0;transform:scale(.4)}40%{opacity:1;transform:scale(1)}}"
+               ".scene .spark{fill:var(--gold);transform-box:fill-box;transform-origin:center;animation:spark 1.8s infinite}"
+               + "".join(f".scene .k{i}{{animation-delay:{i*0.35:.2f}s}}" for i in range(4)))
+    write("podium", mini_svg("podium", "0 0 150 125", b, "Stick figure on a winner's podium with a medal"))
+
+def dangler():
+    """Sits on the footer rule, swinging legs."""
+    body = fig("dangle", 0, 0, 1, dict(aL=22, fL=-16, aR=-26, fR=-8, lL=-88, sL=72, lR=-84, sR=68), dict(hL=hand(), hR=hand()))
+    kf("dangA", [(0, 64, EASE_BOTH), (100, 86)])
+    kf("dangB", [(0, 86, EASE_BOTH), (100, 62)])
+    kf("dangSway", [(0, -2.5, EASE_BOTH), (100, 2.5)])
+    CSS.append(".dangle .sL{animation:dangA 1.25s infinite alternate}.dangle .sR{animation:dangB 1.1s infinite alternate}"
+               ".dangle .up{animation:dangSway 2.6s infinite alternate}")
+    poke("dangle", [(0, -26), (35, 24), (70, -20), (100, -26)], 1.0, " .fR")
+    write("dangler", mini_svg("dangle", "-26 -56 52 74", body, "Stick figure sitting and swinging their legs"))
+
+def spotter():
+    """Peeks over the top of a section rule, then ducks back down."""
+    body = fig("spot", 0, 0, 1, dict(aL=150, fL=22, aR=-150, fR=-22, lL=0, lR=0))
+    CSS.append("@keyframes peekUp{0%,8%{transform:translateY(42px)}18%,52%{transform:translateY(0)}64%,100%{transform:translateY(42px)}}"
+               f".scene .spot-move{{animation:peekUp 9s infinite {EASE_OUT}}}"
+               "@keyframes peekLook{0%,25%{transform:rotate(-7deg)}45%{transform:rotate(7deg)}60%,100%{transform:rotate(-7deg)}}"
+               ".spot .up{animation:peekLook 9s infinite ease-in-out}")
+    return f'<g class="spot-move">{body}</g>'
+
+# ───────────────────────── ambient background field ─────────────────────────
+def ambient():
+    """Faint drifting objects from Yuvin's work: notes, soccer balls, cells, math, tools.
+    Physics (inertia, drag, mouse repulsion, wall bounce) runs in site.js."""
+    S = {}
+
+    # music — quaver and beamed pair
+    S["note"] = ('<ellipse cx="7" cy="25" rx="5.4" ry="4" transform="rotate(-22 7 25)"/>'
+                 '<path d="M12 24 V4" fill="none"/><path d="M12 4 q8 3 7.5 11 q2.5-9 -7.5-14z"/>')
+    S["beam"] = ('<ellipse cx="6" cy="26" rx="5" ry="3.7" transform="rotate(-22 6 26)"/>'
+                 '<ellipse cx="23" cy="22" rx="5" ry="3.7" transform="rotate(-22 23 22)"/>'
+                 '<path d="M10.8 25 V6 M27.8 21 V2" fill="none"/><path d="M10 7 L28.6 3 L28.6 7.6 L10 11.6z"/>')
+    # soccer ball — pentagon centre with surrounding seams
+    pent = []
+    for k in range(5):
+        a = math.radians(k * 72 - 90)
+        pent.append(f"{16 + 5.4 * math.cos(a):.1f},{16 + 5.4 * math.sin(a):.1f}")
+    seams = ""
+    for k in range(5):
+        a = math.radians(k * 72 - 90)
+        px, py = 16 + 5.4 * math.cos(a), 16 + 5.4 * math.sin(a)
+        seams += f'<path d="M{px:.1f} {py:.1f} L{16 + 13.6 * math.cos(a):.1f} {16 + 13.6 * math.sin(a):.1f}" fill="none"/>'
+    S["ball"] = (f'<circle cx="16" cy="16" r="14" fill="none"/><polygon points="{" ".join(pent)}"/>' + seams
+                 + "".join(f'<path d="M{16 + 13.6*math.cos(math.radians(k*72-90)):.1f} {16 + 13.6*math.sin(math.radians(k*72-90)):.1f} '
+                           f'A14 14 0 0 1 {16 + 13.6*math.cos(math.radians((k+1)*72-90)):.1f} {16 + 13.6*math.sin(math.radians((k+1)*72-90)):.1f}" fill="none" opacity=".45"/>' for k in range(5)))
+    # plant cell — square wall, vacuole, chloroplasts
+    S["plantcell"] = ('<rect x="2" y="5" width="36" height="24" rx="3" fill="none" stroke-width="2.2"/>'
+                      '<rect x="5" y="8" width="30" height="18" rx="2.5" fill="none" stroke-width="1"/>'
+                      '<ellipse cx="20" cy="17" rx="9" ry="6" fill="none" opacity=".6"/>'
+                      '<circle cx="10" cy="12" r="2.4"/><ellipse cx="29" cy="23" rx="3.4" ry="2" transform="rotate(-25 29 23)"/>'
+                      '<ellipse cx="12" cy="24" rx="3.4" ry="2" transform="rotate(18 12 24)"/>'
+                      '<ellipse cx="31" cy="11" rx="3" ry="1.8" transform="rotate(35 31 11)"/>')
+    # animal cell — membrane, nucleus with nucleolus, mitochondrion
+    S["cell"] = ('<path d="M4 18 C4 9 12 3 21 4 C31 5 36 12 35 20 C34 28 26 33 17 32 C9 31 4 26 4 18z" fill="none" stroke-width="1.8"/>'
+                 '<circle cx="20" cy="17" r="6.4" fill="none"/><circle cx="21" cy="16" r="2.2"/>'
+                 '<path d="M9 23 q4 -3 7 0 q-4 3 -7 0z"/><path d="M28 10 q4 -3 6 0 q-3 3 -6 0z"/>'
+                 '<circle cx="12" cy="11" r="1.5"/><circle cx="29" cy="26" r="1.5"/>')
+    # DNA
+    S["dna"] = ('<path d="M6 2 C20 10 6 22 20 30 M22 2 C8 10 22 22 8 30" fill="none" stroke-width="1.6"/>'
+                + "".join(f'<path d="M{7.5 + (k%2)*2} {6+k*5} H{20.5 - (k%2)*2}" fill="none" stroke-width="1"/>' for k in range(5)))
+    # tools
+    S["screwdriver"] = ('<rect x="14" y="2" width="8" height="13" rx="3"/><rect x="16.4" y="15" width="3.2" height="11"/>'
+                        '<path d="M16.4 26 h3.2 l-1.6 4z"/><path d="M15 6 h6 M15 9.5 h6" fill="none" stroke-width="1" opacity=".5"/>')
+    S["wrench"] = ('<path d="M8 4 a5.5 5.5 0 1 0 5 8.4 L26 26 a3 3 0 0 0 4.2 -4.2 L17 8.8 A5.5 5.5 0 0 0 8 4z M8 6.4 l3.6 3.6 -2 2 -3.6 -3.6z" fill="none" stroke-width="1.8"/>')
+    S["caliper"] = ('<rect x="3" y="13" width="30" height="4" rx="1" fill="none" stroke-width="1.4"/>'
+                    '<path d="M6 13 V5 h3 v8 M24 17 v8 h3 v-8" fill="none" stroke-width="1.4"/>'
+                    '<rect x="20" y="11" width="8" height="8" rx="1" fill="none" stroke-width="1.2"/>')
+    S["flask"] = ('<path d="M13 3 v9 L5 27 a2 2 0 0 0 1.8 3 h18.4 a2 2 0 0 0 1.8 -3 L19 12 V3" fill="none" stroke-width="1.7"/>'
+                  '<path d="M11 3 h10" fill="none" stroke-width="1.7"/><path d="M9.2 22 h13.6 l3 5.2 a1.4 1.4 0 0 1 -1.3 2.1 h-17 a1.4 1.4 0 0 1 -1.3 -2.1z" opacity=".55"/>'
+                  '<circle cx="14" cy="19" r="1.3"/><circle cx="18.6" cy="16" r="1"/>')
+    S["pipette"] = ('<rect x="14" y="2" width="6" height="5" rx="1.6"/><path d="M15 7 h4 l-1 14 h-2z"/>'
+                    '<path d="M17 21 l1.2 6 -2.4 0z"/><circle cx="17" cy="30" r="1.6" opacity=".7"/>')
+    S["gear"] = ('<circle cx="17" cy="17" r="7" fill="none" stroke-width="1.8"/><circle cx="17" cy="17" r="2.6" fill="none"/>'
+                 + "".join(f'<rect x="15.6" y="2.6" width="2.8" height="5" rx="1" transform="rotate({k*45} 17 17)"/>' for k in range(8)))
+    # math
+    for key, txt, size in [("sigma", "Σ", 30), ("integral", "∫", 32), ("pi", "π", 28), ("delta", "ΔG", 20),
+                           ("pval", "p&lt;.05", 15), ("sd", "σ²", 22), ("euler", "e&#8305;&#960;+1=0", 13), ("mu", "μ", 28)]:
+        S[key] = f'<text x="2" y="26" font-size="{size}" font-family="Geist Mono, ui-monospace, monospace">{txt}</text>'
+
+    order = ["note", "beam", "ball", "plantcell", "cell", "dna", "screwdriver", "wrench", "caliper",
+             "flask", "pipette", "gear", "sigma", "integral", "pi", "delta", "pval", "sd", "euler", "mu"]
+    defs = "".join(f'<symbol id="am-{k}" viewBox="0 0 40 34">{S[k]}</symbol>' for k in order)
+    out = (f'<div class="ambient" aria-hidden="true" data-ambient>'
+           f'<svg width="0" height="0" style="position:absolute" focusable="false"><defs>{defs}</defs></svg>'
+           f'<div class="ambient-field"></div></div>\n')
+    with open(os.path.join(ROOT, "_includes", "ambient.html"), "w") as f:
+        f.write(out)
+
 if __name__ == "__main__":
-    hero(); biolistics(); bioscaffold(); rover(); clinic(); design(); dispenser(); riders(); wheel_frame(); jogger(); pizza(); climber(); peeker(); soccer(); bass_scene(); tkd_scene(); blog(); profile()
+    hero(); biolistics(); bioscaffold(); rover(); clinic(); design(); dispenser(); riders(); wheel_frame(); jogger(); pizza(); climber(); peeker(); soccer(); bass_scene(); tkd_scene(); blog(); profile(); debate(); stats(); podium_scene(); dangler(); ambient()
     with open(os.path.join(ROOT, "assets", "css", "scenes.css"), "w") as f:
         f.write(BASE + "\n".join(CSS) + "\n")
     print("scenes written:", sorted(os.listdir(INC)))

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="{{ '/assets/css/scenes.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head>
 <body>
+  {% include ambient.html %}
   {% include sidenav.html %}
 
   <main>
@@ -24,6 +25,7 @@
       {% include scenes/pizza.html %}
       <p class="mono pizza-cap">refueling · favorite food: pizza</p>
     </div>
+    <div class="footer-dangle">{% include scenes/dangler.html %}</div>
     <div class="footer-row">
       {% include links.html %}
       <p class="copyright">© {{ 'now' | date: '%Y' }} {{ site.name }} · <a href="#top">back to top ↑</a></p>

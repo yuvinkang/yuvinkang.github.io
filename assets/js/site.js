@@ -68,9 +68,9 @@
     var gondolas = Array.prototype.slice.call(w.querySelectorAll('.gondola'));
     var n = gondolas.length; if (!n || !rotor) return;
     var CX = 250, CY = 232, R = 158, VW = 500, VH = 540;
-    var theta = -90, omega = 0, AUTO = 9, relax = 1.6;
+    var theta = -90, omega = 0, AUTO = 9, relax = 2.4;
     var active = null, dragging = false, moved = 0, visible = true, last = 0;
-    var sway = gondolas.map(function () { return { s: 0, v: 0 }; });
+    var sway = gondolas.map(function () { return { s: 0, v: 0, lastW: 0 }; });
 
     function setActive(g) {
       if (active === g) return;
@@ -85,7 +85,9 @@
       var dt = last ? Math.min(0.05, (t - last) / 1000) : 0.016; last = t;
       if (!dragging) {
         var target = active ? 0 : AUTO;
-        omega += (target - omega) * Math.min(1, dt * relax);
+        // ease toward the target speed, then let leftover momentum bleed off
+        omega += (target - omega) * (1 - Math.exp(-relax * dt));
+        if (Math.abs(omega) > Math.abs(target) + 1) omega *= Math.exp(-0.9 * dt);
         theta += omega * dt;
       }
       rotor.setAttribute('transform', 'rotate(' + theta.toFixed(2) + ' ' + CX + ' ' + CY + ')');
@@ -96,10 +98,15 @@
         g.style.left = (x / VW * 100) + '%';
         g.style.top = (y / VH * 100) + '%';
         // cabins swing like pendulums when the wheel speeds up or slows down
-        var st = sway[i], goal = Math.max(-28, Math.min(28, -omega * 0.9));
-        st.v += ((goal - st.s) * 26 - st.v * 3.2) * dt;
+        // pendulum: driven by the cabin's tangential acceleration, lightly damped
+        var st = sway[i];
+        var goal = Math.max(-26, Math.min(26, -omega * 0.52 - (omega - st.lastW) / Math.max(dt, .001) * 0.012));
+        st.lastW = omega;
+        var k = 34, c = 2 * Math.sqrt(k) * 0.26;          // near-critical damping
+        st.v += ((goal - st.s) * k - st.v * c) * dt;
         st.s += st.v * dt;
         g.style.setProperty('--sway', st.s.toFixed(2) + 'deg');
+        g.style.setProperty('--lean', (st.s * -0.45).toFixed(2) + 'deg');
         g.style.zIndex = active === g ? 30 : Math.round(10 + y / 30);
       }
       w.classList.toggle('is-fast', Math.abs(omega) > AUTO * 1.8);
@@ -149,6 +156,15 @@
       setTimeout(function () { moved = 0; }, 0);
     });
     document.addEventListener('pointerdown', function (e) { if (active && !w.contains(e.target)) setActive(null); });
+  });
+
+  // 4b. Poke a stick figure and it reacts
+  document.querySelectorAll('.scene').forEach(function (sc) {
+    sc.addEventListener('click', function () {
+      if (sc.classList.contains('is-poked')) return;
+      sc.classList.add('is-poked');
+      setTimeout(function () { sc.classList.remove('is-poked'); }, 1400);
+    });
   });
 
   // 5. Lightbox for wheel photos
@@ -221,4 +237,81 @@
     set(0);
   });
 
+
+  // 7. Ambient background field — drifting objects with inertia that scatter from the cursor
+  (function ambient() {
+    var host = document.querySelector('[data-ambient] .ambient-field');
+    if (!host) return;
+    var KINDS = [
+      ['note', 30, .9], ['beam', 36, .9], ['ball', 34, 1.15], ['ball', 26, 1.15],
+      ['plantcell', 42, 1.0], ['cell', 40, 1.0], ['dna', 32, .85],
+      ['screwdriver', 30, .8], ['wrench', 34, .95], ['caliper', 34, .9],
+      ['flask', 30, .85], ['pipette', 26, .7], ['gear', 32, 1.0],
+      ['sigma', 30, .8], ['integral', 32, .75], ['pi', 28, .7],
+      ['delta', 32, .8], ['pval', 40, .8], ['sd', 28, .7], ['euler', 46, .85], ['mu', 26, .7]
+    ];
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var count = innerWidth < 760 ? 11 : (innerWidth < 1200 ? 16 : 21);
+    var items = [], W = innerWidth, H = innerHeight;
+    var mouse = { x: -9999, y: -9999, active: false };
+
+    for (var i = 0; i < count; i++) {
+      var k = KINDS[i % KINDS.length];
+      var el = document.createElement('span');
+      el.className = 'am';
+      el.innerHTML = '<svg viewBox="0 0 40 34" width="' + k[1] + '" height="' + (k[1] * .85) + '"><use href="#am-' + k[0] + '"/></svg>';
+      host.appendChild(el);
+      items.push({
+        el: el, r: k[1] * .5, m: k[2],
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * 15, vy: (Math.random() - .5) * 15,
+        a: Math.random() * 360, va: (Math.random() - .5) * 10
+      });
+    }
+
+    addEventListener('resize', function () { W = innerWidth; H = innerHeight; });
+    addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }, { passive: true });
+    addEventListener('pointerleave', function () { mouse.active = false; mouse.x = mouse.y = -9999; });
+
+    var last = 0, running = true;
+    document.addEventListener('visibilitychange', function () { running = !document.hidden; last = 0; });
+
+    function step(t) {
+      requestAnimationFrame(step);
+      if (!running) { last = 0; return; }
+      var dt = last ? Math.min(0.05, (t - last) / 1000) : 0.016; last = t;
+      var R = 150, R2 = R * R;
+      for (var i = 0; i < items.length; i++) {
+        var p = items[i];
+        if (mouse.active) {
+          var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+          if (d2 < R2 && d2 > 1) {
+            var d = Math.sqrt(d2), f = (1 - d / R);
+            var push = f * f * 2600 / p.m;
+            p.vx += (dx / d) * push * dt;
+            p.vy += (dy / d) * push * dt;
+            p.va += (dx / d) * f * 14 * dt * 60 / 60;
+          }
+        }
+        // gentle drift so nothing ever comes fully to rest
+        p.vx += Math.sin(t / 2600 + i * 1.7) * 3.2 * dt;
+        p.vy += Math.cos(t / 3100 + i * 2.3) * 3.2 * dt;
+        // drag
+        var drag = Math.exp(-0.75 * dt);
+        p.vx *= drag; p.vy *= drag; p.va *= Math.exp(-0.6 * dt);
+        // clamp
+        var sp = Math.hypot(p.vx, p.vy), MAX = 260;
+        if (sp > MAX) { p.vx *= MAX / sp; p.vy *= MAX / sp; }
+        p.x += p.vx * dt; p.y += p.vy * dt; p.a += p.va * dt;
+        // bounce off the viewport edges, losing a little energy
+        if (p.x < p.r) { p.x = p.r; p.vx = Math.abs(p.vx) * .72; p.va += 8; }
+        else if (p.x > W - p.r) { p.x = W - p.r; p.vx = -Math.abs(p.vx) * .72; p.va -= 8; }
+        if (p.y < p.r) { p.y = p.r; p.vy = Math.abs(p.vy) * .72; }
+        else if (p.y > H - p.r) { p.y = H - p.r; p.vy = -Math.abs(p.vy) * .72; }
+        p.el.style.transform = 'translate3d(' + (p.x - p.r) + 'px,' + (p.y - p.r * .85) + 'px,0) rotate(' + p.a + 'deg)';
+      }
+    }
+    if (!reduce) requestAnimationFrame(step);
+    else items.forEach(function (p) { p.el.style.transform = 'translate3d(' + p.x + 'px,' + p.y + 'px,0)'; });
+  })();
 })();

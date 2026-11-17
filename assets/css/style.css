@@ -689,3 +689,26 @@ body { background: var(--page); }
 .bx-cols .prose ul { margin: 0; }
 @media (max-width: 760px) { .bx-cols { grid-template-columns: 1fr; gap: 1.8rem; } }
 
+
+/* ───────────── Ambient background field ───────────── */
+.ambient { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.ambient-field { position: absolute; inset: 0; }
+.am { position: absolute; top: 0; left: 0; will-change: transform; color: var(--accent); opacity: .13; }
+.am svg { display: block; fill: currentColor; stroke: currentColor; }
+.am svg [fill="none"] { fill: none; }
+.am:nth-child(3n) { color: var(--brand); opacity: .11; }
+.am:nth-child(4n) { color: var(--bio); opacity: .10; }
+.am:nth-child(7n) { color: var(--gold); opacity: .12; }
+
+/* ───────────── New stickmen placements ───────────── */
+.debate-lane { max-width: var(--width); margin: 0 auto; padding: 1rem 0 0; }
+.debate-lane .mini { max-width: 330px; }
+.research-head { display: grid; grid-template-columns: 1fr 270px; gap: 2rem; align-items: center; }
+.research-head .section-lede { margin-bottom: 0; }
+.research-scene { max-width: 270px; }
+.awards-scene { max-width: 150px; margin: -.4rem 0 .6rem; }
+.site-footer { position: relative; }
+.footer-dangle { position: absolute; top: -40px; right: 2rem; width: 50px; z-index: 2; }
+.footer-dangle .mini { overflow: visible; }
+.scene { cursor: default; }
+.scene.mini { cursor: pointer; }

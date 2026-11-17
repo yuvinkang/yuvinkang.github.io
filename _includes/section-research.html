@@ -1,5 +1,8 @@
 {% assign r = site.data.research %}
-{% if r.interests %}<p class="section-lede">{{ r.interests }}</p>{% endif %}
+<div class="research-head">
+  {% if r.interests %}<p class="section-lede">{{ r.interests }}</p>{% endif %}
+  <div class="research-scene">{% include scenes/stats.html %}</div>
+</div>
 <ul class="entries">
   {% for e in r.entries %}
   <li class="entry{% if e.scene and e.scene != 'none' %} has-scene{% endif %}" style="--i: {{ forloop.index }}">

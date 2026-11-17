@@ -34,5 +34,6 @@ layout: default
     {% else %}{% if item.content %}<div class="prose">{{ item.content | markdownify }}</div>{% endif %}
   {% endcase %}
 </section>
+{% if item.id == "research" %}{% include interlude-debate.html %}{% endif %}
 {% if item.id == "experience" %}{% include interlude-run.html %}{% endif %}
 {% endfor %}
