@@ -22,3 +22,19 @@
   </article>
   {% endfor %}
 </div>
+
+{% if site.data.now %}
+<div class="now">
+  <p class="label">Right now</p>
+  <dl class="now-list">
+    {% for n in site.data.now %}
+    <div class="now-item" style="--i: {{ forloop.index }}">
+      <dt class="mono">{{ n.label }}</dt>
+      <dd>{{ n.text | markdownify | remove: '<p>' | remove: '</p>' }}</dd>
+    </div>
+    {% endfor %}
+  </dl>
+</div>
+{% endif %}
+
+{% include penalty.html %}

@@ -36,3 +36,35 @@ results:
   - "Median 7.5 foci at 12 cm vs 4.0 at 6 cm; U = 89.0, p = 0.269."
   - "Coefficient of variation above 120% in both groups."
   - "At 6 cm, 1,350 psi vs 1,100 psi: p = 0.053 (n = 6)."
+
+# Interactive readout under the plot. Every number here is from the paper —
+# where the paper has no figure (1,350 psi medians), leave it blank rather
+# than filling one in.
+explore:
+  pressures: [1100, 1350]
+  distances: [6, 12]
+  cells:
+    - key: "1100-6"
+      n: 13
+      median: "4.0"
+      spread: "IQR 1.0 – 6.0 · CV > 120%"
+      note: "Baseline. Half the samples returned 1 focus or fewer."
+      group: 0
+    - key: "1100-12"
+      n: 18
+      median: "7.5"
+      spread: "IQR 1.5 – 14.5 · CV > 120%"
+      note: "Higher median than 6 cm, but the spread swamps the difference: U = 89.0, p = 0.269. Not significant."
+      group: 1
+    - key: "1350-6"
+      n: 6
+      median: ""
+      spread: ""
+      note: "Six bombardments at the raised burst pressure. Against 1,100 psi at the same distance: p = 0.053 — close, and still not significant."
+      group: -1
+    - key: "1350-12"
+      n: 0
+      median: ""
+      spread: ""
+      note: "Not tested. The 1,350 psi arm was run at 6 cm only."
+      group: -1

@@ -1,0 +1,12 @@
+# The route drawn in the Profile section. Three stops, left to right, in the
+# order they happened. The walker crosses the arc as you scroll past it.
+stops:
+  - place: "Duluth, GA"
+    years: "2007 – 2025"
+    note: "Home."
+  - place: "Dublin, IE"
+    years: "2025 – 2026"
+    note: "Ng Lab, University College Dublin."
+  - place: "New Haven, CT"
+    years: "2026 –"
+    note: "Yale."

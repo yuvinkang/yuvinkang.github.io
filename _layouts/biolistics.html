@@ -60,6 +60,38 @@ layout: default
     <figcaption class="mono">Target distance at 1,100 psi. Box = IQR, line = median, whiskers = 1.5×IQR, points = outliers.</figcaption>
   </figure>
 
+  {% assign E = d.explore %}
+  {% if E %}
+  <div class="bx-try reveal" data-bio>
+    <p class="label">Try a condition</p>
+    <div class="bx-controls">
+      <div class="bx-row">
+        <span class="mono bx-row-label">Burst pressure</span>
+        {% for p in E.pressures %}
+        <button type="button" class="bx-opt" data-bio-p="{{ p }}">{{ p }} psi</button>
+        {% endfor %}
+      </div>
+      <div class="bx-row">
+        <span class="mono bx-row-label">Target distance</span>
+        {% for x in E.distances %}
+        <button type="button" class="bx-opt" data-bio-d="{{ x }}">{{ x }} cm</button>
+        {% endfor %}
+      </div>
+    </div>
+    {% for c in E.cells %}
+    <div class="bx-cell" data-bio-cell="{{ c.key }}" data-bio-group="{{ c.group }}">
+      <div class="bx-stats">
+        <div><p class="mono">Samples</p><p class="bx-stat">{% if c.n > 0 %}n = {{ c.n }}{% else %}—{% endif %}</p></div>
+        <div><p class="mono">Median foci</p><p class="bx-stat">{% if c.median != "" %}{{ c.median }}{% else %}—{% endif %}</p></div>
+        <div><p class="mono">Spread</p><p class="bx-stat bx-stat-sm">{% if c.spread != "" %}{{ c.spread }}{% else %}—{% endif %}</p></div>
+      </div>
+      <p class="bx-verdict">{{ c.note }}</p>
+    </div>
+    {% endfor %}
+    <p class="mono bx-foot">31 bombardments in total. Every figure here is from the paper; blanks are conditions it does not report.</p>
+  </div>
+  {% endif %}
+
   <div class="bx-cols">
     <div>
       <p class="label">Results</p>

@@ -646,7 +646,7 @@ body { background: transparent; }
 .entry-scene, .personal-scene, .profile-scene, .section-scene-sm, .project-scene, .bx-scene, .rm-rover { background: transparent; border: 0; box-shadow: none; padding: 0; }
 /* project cards keep their hairline border for the click target, but no white
    fill, so they don't cut a seam out of the page gradient either */
-.card { background: transparent; }
+.card, .mod-btn, .measure, .px-design-item { background: transparent; }
 .card:hover { border-color: var(--accent); background: transparent; }
 .cabin { box-shadow: 0 6px 16px -10px rgba(13,27,42,.5), 0 0 0 1px var(--line); }
 .gondola:hover .cabin, .gondola.is-active .cabin { box-shadow: 0 10px 22px -12px rgba(13,27,42,.5), 0 0 0 2px var(--accent); }
@@ -787,7 +787,12 @@ body { background: transparent; }
 .dr-sheet.on { display: block; }
 .dr-sheet img { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: #fff; }
 .dr-sheet figcaption { margin-top: .7rem; color: var(--muted); font-size: .76rem; }
-.dr-tabs .mod-btn { white-space: nowrap; width: auto; flex: 0 0 auto; padding: 9px 16px; }
+/* .mod-btn is a grid with a 30px number column; these tabs have no number,
+   so override the display or the label overflows into the next button */
+.dr-tabs .mod-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  white-space: nowrap; width: auto; flex: 0 0 auto; padding: 10px 18px; gap: 0;
+}
 .sc-tabs .mod-btn { white-space: nowrap; }
 
 /* ═════════════════════════════════════════════════════════════
@@ -916,3 +921,126 @@ body { background: transparent; }
   .bio-block.is-lead .bio-text p { font-size: 1.2rem; }
   .bio-aside { max-width: 420px; }
 }
+
+
+/* ───────────── Mechanism carousel (shower chair) ───────────── */
+.mech { position: relative; overflow: hidden; outline: none; touch-action: pan-y; }
+.mech-track { display: flex; transition: transform .55s var(--ease); will-change: transform; }
+.mech-card {
+  flex: 0 0 100%; min-width: 100%; padding: 1.6rem 0 1.9rem;
+  opacity: .25; transition: opacity .45s var(--ease);
+}
+.mech-card.on { opacity: 1; }
+.mech-num { color: var(--accent); font-size: .74rem; }
+.mech-name { font-size: 1.5rem; font-weight: 500; letter-spacing: -0.025em; margin: .5rem 0 .6rem; }
+.mech-note { margin: 0; max-width: 60ch; font-weight: 300; line-height: 1.7; }
+.mech-bar { display: flex; align-items: center; gap: 14px; border-top: 1px solid var(--line); padding-top: .9rem; }
+.mech-arrow {
+  width: 34px; height: 34px; flex: none; border: 1px solid var(--line); background: transparent;
+  color: var(--brand); font: inherit; font-size: .95rem; cursor: pointer; line-height: 1;
+  transition: border-color .25s, color .25s;
+}
+.mech-arrow:hover { border-color: var(--accent); }
+.mech-dots { display: flex; gap: 6px; flex: 1; }
+.mech-dot {
+  flex: 1; height: 3px; padding: 0; border: 0; background: var(--line); cursor: pointer;
+  transition: background .3s var(--ease);
+}
+.mech-dot.on { background: var(--accent); }
+.mech-dot:hover { background: var(--tint); }
+@media (max-width: 760px) { .mech-name { font-size: 1.25rem; } }
+
+
+/* ───────────── Biolistics condition explorer ───────────── */
+.bx-try { margin-top: 2.6rem; border-top: 1px solid var(--line); padding-top: 1.4rem; }
+.bx-controls { display: flex; flex-wrap: wrap; gap: 1.6rem 2.6rem; margin-bottom: 1.6rem; }
+.bx-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.bx-row-label { color: var(--muted); font-size: .72rem; margin-right: 4px; }
+.bx-opt {
+  padding: 8px 14px; border: 1px solid var(--line); background: transparent;
+  font: inherit; font-size: .86rem; color: var(--text); cursor: pointer;
+  transition: border-color .25s, color .25s;
+}
+.bx-opt:hover { border-color: var(--tint); }
+.bx-opt.on { border-color: var(--accent); color: var(--brand); font-weight: 500; }
+.bx-cell { display: none; }
+.bx-cell.on { display: block; }
+.bx-stats { display: flex; flex-wrap: wrap; gap: 2.4rem; margin-bottom: 1rem; }
+.bx-stats .mono { color: var(--muted); font-size: .7rem; margin: 0 0 .2rem; }
+.bx-stat { margin: 0; font-size: 1.45rem; font-weight: 500; letter-spacing: -0.02em; color: var(--brand); }
+.bx-stat-sm { font-size: .95rem; font-weight: 400; color: var(--text); }
+.bx-verdict { margin: 0; font-weight: 300; line-height: 1.7; max-width: 62ch; }
+.bx-foot { margin-top: 1.2rem; color: var(--faint); font-size: .7rem; }
+/* dim the boxes that aren't the chosen condition */
+.boxplot.has-lit .bp-group { opacity: .28; transition: opacity .35s var(--ease); }
+.boxplot.has-lit .bp-group.lit { opacity: 1; }
+@media (max-width: 620px) { .bx-stats { gap: 1.4rem; } .bx-stat { font-size: 1.2rem; } }
+
+
+/* ───────────── Figures that notice you, and ones you can play ───────────── */
+.scene-hero .head { transition: transform .5s var(--ease); }
+.scene-hero .fig .head { transform: translate(var(--look-x, 0), var(--look-y, 0)); }
+.is-playable { cursor: pointer; }
+
+
+/* ───────────── Journey strip ───────────── */
+.trip { position: relative; margin: .4rem 0 2.4rem; }
+.trip-map { width: 100%; height: auto; display: block; overflow: visible; }
+.trip-arc { fill: none; stroke: var(--line); stroke-width: 2; stroke-dasharray: 7 9; }
+.trip-arc-done { fill: none; stroke: var(--accent); stroke-width: 2.4; }
+.trip-dot { fill: var(--bg); stroke: var(--accent); stroke-width: 2.6; }
+.trip-place { fill: var(--text); font-family: var(--font-sans); font-size: 26px; font-weight: 500; }
+.trip-years { fill: var(--muted); font-family: var(--font-mono); font-size: 19px; }
+.trip-walker {
+  position: absolute; width: 5.4%; left: 6%; top: 76.6%;
+  transform: translate(-50%, -94%); pointer-events: none;
+}
+.trip-walker svg { width: 100%; height: auto; display: block; overflow: visible; }
+@media (max-width: 700px) {
+  .trip-place { font-size: 34px; }
+  .trip-years { font-size: 26px; }
+  .trip-walker { width: 8%; }
+}
+
+
+/* ───────────── "Right now" strip ───────────── */
+.now { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1.4rem; }
+.now-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.4rem 2rem; margin: 0; }
+.now-item dt { color: var(--muted); font-size: .7rem; margin-bottom: .25rem; }
+.now-item dd { margin: 0; font-weight: 300; }
+.now-item dd em { color: var(--tint-deep); font-style: italic; }
+
+
+/* ───────────── Penalty shootout ───────────── */
+.pk { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1.4rem; max-width: 560px; }
+.pk-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.pk-head .label { margin: 0; }
+.pk-score { color: var(--muted); font-size: .74rem; }
+.pk-pitch { width: 100%; height: auto; display: block; margin-top: .8rem; touch-action: none; cursor: crosshair; }
+.pk-ground { stroke: var(--line); stroke-width: 2; }
+.pk-goal line { stroke: var(--ink-strong); stroke-width: 3; stroke-linecap: round; }
+.pk-goal .pk-net { stroke: var(--tint); stroke-width: 1; }
+.pk-keeper { stroke: var(--ink-strong); stroke-width: 2.6; stroke-linecap: round; fill: none; }
+.pk-keeper circle { fill: var(--bg); }
+.pk-keeper.dive .pk-arm { stroke: var(--accent); }
+.pk-ball circle { fill: var(--bg); stroke: var(--ink-strong); stroke-width: 2.4; }
+.pk-ball-mark { fill: none; stroke: var(--ink-strong); stroke-width: 1.6; }
+.pk-aim { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 4 6; opacity: 0; }
+.pk-aim.on { opacity: .8; }
+.pk-hint { margin-top: .7rem; color: var(--muted); font-size: .74rem; }
+.pk.scored .pk-hint { color: var(--bio); }
+
+
+/* ───────────── Exploded-view scrubber ───────────── */
+.xp-wrap { max-width: 760px; }
+.xp { position: relative; aspect-ratio: 60 / 49; background: var(--tint-soft);
+  cursor: ew-resize; touch-action: pan-y; user-select: none; overflow: hidden; }
+.xp.grabbing { cursor: grabbing; }
+.xp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .09s linear; }
+.xp img.on { opacity: 1; }
+.xp-control { display: flex; align-items: center; gap: 14px; margin-top: .9rem;
+  color: var(--muted); font-size: .74rem; }
+.xp-control input[type=range] { flex: 1; accent-color: var(--accent); }
+.xp-read { color: var(--accent); min-width: 8ch; text-align: right; }
+@media (max-width: 760px) { .xp-control span:first-child { display: none; } }

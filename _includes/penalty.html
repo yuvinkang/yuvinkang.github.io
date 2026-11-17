@@ -1,0 +1,42 @@
+{%- comment -%}
+Penalty shootout easter egg at the end of Personal. Drag from the ball to aim,
+let go to shoot; the keeper guesses. All the motion is in site.js.
+{%- endcomment -%}
+<div class="pk" data-pk>
+  <div class="pk-head">
+    <p class="label">Take a penalty</p>
+    <p class="mono pk-score"><span data-pk-goals>0</span> scored · <span data-pk-shots>0</span> taken</p>
+  </div>
+  <svg class="pk-pitch" viewBox="0 0 520 260" role="img" aria-label="Penalty shootout game">
+    <line class="pk-ground" x1="0" y1="226" x2="520" y2="226"/>
+    <!-- goal -->
+    <g class="pk-goal">
+      <line x1="130" y1="60" x2="130" y2="226"/>
+      <line x1="390" y1="60" x2="390" y2="226"/>
+      <line x1="130" y1="60" x2="390" y2="60"/>
+      {% for n in (0..9) %}
+      <line class="pk-net" x1="{{ n | times: 26 | plus: 130 }}" y1="60" x2="{{ n | times: 26 | plus: 130 }}" y2="226"/>
+      {% endfor %}
+      {% for n in (0..5) %}
+      <line class="pk-net" x1="130" y1="{{ n | times: 28 | plus: 60 }}" x2="390" y2="{{ n | times: 28 | plus: 60 }}"/>
+      {% endfor %}
+    </g>
+    <!-- keeper -->
+    <g class="pk-keeper" data-pk-keeper>
+      <circle cx="260" cy="150" r="9"/>
+      <line x1="260" y1="159" x2="260" y2="192"/>
+      <line class="pk-arm" x1="260" y1="166" x2="236" y2="152"/>
+      <line class="pk-arm" x1="260" y1="166" x2="284" y2="152"/>
+      <line x1="260" y1="192" x2="246" y2="222"/>
+      <line x1="260" y1="192" x2="274" y2="222"/>
+    </g>
+    <!-- aim line -->
+    <line class="pk-aim" data-pk-aim x1="260" y1="244" x2="260" y2="244"/>
+    <!-- ball -->
+    <g class="pk-ball" data-pk-ball>
+      <circle cx="0" cy="0" r="9"/>
+      <path class="pk-ball-mark" d="M-9 -2 L-3 -6 L3 -6 L9 -2 M-5 6 L0 2 L5 6"/>
+    </g>
+  </svg>
+  <p class="mono pk-hint" data-pk-hint>Drag the ball to aim, let go to shoot.</p>
+</div>

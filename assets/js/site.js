@@ -54,6 +54,75 @@
     }
   }
 
+  // 2d. Horizontal carousel: [data-mech] slides one card at a time, with
+  //     arrows, dots, drag and the arrow keys.
+  document.querySelectorAll('[data-mech]').forEach(function (box) {
+    var track = box.querySelector('.mech-track');
+    var cards = box.querySelectorAll('[data-mech-card]');
+    var dots = box.querySelectorAll('[data-mech-go]');
+    var i = 0, startX = null;
+    function go(n) {
+      i = Math.max(0, Math.min(cards.length - 1, n));
+      track.style.transform = 'translateX(' + (-i * 100) + '%)';
+      cards.forEach(function (c, k) { c.classList.toggle('on', k === i); });
+      dots.forEach(function (d, k) {
+        d.classList.toggle('on', k === i);
+        d.setAttribute('aria-current', k === i);
+      });
+    }
+    var prev = box.querySelector('[data-mech-prev]');
+    var next = box.querySelector('[data-mech-next]');
+    if (prev) prev.addEventListener('click', function () { go(i - 1); });
+    if (next) next.addEventListener('click', function () { go(i + 1); });
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { go(+d.dataset.mechGo); });
+    });
+    box.addEventListener('pointerdown', function (e) { startX = e.clientX; });
+    box.addEventListener('pointermove', function (e) {
+      if (startX === null) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 70) { go(i + (dx < 0 ? 1 : -1)); startX = e.clientX; }
+    });
+    box.addEventListener('pointerup', function () { startX = null; });
+    box.addEventListener('pointercancel', function () { startX = null; });
+    box.setAttribute('tabindex', '0');
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { go(i + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { go(i - 1); e.preventDefault(); }
+    });
+    go(0);
+  });
+
+  // 2e. Biolistics condition explorer: pick a pressure and a distance, see
+  //     what that run actually returned, and light up its box on the plot.
+  document.querySelectorAll('[data-bio]').forEach(function (box) {
+    var pBtns = box.querySelectorAll('[data-bio-p]');
+    var dBtns = box.querySelectorAll('[data-bio-d]');
+    var cells = box.querySelectorAll('[data-bio-cell]');
+    var groups = document.querySelectorAll('.boxplot .bp-group');
+    var P = pBtns[0] && pBtns[0].dataset.bioP;
+    var D = dBtns[0] && dBtns[0].dataset.bioD;
+    function show() {
+      pBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.bioP === P); });
+      dBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.bioD === D); });
+      var key = P + '-' + D, lit = -1;
+      cells.forEach(function (c) {
+        var on = c.dataset.bioCell === key;
+        c.classList.toggle('on', on);
+        if (on) lit = +c.dataset.bioGroup;
+      });
+      groups.forEach(function (g, k) { g.classList.toggle('lit', k === lit); });
+      document.querySelector('.boxplot').classList.toggle('has-lit', lit >= 0);
+    }
+    pBtns.forEach(function (b) {
+      b.addEventListener('click', function () { P = b.dataset.bioP; show(); });
+    });
+    dBtns.forEach(function (b) {
+      b.addEventListener('click', function () { D = b.dataset.bioD; show(); });
+    });
+    show();
+  });
+
   // 3. Progress line, climbing stickman, gentle hero fade
   var climbTimer;
   function onScroll() {
@@ -178,6 +247,250 @@
       sc.classList.add('is-poked');
       setTimeout(function () { sc.classList.remove('is-poked'); }, 1400);
     });
+  });
+
+  // 4c. The hero figures notice the cursor: each head shifts a little toward
+  //     the pointer. Small on purpose — a glance, not a stare.
+  var heroScene = document.querySelector('.scene-hero');
+  if (heroScene && window.matchMedia('(pointer: fine)').matches) {
+    var figs = heroScene.querySelectorAll('.fig');
+    var raf = null, px = 0, py = 0;
+    function look() {
+      raf = null;
+      figs.forEach(function (f) {
+        var r = f.getBoundingClientRect();
+        if (!r.width) return;
+        var dx = px - (r.left + r.width / 2);
+        var dy = py - (r.top + r.height * 0.22);
+        var d = Math.sqrt(dx * dx + dy * dy) || 1;
+        var reach = Math.min(1, d / 520);
+        f.style.setProperty('--look-x', (dx / d * 2.1 * reach).toFixed(2) + 'px');
+        f.style.setProperty('--look-y', (dy / d * 1.5 * reach).toFixed(2) + 'px');
+      });
+    }
+    window.addEventListener('pointermove', function (e) {
+      px = e.clientX; py = e.clientY;
+      if (!raf) raf = requestAnimationFrame(look);
+    }, { passive: true });
+  }
+
+  // 4d. Click a bassist and hear one. Plucked note synthesised on the spot,
+  //     so there is no audio file and nothing plays unprompted.
+  var actx = null, step = 0;
+  var SCALE = [49.0, 55.0, 61.7, 65.4, 73.4, 82.4, 92.5, 98.0];   // E1 up to G2
+  function pluck() {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      if (!actx) actx = new AC();
+      if (actx.state === 'suspended') actx.resume();
+      var f = SCALE[step % SCALE.length];
+      step++;
+      var t = actx.currentTime;
+      var gain = actx.createGain();
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.22, t + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 2.2);
+      var filter = actx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1800, t);
+      filter.frequency.exponentialRampToValueAtTime(320, t + 1.6);
+      [1, 2, 3, 4.01].forEach(function (h, k) {
+        var o = actx.createOscillator();
+        o.type = k === 0 ? 'sawtooth' : 'sine';
+        o.frequency.setValueAtTime(f * h, t);
+        var g = actx.createGain();
+        g.gain.value = [0.5, 0.22, 0.12, 0.06][k];
+        o.connect(g); g.connect(filter);
+        o.start(t); o.stop(t + 2.3);
+      });
+      filter.connect(gain); gain.connect(actx.destination);
+    } catch (err) { /* no audio, no problem */ }
+  }
+  document.querySelectorAll('.scene-bass, .scene-hero').forEach(function (sc) {
+    sc.classList.add('is-playable');
+    sc.addEventListener('click', pluck);
+  });
+
+  // 4e. Walk the route as the page scrolls past it. Same quadratic curve as
+  //     the SVG in journey.html: P0 (60,230), P1 (500,20), P2 (940,230).
+  var trip = document.querySelector('[data-trip]');
+  if (trip) {
+    var walker = trip.querySelector('[data-trip-walker]');
+    var arcDone = trip.querySelector('.trip-arc-done');
+    var LEN = arcDone ? arcDone.getTotalLength() : 0;
+    if (arcDone) { arcDone.style.strokeDasharray = LEN; arcDone.style.strokeDashoffset = LEN; }
+    function bez(t, a, b, c) {
+      var u = 1 - t;
+      return u * u * a + 2 * u * t * b + t * t * c;
+    }
+    function walk() {
+      var r = trip.getBoundingClientRect();
+      var vh = window.innerHeight;
+      // 0 when the strip first clears the bottom, 1 once it has passed the top third
+      var p = (vh - r.top) / (vh * 0.55 + r.height);
+      p = Math.max(0, Math.min(1, p));
+      var x = bez(p, 60, 500, 940) / 1000 * 100;
+      var y = bez(p, 230, 20, 230) / 300 * 100;
+      walker.style.left = x + '%';
+      walker.style.top = y + '%';
+      trip.style.setProperty('--trip', p.toFixed(3));
+      if (arcDone) arcDone.style.strokeDashoffset = LEN * (1 - p);
+    }
+    walk();
+    window.addEventListener('scroll', walk, { passive: true });
+    window.addEventListener('resize', walk);
+  }
+
+  // 4f. Number keys jump between sections; "g" goes back to the top.
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (e.key === 'g' || e.key === 'G') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    var n = parseInt(e.key, 10);
+    if (!n || n < 1 || n > sections.length) return;
+    var target = sections[n - 1];
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // 4g. Penalty shootout. Drag from the ball to aim, release to shoot; the
+  //     keeper picks a side and sometimes picks right.
+  var pk = document.querySelector('[data-pk]');
+  if (pk) {
+    var svg = pk.querySelector('.pk-pitch');
+    var ball = pk.querySelector('[data-pk-ball]');
+    var keeper = pk.querySelector('[data-pk-keeper]');
+    var aim = pk.querySelector('[data-pk-aim]');
+    var hint = pk.querySelector('[data-pk-hint]');
+    var goalsEl = pk.querySelector('[data-pk-goals]');
+    var shotsEl = pk.querySelector('[data-pk-shots]');
+    var SPOT = { x: 260, y: 244 };
+    var goals = 0, shots = 0, busy = false, dragging = false;
+
+    function place(x, y) { ball.setAttribute('transform', 'translate(' + x + ' ' + y + ')'); }
+    place(SPOT.x, SPOT.y);
+
+    function toSvg(e) {
+      var r = svg.getBoundingClientRect();
+      return {
+        x: (e.clientX - r.left) / r.width * 520,
+        y: (e.clientY - r.top) / r.height * 260
+      };
+    }
+
+    function reset() {
+      busy = false;
+      ball.style.transition = 'none';
+      keeper.style.transition = 'none';
+      place(SPOT.x, SPOT.y);
+      keeper.setAttribute('transform', 'translate(0 0)');
+      keeper.classList.remove('dive');
+      requestAnimationFrame(function () {
+        ball.style.transition = '';
+        keeper.style.transition = '';
+      });
+    }
+
+    function shoot(target) {
+      if (busy) return;
+      busy = true;
+      shots++;
+      // keeper commits to a third, with a little randomness about how far
+      var third = Math.floor(Math.random() * 3) - 1;            // -1, 0, 1
+      var dive = third * (78 + Math.random() * 26);
+      keeper.style.transition = 'transform .42s cubic-bezier(.2,.8,.3,1)';
+      keeper.setAttribute('transform', 'translate(' + dive.toFixed(0) + ' ' + (third ? 22 : 0) + ')');
+      if (third) keeper.classList.add('dive');
+
+      var tx = Math.max(118, Math.min(402, target.x));
+      var ty = Math.max(48, Math.min(236, target.y));
+      ball.style.transition = 'transform .46s cubic-bezier(.3,.6,.4,1)';
+      place(tx, ty);
+
+      var inGoal = tx > 136 && tx < 384 && ty > 66 && ty < 222;
+      var saved = Math.abs(tx - (260 + dive)) < 34 && Math.abs(ty - (150 + (third ? 22 : 0))) < 52;
+      setTimeout(function () {
+        if (inGoal && !saved) {
+          goals++;
+          hint.textContent = 'Goal.';
+          pk.classList.add('scored');
+        } else if (saved) {
+          hint.textContent = 'Saved.';
+        } else {
+          hint.textContent = 'Wide.';
+        }
+        goalsEl.textContent = goals;
+        shotsEl.textContent = shots;
+        setTimeout(function () {
+          pk.classList.remove('scored');
+          hint.textContent = 'Drag the ball to aim, let go to shoot.';
+          reset();
+        }, 1100);
+      }, 460);
+    }
+
+    svg.addEventListener('pointerdown', function (e) {
+      if (busy) return;
+      dragging = true;
+      svg.setPointerCapture && svg.setPointerCapture(e.pointerId);
+      aim.classList.add('on');
+      e.preventDefault();
+    });
+    svg.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var p = toSvg(e);
+      aim.setAttribute('x2', p.x.toFixed(1));
+      aim.setAttribute('y2', p.y.toFixed(1));
+    });
+    svg.addEventListener('pointerup', function (e) {
+      if (!dragging) return;
+      dragging = false;
+      aim.classList.remove('on');
+      aim.setAttribute('x2', SPOT.x); aim.setAttribute('y2', SPOT.y);
+      shoot(toSvg(e));
+    });
+    svg.addEventListener('pointercancel', function () {
+      dragging = false;
+      aim.classList.remove('on');
+    });
+  }
+
+  // 4h. Exploded-view scrubber: drag across the assembly, or use the slider,
+  //     to pull it apart and put it back together.
+  document.querySelectorAll('[data-explode]').forEach(function (box) {
+    var imgs = box.querySelectorAll('img');
+    var range = box.parentNode.querySelector('input[type=range]');
+    var readout = box.parentNode.querySelector('[data-explode-read]');
+    var last = imgs.length - 1, i = 0, startX = null, startI = 0;
+    if (range) range.max = last;
+    function set(n) {
+      i = Math.max(0, Math.min(last, Math.round(n)));
+      imgs.forEach(function (im, k) { im.classList.toggle('on', k === i); });
+      if (range) range.value = i;
+      if (readout) readout.textContent = i === 0 ? 'assembled'
+        : i === last ? 'fully exploded'
+        : Math.round(i / last * 100) + '%';
+    }
+    box.addEventListener('pointerdown', function (e) {
+      startX = e.clientX; startI = i;
+      box.setPointerCapture && box.setPointerCapture(e.pointerId);
+      box.classList.add('grabbing');
+      e.preventDefault();
+    });
+    box.addEventListener('pointermove', function (e) {
+      if (startX === null) return;
+      var w = box.getBoundingClientRect().width || 1;
+      set(startI + (e.clientX - startX) / (w * 0.72) * last);
+    });
+    function stop() { startX = null; box.classList.remove('grabbing'); }
+    box.addEventListener('pointerup', stop);
+    box.addEventListener('pointercancel', stop);
+    if (range) range.addEventListener('input', function () { set(+range.value); });
+    set(0);
   });
 
   // 5. Lightbox for wheel photos

@@ -1,0 +1,10 @@
+# A short "right now" strip at the end of Personal. Edit whenever; three or
+# four lines reads best. Leave the file out entirely to hide the strip.
+- label: "Reading"
+  text: "*The Vital Question*, Nick Lane"
+- label: "Listening"
+  text: "Ravel, *Daphnis et Chloé*"
+- label: "Building"
+  text: "The Prari rover's next sensor bay"
+- label: "Playing"
+  text: "Bottelli, *Concerto for Double Bass*"

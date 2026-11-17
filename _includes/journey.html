@@ -1,0 +1,26 @@
+{%- comment -%}
+Duluth → Dublin → New Haven. The arc is one quadratic curve, P0 (60,230),
+P1 (500,20), P2 (940,230) in a 1000×300 box; site.js walks the stickman along
+the same curve as you scroll past, so the two always agree.
+{%- endcomment -%}
+{% assign J = site.data.journey %}
+<div class="trip" data-trip>
+  <svg class="trip-map" viewBox="0 0 1000 300" role="img"
+       aria-label="Route from Duluth, Georgia to Dublin, Ireland to New Haven, Connecticut">
+    <path class="trip-arc" d="M60 230 Q500 20 940 230"/>
+    <path class="trip-arc-done" d="M60 230 Q500 20 940 230"/>
+    {% assign pts = "60,230 500,125 940,230" | split: " " %}
+    {% for p in pts %}
+      {% assign xy = p | split: "," %}
+      {% assign s = J.stops[forloop.index0] %}
+      <g class="trip-stop" style="--i: {{ forloop.index }}">
+        <circle class="trip-dot" cx="{{ xy[0] }}" cy="{{ xy[1] }}" r="7"/>
+        <text class="trip-place" x="{{ xy[0] }}" y="{{ xy[1] | minus: 24 }}"
+              text-anchor="{% if forloop.first %}start{% elsif forloop.last %}end{% else %}middle{% endif %}">{{ s.place }}</text>
+        <text class="trip-years" x="{{ xy[0] }}" y="{{ xy[1] | plus: 30 }}"
+              text-anchor="{% if forloop.first %}start{% elsif forloop.last %}end{% else %}middle{% endif %}">{{ s.years }}</text>
+      </g>
+    {% endfor %}
+  </svg>
+  <div class="trip-walker" data-trip-walker>{% include scenes/runner-plain.html %}</div>
+</div>

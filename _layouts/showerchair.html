@@ -55,31 +55,51 @@ layout: default
     </div>
   </section>
 
-  <section class="px-sec reveal" data-toggle-scope>
-    <p class="px-num mono">03 — Mechanisms</p>
-    <h2 class="px-h">Eight mechanisms</h2>
-    <div class="sc-feats">
-      <div class="mod-list" data-toggle-group data-hover>
-        {% for f in d.features %}
-        <button type="button" class="mod-btn" data-show="f{{ forloop.index }}">
-          <span class="mono">{{ forloop.index }}</span>{{ f.name }}
-        </button>
+  <section class="px-sec reveal">
+    <p class="px-num mono">03 — Assembly</p>
+    <h2 class="px-h">Pull it apart</h2>
+    <div class="xp-wrap">
+      <div class="xp" data-explode title="Drag to take the chair apart">
+        {% for n in (0..17) %}
+        <img src="{{ img | append: 'explode-' | append: n | append: '.webp' | relative_url }}"
+             alt="Shower chair assembly, step {{ forloop.index }} of 18" draggable="false" loading="lazy">
         {% endfor %}
       </div>
-      <div class="sc-feat-notes">
+      <label class="xp-control mono">
+        <span>drag, or use the slider</span>
+        <input type="range" min="0" max="17" step="1" value="0" aria-label="Explode the assembly">
+        <span class="xp-read" data-explode-read>assembled</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">04 — Mechanisms</p>
+    <h2 class="px-h">Eight mechanisms</h2>
+    <div class="mech" data-mech>
+      <div class="mech-track">
         {% for f in d.features %}
-        <div class="mod-card" data-panel="f{{ forloop.index }}">
-          <p class="mono">Feature 0{{ forloop.index }}</p>
-          <p class="mod-card-t">{{ f.name }}</p>
-          <p>{{ f.note }}</p>
-        </div>
+        <article class="mech-card" data-mech-card>
+          <p class="mono mech-num">{{ forloop.index }} / {{ d.features | size }}</p>
+          <h3 class="mech-name">{{ f.name }}</h3>
+          <p class="mech-note">{{ f.note }}</p>
+        </article>
         {% endfor %}
+      </div>
+      <div class="mech-bar">
+        <button type="button" class="mech-arrow" data-mech-prev aria-label="Previous mechanism">←</button>
+        <div class="mech-dots" data-mech-dots>
+          {% for f in d.features %}
+          <button type="button" class="mech-dot" data-mech-go="{{ forloop.index0 }}" aria-label="{{ f.name }}"></button>
+          {% endfor %}
+        </div>
+        <button type="button" class="mech-arrow" data-mech-next aria-label="Next mechanism">→</button>
       </div>
     </div>
   </section>
 
   <section class="px-sec reveal">
-    <p class="px-num mono">04 — Drive</p>
+    <p class="px-num mono">05 — Drive</p>
     <h2 class="px-h">Motor and cable loop</h2>
     <div class="px-solution">
       <img class="sc-still" src="{{ img | append: 'drive.webp' | relative_url }}" alt="Gearmotor, gearbox and cable drum under the outboard rails">
@@ -92,7 +112,7 @@ layout: default
   </section>
 
   <section class="px-sec reveal">
-    <p class="px-num mono">05 — My part</p>
+    <p class="px-num mono">06 — My part</p>
     <h2 class="px-h">My part</h2>
     <div class="px-mine">
       <div class="prose">{{ content }}</div>

@@ -57,6 +57,11 @@
 </ul>
 {% endif %}
 
+{% if site.data.journey %}
+<p class="label label-gap">Where</p>
+{% include journey.html %}
+{% endif %}
+
 {% if site.data.timeline %}
 <p class="label label-gap">Personal history</p>
 <ol class="timeline">
