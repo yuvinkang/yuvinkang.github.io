@@ -5,7 +5,7 @@ order: 4
 role: "Industrial Design Intern · Product Quickstart"
 tools: ["SolidWorks", "3D printing", "Client reviews"]
 tags: ["Product design", "Health", "Prototyping"]
-summary: "A health device that tapers nicotine dosing step by step to support quitting."
+summary: "Device that steps nicotine dosing down over time to support tapered cessation."
 scene: dispenser
 metrics:
   - value: "Stepwise"
@@ -15,14 +15,8 @@ metrics:
 image: ""
 ---
 
-## Overview
+Dispenser that lowers nicotine dosing in fixed steps, designed during my internship at Product Quickstart.
 
-A dispenser that lowers nicotine dosing in steps, designed at Product Quickstart to support tapered cessation.
-
-## What I did
-
-- **Developed** the concept and dosing mechanism.
-- **Modeled and prototyped** it in SolidWorks and with 3D printing.
-- **Presented** design reviews to the client.
-
-> Edit this page to add photos, how the mechanism works, and what you learned.
+- Developed the concept and dosing mechanism.
+- Modeled and 3D-printed prototypes in SolidWorks.
+- Presented design reviews to the client.

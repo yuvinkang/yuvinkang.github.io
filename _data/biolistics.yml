@@ -1,55 +1,38 @@
-# BIOLISTICS PAPER — content for /projects/biolistic-optimization/.
-# All figures come from the paper (Kang, Downey & Ng). Edit freely.
-
-question: "Inside a gene gun, DNA-coated gold particles are fired at plant cells. Moving the target farther from the barrel changes how fast those particles arrive — so does it change how many cells get transformed?"
+# BIOLISTICS — content for /projects/biolistic-optimization/.
+# Figures from the paper (Kang, Downey & Ng, UCD).
 
 setup:
   - label: "System"
-    value: "PDS-1000/He"
-    note: "Bio-Rad biolistic delivery, 1,100 psi rupture disc, 27–28 mmHg partial vacuum"
-  - label: "Target"
-    value: "Allium cepa"
-    note: "Onion epidermis — one cell thick and transparent, so every transformed cell is visible"
+    value: "Bio-Rad PDS-1000/He, 1,100 psi"
+  - label: "Tissue"
+    value: "Allium cepa epidermis"
   - label: "Reporter"
-    value: "uidA (GUS)"
-    note: "pCAMBIA1305 on 1.0 µm gold; X-Gluc stains transformed cells blue"
+    value: "uidA (GUS) on 1.0 µm gold"
+  - label: "Test"
+    value: "Mann-Whitney U, Python (SciPy)"
 
-# The two groups compared, at a fixed 1,100 psi
-groups:
-  - name: "6 cm"
-    sub: "proximal · top shelf"
-    n: 13
-    median: 4.0
-    mean: "5.7 ± 1.9"
-    max: 25
-    cv: "122.8%"
-    zeros: "3 of 13"
-    counts: [0, 0, 0, 1, 1, 2, 4, 4, 5, 6, 6, 20, 25]
-  - name: "12 cm"
-    sub: "distal · bottom shelf"
-    n: 18
-    median: 7.5
-    mean: "10.9 ± 3.2"
-    max: 55
-    cv: "125.4%"
-    zeros: "2 of 18"
-    counts: [0, 0, 1, 1, 2, 2, 3, 5, 6, 9, 10, 12, 13, 14, 15, 18, 30, 55]
+# Box plot. Whiskers at 1.5×IQR; points beyond are outliers.
+plot:
+  max: 60                 # y-axis top
+  groups:
+    - name: "6 cm"
+      n: 13
+      min: 0
+      q1: 1.0
+      median: 4.0
+      q3: 6.0
+      whisker: 6
+      outliers: [20, 25]
+    - name: "12 cm"
+      n: 18
+      min: 0
+      q1: 1.5
+      median: 7.5
+      q3: 14.5
+      whisker: 30
+      outliers: [55]
 
-# Headline result
-verdict:
-  stat: "p = 0.269"
-  title: "No significant difference."
-  text: "The distal group did trend higher — median 7.5 versus 4.0 foci — but a Mann-Whitney U test (U = 89.0) could not separate the two distributions, and the effect size was modest (rank-biserial r = 0.24). Both groups varied by more than 120% of their own mean."
-
-findings:
-  - title: "Distance is a weak lever"
-    text: "This matches Rajkumari et al. (2021), who found the same non-significant result comparing 6 cm and 9 cm in tobacco — a different species, a different construct, the same conclusion."
-  - title: "Pressure looks like the stronger one"
-    text: "A supplementary group at 1,350 psi approached significance against 1,100 psi at the same distance (p = 0.053), despite only six samples. Pressure acts directly on particle velocity; distance only modulates it."
-  - title: "Variance is the real story"
-    text: "A plant nucleus is roughly 5–10% of a cell's cross-section, so each particle strike is a low-probability event. That makes foci counts a high-variance count process: mostly low or zero, with rare outliers of 25, 30 and 55 foci."
-
-# Why it matters beyond the bench
-implication:
-  title: "What this means for manufacturing"
-  text: "Plant cell culture is a candidate platform for drugs like galantamine, an acetylcholinesterase inhibitor used in Alzheimer's disease. But a production line is judged by the reliability of its median run, not its best one. If physical parameters can't reduce the variance, reproducibility — not peak efficiency — should be the optimization target."
+results:
+  - "Median 7.5 foci at 12 cm vs 4.0 at 6 cm; U = 89.0, p = 0.269."
+  - "Coefficient of variation above 120% in both groups."
+  - "At 6 cm, 1,350 psi vs 1,100 psi: p = 0.053 (n = 6)."

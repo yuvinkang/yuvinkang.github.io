@@ -10,7 +10,7 @@ This is the owner's personal website: a Jekyll site built by GitHub Pages direct
 - `_projects/*.md` — Jekyll collection (`output: true`, `/projects/:name/`), layout `project.html`; front matter `title, year, order, tags, summary, image`. Cards on the home page come from `site.projects | sort: "order"`.
 - `_includes/ferris.html` — hero Ferris wheel: static `scenes/wheel-frame.html` (frame, rotor `.rotor`, operator + lever, queue) + HTML `.gondola` buttons (photo cabins, `rider-N` stickman, `.blurb`). site.js animates it (rotor angle, cabin positions on R=158 around hub 250,232 in a 500×540 box, spring sway, hover pause, drag with inertia, `.is-fast` lever, lightbox `<dialog>`). Photos/blurbs from `_data/gallery.yml`.
 - `_layouts/project.html` — generic project showcase (hero + scene, facts, metrics, prose, prev/next); project files get it via `defaults` in `_config.yml` (GitHub Pages does NOT infer layouts — keep that default).
-- `_layouts/biolistics.html` + `_data/biolistics.yml` — the biolistics paper page (question, setup, per-sample distribution strips built from the real foci counts, Mann-Whitney verdict, findings, manufacturing implication, my part). Paper PDF at `assets/files/biolistics-paper.pdf`.
+- `_layouts/biolistics.html` + `_data/biolistics.yml` — biolistics paper page: title, one-line summary, facts row, a single SVG box plot (five-number summary + outliers, computed in Liquid from `plot:`), then Results / My role bullets. Deliberately minimal — no narrative sections. Paper PDF at `assets/files/biolistics-paper.pdf`.
 - `_layouts/prari.html` + `_data/prari.yml` — the Prari Robotics design-showcase page (idea, drag-to-turn renders + design notes, module hotspots, research/measures + one farmer quote, my part + skill chips). Renders live in `assets/images/projects/prari/`. Widgets are generic in site.js: `[data-count]`, `[data-toggle-group]`/`[data-panel]`, `[data-turntable]`.
 - `_includes/interlude-run.html` — Strava jogger lane after Experience; footer pizza eater; `climber` on the sidenav progress line; `peeker` on project cards.
 - `_includes/entry-scene.html` — maps an entry's `scene` (bioscaffold, biolistics, rover, clinic, design) to its SVG; set `entry_scene` before including.
@@ -34,6 +34,9 @@ Landing page is intentionally minimal: name, "Biomedical Engineering @ Yale Univ
 Biolistics facts come from the owner's first-author paper (Kang, Downey & Ng): no significant target-distance effect at 1,100 psi (Mann-Whitney U = 89.0, p = 0.269; medians 7.5 vs 4.0), CV > 120% in both groups, 1,350 psi comparison p = 0.053. An older résumé line claimed a "43% efficiency gain" — that figure is not in the paper; the owner chose to follow the paper, so don't reintroduce it.
 
 The Prari page is a design showcase (idea, SolidWorks renders, modules, research, my part + skills), not a pitch — keep market/pricing/competitor material off it.
+
+## Voice
+Write plainly and briefly. State the fact, drop the framing. No rhetorical questions, no "the honest answer", no "here's what it means", no editorial headlines over data, no filler adjectives. Résumé-style bullets: what was done, with the number. Bold only the term or figure that matters. Placeholder prompts like "*Write about...*" don't belong in published copy.
 
 ## Conventions
 - Always use `| relative_url` for internal links.

@@ -15,7 +15,7 @@
       {% endif %}
     </div>
     <div class="personal-text">
-      <p class="mono">0{{ forloop.index }}{% if it.image and it.image != '' %}<span class="hover-hint"> · hover for photo</span>{% endif %}</p>
+      <p class="mono">0{{ forloop.index }}</p>
       <h3 class="personal-title">{{ it.title }}</h3>
       <div class="prose">{{ it.text | markdownify }}</div>
     </div>

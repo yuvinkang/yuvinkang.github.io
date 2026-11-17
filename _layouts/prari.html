@@ -30,14 +30,14 @@ layout: default
   <!-- THE IDEA -->
   <section class="px-sec reveal">
     <p class="px-num mono">01 — The idea</p>
-    <h2 class="px-h">Measure the soil itself,<br><span>patch by patch.</span></h2>
+    <h2 class="px-h">The idea</h2>
     <p class="px-lede">{{ d.idea }}</p>
   </section>
 
   <!-- CAD / DESIGN -->
   <section class="px-sec reveal">
     <p class="px-num mono">02 — Design</p>
-    <h2 class="px-h">Designed in SolidWorks.<br><span>Drag to turn it.</span></h2>
+    <h2 class="px-h">Designed in SolidWorks</h2>
     <div class="px-solution">
       <div class="turntable-wrap">
         <div class="turntable" data-turntable title="Drag to turn the rover">
@@ -46,7 +46,7 @@ layout: default
           <img src="{{ '/assets/images/projects/prari/quarter-right.webp' | relative_url }}" alt="Prari rover, front-right three-quarter view" draggable="false">
           <img class="tt-studio" src="{{ '/assets/images/projects/prari/studio.webp' | relative_url }}" alt="Prari rover studio render" draggable="false">
         </div>
-        <label class="tt-control mono"><span>↺ drag or slide to turn</span><input type="range" min="0" max="3" step="1" value="0" aria-label="Rotate rover view"></label>
+        <label class="tt-control mono"><span>drag to turn</span><input type="range" min="0" max="3" step="1" value="0" aria-label="Rotate rover view"></label>
       </div>
       <div class="px-design">
         {% for x in d.design %}
@@ -59,7 +59,7 @@ layout: default
   <!-- MODULE EXPLORER -->
   <section class="px-sec reveal" data-toggle-scope>
     <p class="px-num mono">03 — Modules</p>
-    <h2 class="px-h">One base rover.<br><span>Six swappable modules.</span></h2>
+    <h2 class="px-h">Six swappable modules</h2>
     <div class="px-modules">
       <div class="mod-list" data-toggle-group data-hover>
         {% for m in d.modules %}
@@ -84,7 +84,7 @@ layout: default
   <!-- RESEARCH -->
   <section class="px-sec reveal" data-toggle-scope>
     <p class="px-num mono">04 — Research</p>
-    <h2 class="px-h">What it measures —<br><span>chosen with 22 farmers.</span></h2>
+    <h2 class="px-h">What it measures</h2>
     <div class="px-research">
       <div>
         <div class="measure-chips" data-toggle-group data-hover>
@@ -103,7 +103,7 @@ layout: default
   <!-- MY PART -->
   <section class="px-sec reveal">
     <p class="px-num mono">05 — My part</p>
-    <h2 class="px-h">Design, science, and the people who'll use it.</h2>
+    <h2 class="px-h">My part</h2>
     <div class="px-mine">
       <div class="prose">{{ content }}</div>
       <div class="px-skills">

@@ -1,31 +1,24 @@
-# PERSONAL — one block per interest. Write as much as you like in "text"
-# (leave a blank line between paragraphs). "scene" picks the animation: bass, soccer, taekwondo, or none.
-# "image" is the photo that pops out when someone hovers over the block:
-#   upload your photo to assets/images/personal/ and change the path. Use "" for no popout.
+# PERSONAL — one block per interest.
+# "scene" picks the animation: bass, soccer, taekwondo, or none.
+# "image" is the photo shown on hover: upload to assets/images/personal/ and change the path. Use "" for none.
 
 - title: "Music · Double Bass"
   scene: bass
   image: /assets/images/personal/bass.svg
   caption: "Yale Symphony Orchestra"
   text: |
-    Principal bassist of the Yale Symphony Orchestra. Two-time Interlochen Arts Camp full orchestral scholar — one of three bassists selected internationally — and concerto competition winner, performing with full orchestra at Gas South Arena.
-
-    *Write about what you love playing, your favorite pieces, or how you started.*
+    Principal bassist, Yale Symphony Orchestra. Two-time Interlochen Arts Camp full orchestral scholar, one of three bassists selected internationally. Concerto competition winner, performed with full orchestra at Gas South Arena.
 
 - title: "Soccer"
   scene: soccer
   image: /assets/images/personal/soccer.svg
   caption: "Yale C1 Club Soccer"
   text: |
-    Yale C1 Club Soccer. In high school, varsity soccer — 6A state semifinalists.
-
-    *Write about your position, your team, or a favorite match.*
+    Yale C1 Club Soccer. High school varsity, 6A state semifinalists.
 
 - title: "Taekwondo"
   scene: taekwondo
   image: /assets/images/personal/taekwondo.svg
   caption: "Yale Club Taekwondo"
   text: |
-    Social chair of Yale Club Taekwondo.
-
-    *Write about your belt, how long you've trained, or what it's taught you.*
+    Social chair, Yale Club Taekwondo.

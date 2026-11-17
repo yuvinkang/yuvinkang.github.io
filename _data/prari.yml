@@ -1,21 +1,21 @@
 # PRARI ROBOTICS — content for the project page (/projects/prari-rover/).
 # A design showcase: the rover, its CAD, its modules, and the research behind it. Edit freely.
 
-tagline: "A modular field rover for ground-level soil and crop data."
+tagline: "Modular field rover for ground-level soil and crop data."
 chips: ["Co-founded at Yale · 2026", "Designed in SolidWorks", "Sobotka Seed Prize proposal"]
 
-idea: "Farm fields vary patch by patch, but most get one soil test and one fertilizer plan. Prari is an autonomous rover that drives the rows and measures the soil itself — under the canopy, where drones can't see — so farmers can treat each patch on its own."
+idea: "Fields vary patch by patch, but most get one soil test and one fertilizer plan. Prari is an autonomous rover that drives the rows and measures soil directly, under the canopy where drones cannot see."
 
 team: ["Tony Gao", "Hunter Yang"]
 
 # Design highlights shown next to the drag-to-turn renders
 design:
   - title: "Modular by design"
-    text: "One base rover with swappable side-bay modules, so the same platform serves every crop, field and season."
+    text: "One base rover with swappable side-bay modules, so one platform serves every crop and season."
   - title: "Built for the rows"
     text: "High-clearance chassis and wide, deep-tread tires to straddle crop rows on uneven ground."
   - title: "Sensing up front"
-    text: "A front camera window and top sensor housing for navigation and crop views; the soil probe deploys at each stop."
+    text: "Front camera window and top sensor housing for navigation and crop views; soil probe deploys at each stop."
 
 modules:
   - name: "Soil probe"
@@ -52,17 +52,17 @@ modules:
 # The research side: what the rover measures, chosen from farmer conversations
 measures:
   - name: "Labile carbon"
-    note: "Active carbon available to microbes — responds to change much faster than total organic carbon."
+    note: "Active carbon available to microbes; responds faster than total organic carbon."
   - name: "Soil pH"
-    note: "Controls how available nutrients are. Measured with an ion-selective electrode at each probe stop."
+    note: "Controls nutrient availability. Ion-selective electrode at each probe stop."
   - name: "Nitrogen"
-    note: "Nitrate readings, plus loss risk flagged after heavy rain saturates the soil."
+    note: "Nitrate readings, with loss risk flagged after heavy rain."
   - name: "Phosphorus"
-    note: "The rover maps where values differ, so lab samples go only where they matter."
+    note: "Rover maps where values differ, so lab samples go only where needed."
   - name: "Potassium"
     note: "Mapped alongside phosphorus."
   - name: "Total organic carbon"
-    note: "A long-term baseline for soil health."
+    note: "Long-term soil health baseline."
 
 quote:
   text: "I tell them [workers] to put a little extra fertilizer if there's a bad patch … nothing is really measured."

@@ -6,87 +6,77 @@ layout: default
 {% for p in all %}{% if p.url == page.url %}{% assign pos = forloop.index0 %}{% endif %}{% endfor %}
 {% assign prev_i = pos | minus: 1 %}{% assign next_i = pos | plus: 1 %}
 
-<article class="bx">
+<article class="bx reveal">
+  <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a><span class="mono">{{ page.year }}</span></p>
+  <h1 class="page-title">{{ page.title }}</h1>
+  <p class="lede">{{ page.summary }}</p>
+  <p class="bx-authors mono">{{ page.authors }} · University College Dublin</p>
+  {% if page.paper %}<a class="btn btn-solid bx-paper" href="{{ page.paper | relative_url }}">Read the paper (PDF)</a>{% endif %}
 
-  <header class="bx-head reveal">
-    <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a><span class="mono">{{ page.year }}</span></p>
-    <h1 class="page-title">{{ page.title }}</h1>
-    <p class="lede">{{ page.summary }}</p>
-    <p class="bx-authors mono">{{ page.authors }} · School of Biology &amp; Environmental Science, UCD</p>
-    {% if page.paper %}<a class="btn btn-solid bx-paper" href="{{ page.paper | relative_url }}">Read the paper (PDF)</a>{% endif %}
-  </header>
+  <dl class="facts bx-facts">
+    {% for s in d.setup %}<div><dt class="mono">{{ s.label }}</dt><dd>{{ s.value }}</dd></div>{% endfor %}
+  </dl>
 
-  <section class="bx-sec reveal">
-    <p class="px-num mono">01 — The question</p>
-    <p class="px-lede">{{ d.question }}</p>
-    <div class="setup">
-      {% for s in d.setup %}
-      <div class="setup-item"><p class="mono">{{ s.label }}</p><p class="setup-v">{{ s.value }}</p><p class="setup-n">{{ s.note }}</p></div>
+  {% assign P = d.plot %}
+  {% assign H = 300 %}
+  <figure class="boxplot">
+    <svg viewBox="0 0 360 360" role="img" aria-label="Box plot of GUS-positive foci per sample at 6 cm and 12 cm target distance">
+      <!-- y axis -->
+      {% assign ticks = "0,10,20,30,40,50,60" | split: "," %}
+      {% for t in ticks %}
+        {% assign ty = t | times: H | divided_by: P.max %}
+        {% assign y = 320 | minus: ty %}
+        <line class="bp-grid" x1="42" y1="{{ y }}" x2="340" y2="{{ y }}"/>
+        <text class="bp-tick" x="34" y="{{ y | plus: 4 }}" text-anchor="end">{{ t }}</text>
       {% endfor %}
-    </div>
-    <div class="bx-scene">{% assign entry_scene = page.scene %}{% include entry-scene.html %}</div>
-  </section>
+      <text class="bp-axis" transform="translate(13 190) rotate(-90)" text-anchor="middle">GUS-positive foci per sample</text>
 
-  <section class="bx-sec reveal">
-    <p class="px-num mono">02 — The data</p>
-    <h2 class="px-h">31 bombardments.<br><span>Every blue focus counted by hand.</span></h2>
-
-    <div class="dist">
-      {% for g in d.groups %}
-      <div class="dist-group">
-        <div class="dist-head">
-          <p class="dist-name">{{ g.name }}<span class="mono">{{ g.sub }}</span></p>
-          <p class="mono">n = {{ g.n }}</p>
-        </div>
-        <div class="strip" aria-label="Foci counts for the {{ g.name }} group: {{ g.counts | join: ', ' }}">
-          {% for c in g.counts %}
-          <span class="dot" style="--h: {{ c | times: 100 | divided_by: 55 | at_least: 3 }}%; --i: {{ forloop.index }}" title="{{ c }} foci"></span>
+      {% for g in P.groups %}
+        {% assign cx = forloop.index0 | times: 150 | plus: 130 %}
+        {% assign x1 = cx | minus: 38 %}{% assign x2 = cx | plus: 38 %}
+        {% assign yq1 = 320 | minus: g.q1 | plus: 0 %}
+        {% assign pq1 = g.q1 | times: H | divided_by: P.max %}{% assign yq1 = 320 | minus: pq1 %}
+        {% assign pq3 = g.q3 | times: H | divided_by: P.max %}{% assign yq3 = 320 | minus: pq3 %}
+        {% assign pmd = g.median | times: H | divided_by: P.max %}{% assign ymd = 320 | minus: pmd %}
+        {% assign pwh = g.whisker | times: H | divided_by: P.max %}{% assign ywh = 320 | minus: pwh %}
+        {% assign pmn = g.min | times: H | divided_by: P.max %}{% assign ymn = 320 | minus: pmn %}
+        {% assign boxh = yq1 | minus: yq3 %}
+        <g class="bp-group" style="--i: {{ forloop.index }}">
+          <line class="bp-whisk" x1="{{ cx }}" y1="{{ ywh }}" x2="{{ cx }}" y2="{{ yq3 }}"/>
+          <line class="bp-whisk" x1="{{ cx }}" y1="{{ yq1 }}" x2="{{ cx }}" y2="{{ ymn }}"/>
+          <line class="bp-cap" x1="{{ cx | minus: 14 }}" y1="{{ ywh }}" x2="{{ cx | plus: 14 }}" y2="{{ ywh }}"/>
+          <line class="bp-cap" x1="{{ cx | minus: 14 }}" y1="{{ ymn }}" x2="{{ cx | plus: 14 }}" y2="{{ ymn }}"/>
+          <rect class="bp-box" x="{{ x1 }}" y="{{ yq3 }}" width="76" height="{{ boxh }}"/>
+          <line class="bp-median" x1="{{ x1 }}" y1="{{ ymd }}" x2="{{ x2 }}" y2="{{ ymd }}"/>
+          {% for o in g.outliers %}
+            {% assign po = o | times: H | divided_by: P.max %}{% assign yo = 320 | minus: po %}
+            <circle class="bp-out" cx="{{ cx }}" cy="{{ yo }}" r="3.5"/>
           {% endfor %}
-        </div>
-        <dl class="dist-stats">
-          <div><dt class="mono">Median</dt><dd>{{ g.median }}</dd></div>
-          <div><dt class="mono">Mean</dt><dd>{{ g.mean }}</dd></div>
-          <div><dt class="mono">Max</dt><dd>{{ g.max }}</dd></div>
-          <div><dt class="mono">CV</dt><dd>{{ g.cv }}</dd></div>
-        </dl>
-      </div>
+          <text class="bp-label" x="{{ cx }}" y="343" text-anchor="middle">{{ g.name }}</text>
+          <text class="bp-n" x="{{ cx }}" y="356" text-anchor="middle">n = {{ g.n }}</text>
+        </g>
       {% endfor %}
-      <p class="mono bx-axis">each bar = one sample · height = GUS-positive foci (0–55)</p>
-    </div>
+    </svg>
+    <figcaption class="mono">Target distance at 1,100 psi. Box = IQR, line = median, whiskers = 1.5×IQR, points = outliers.</figcaption>
+  </figure>
 
-    <div class="verdict">
-      <p class="verdict-stat mono">{{ d.verdict.stat }}</p>
-      <div>
-        <p class="verdict-t">{{ d.verdict.title }}</p>
-        <p>{{ d.verdict.text }}</p>
-      </div>
+  <div class="bx-cols">
+    <div>
+      <p class="label">Results</p>
+      <ul class="bullets">{% for r in d.results %}<li>{{ r }}</li>{% endfor %}</ul>
     </div>
-  </section>
-
-  <section class="bx-sec reveal">
-    <p class="px-num mono">03 — What it means</p>
-    <ol class="findings">
-      {% for f in d.findings %}
-      <li style="--i: {{ forloop.index }}"><p class="finding-t">{{ f.title }}</p><p>{{ f.text }}</p></li>
-      {% endfor %}
-    </ol>
-    <div class="implication">
-      <p class="label">{{ d.implication.title }}</p>
-      <p>{{ d.implication.text }}</p>
+    <div>
+      <p class="label">My role</p>
+      <div class="prose">{{ content }}</div>
     </div>
-  </section>
-
-  <section class="bx-sec reveal">
-    <p class="px-num mono">04 — My part</p>
-    <div class="prose bx-mine">{{ content }}</div>
-  </section>
+  </div>
 
   <nav class="project-nav" aria-label="More projects">
     {% if pos > 0 %}{% assign pp = all[prev_i] %}
     <a class="pn-card" href="{{ pp.url | relative_url }}"><span class="mono">← Previous</span><span class="pn-title">{{ pp.title }}</span></a>
     {% else %}<span></span>{% endif %}
     {% if next_i < all.size %}{% assign np = all[next_i] %}
-    <a class="pn-card pn-next" href="{{ np.url | relative_url }}"><span class="mono">Next project →</span><span class="pn-title">{{ np.title }}</span></a>
+    <a class="pn-card pn-next" href="{{ np.url | relative_url }}"><span class="mono">Next →</span><span class="pn-title">{{ np.title }}</span></a>
     {% endif %}
   </nav>
 </article>

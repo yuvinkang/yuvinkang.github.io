@@ -2,7 +2,7 @@
 # "scene" picks the animation beside each entry: bioscaffold, biolistics, rover, clinic, design, or none.
 # In summary/highlights, **double asterisks** make text bold.
 
-interests: "Biomaterials and wound healing, and plant biotechnology — from ECM bioscaffolds for diabetic and burn wounds to biolistic gene delivery for plant metabolic engineering."
+interests: "Biomaterials and wound healing; plant biotechnology."
 
 entries:
   - title: "Undergraduate Research Assistant"
@@ -10,11 +10,10 @@ entries:
     location: "New Haven, CT"
     dates: "Sep 2026 – Present"
     scene: bioscaffold
-    summary: "Independent project on how a porcine-derived ECM bioscaffold integrates with host tissue in diabetic and burn wounds."
+    summary: "Biocompatibility and host tissue response of a porcine-derived ECM bioscaffold for diabetic and burn wound repair."
     highlights:
-      - "**Lead** an independent study of the biocompatibility and host tissue response of an ECM bioscaffold for wound repair."
-      - "**Investigate** how apical vs. basal surface properties (scaffold sidedness) shape integration, fibrotic scarring, and wound closure."
-      - "**Assess** in vivo regeneration with H&E and Masson's trichrome histology, immunohistochemistry, and quantitative image analysis."
+      - "Testing how **apical vs. basal scaffold sidedness** affects host integration, fibrotic scarring and wound closure."
+      - "Assessing in vivo regeneration by **H&E and Masson's trichrome histology**, immunohistochemistry and quantitative image analysis."
     link: ""
 
   - title: "Research Assistant"
@@ -22,9 +21,8 @@ entries:
     location: "Dublin, Ireland"
     dates: "May 2025 – Aug 2026"
     scene: biolistics
-    summary: "First-author study of biolistic gene delivery, and plant metabolic engineering toward an Alzheimer's therapeutic."
     link: /projects/biolistic-optimization/
+    summary: "Biolistic gene delivery, and plant metabolic engineering toward galantamine."
     highlights:
-      - "**First-authored a study** of how helium pressure and target distance affect transformation efficiency in *Allium cepa* epidermis — 31 bombardments, analyzed in Python."
-      - "**Contributed** to heterologous production of galantamine, an FDA-approved Alzheimer's drug, in plant cell culture."
-      - "**Performed** aseptic callus culture, plasmid prep, gold microcarrier coating, and GUS reporter screening."
+      - "**First-authored a study** of helium pressure and target distance in *Allium cepa* transformation — 31 bombardments, analyzed in Python."
+      - "Aseptic callus culture, plasmid prep, **gold microcarrier coating** and GUS reporter screening."

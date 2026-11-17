@@ -5,19 +5,19 @@
 
 - src: /assets/images/gallery/photo-1.svg
   caption: "Yale Symphony Orchestra"
-  blurb: "Principal bass, back row, best seat in the house."
+  blurb: "Principal bassist, Yale Symphony Orchestra."
 - src: /assets/images/projects/prari/field.webp
   caption: "Prari Robotics"
-  blurb: "Our rover in the rows — designed in SolidWorks with my co-founders."
+  blurb: "Prari rover prototype, designed in SolidWorks."
 - src: /assets/images/gallery/photo-3.svg
   caption: "Club soccer"
-  blurb: "Yale C1 Club Soccer. Still chasing that 6A semifinal energy."
+  blurb: "Yale C1 Club Soccer."
 - src: /assets/images/gallery/photo-4.svg
   caption: "Kyriakides Lab"
-  blurb: "Bioscaffolds, histology, and a lot of microscope time."
+  blurb: "ECM bioscaffolds and histology at Yale."
 - src: /assets/images/gallery/photo-5.svg
   caption: "Club Taekwondo"
-  blurb: "Social chair by day, board-breaker by night."
+  blurb: "Yale Club Taekwondo."
 - src: /assets/images/gallery/photo-2.svg
   caption: "Ng Lab, Dublin"
-  blurb: "Gene gun + gold particles + onion cells = glowing GFP."
+  blurb: "Biolistic transformation at UCD."

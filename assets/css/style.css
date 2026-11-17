@@ -663,50 +663,29 @@ body { background: var(--page); }
 .edu-logo { width: 54px; height: 54px; background: #fff; border: 1px solid var(--line); object-fit: contain; box-shadow: none; }
 
 /* ───────────── Biolistics paper page ───────────── */
-.bx { max-width: 1000px; margin: 6vh auto 2.5rem; }
-.bx-head { padding: 0 0 1rem; }
-.bx-sec { padding: 9vh 0; border-top: 1px solid var(--line); }
-.bx-head .lede { max-width: 680px; margin-bottom: .9rem; }
-.bx-authors { margin-bottom: 1.6rem; }
+.bx { max-width: var(--width); margin: 6vh auto; }
+.bx .page-title { margin-bottom: .6rem; }
+.bx .lede { max-width: 640px; margin-bottom: .5rem; }
+.bx-authors { margin-bottom: 1.4rem; }
 .bx-paper { display: inline-flex; }
-.bx-sec .px-lede { max-width: 760px; }
-.bx-scene { margin-top: 2rem; max-width: 560px; }
-.setup { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 2rem; }
-.setup-item { padding: 16px 18px; border: 1px solid var(--line); }
-.setup-item .mono { color: var(--accent); }
-.setup-v { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; margin: 2px 0 4px; }
-.setup-n { font-size: .85rem; color: var(--muted); line-height: 1.5; }
+.bx-facts { margin: 2.5rem 0 0; background: transparent; border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.boxplot { margin: 2.5rem 0 0; max-width: 420px; }
+.boxplot svg { width: 100%; height: auto; display: block; }
+.bp-grid { stroke: var(--line); stroke-width: 1; }
+.bp-tick, .bp-label, .bp-n, .bp-axis { font-family: var(--font-mono); fill: var(--muted); }
+.bp-tick { font-size: 10px; }
+.bp-label { font-size: 12px; fill: var(--text); }
+.bp-n { font-size: 10px; }
+.bp-axis { font-size: 10px; }
+.bp-box { fill: var(--tint-soft); stroke: var(--accent); stroke-width: 1.5; }
+.bp-median { stroke: var(--accent); stroke-width: 2.5; }
+.bp-whisk, .bp-cap { stroke: var(--accent); stroke-width: 1.5; }
+.bp-out { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+.bp-group { opacity: 0; transform: translateY(8px); transition: opacity .6s var(--ease), transform .6s var(--ease); transition-delay: calc(var(--i) * 120ms); }
+.is-visible .bp-group { opacity: 1; transform: none; }
+.boxplot figcaption { margin-top: .7rem; font-size: .68rem; color: var(--muted); line-height: 1.5; }
+.bx-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2.6rem; }
+.bx-cols .label { margin-bottom: .9rem; }
+.bx-cols .prose ul { margin: 0; }
+@media (max-width: 760px) { .bx-cols { grid-template-columns: 1fr; gap: 1.8rem; } }
 
-/* distribution strips */
-.dist { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
-.dist-group { }
-.dist-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .75rem; }
-.dist-name { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.02em; }
-.dist-name .mono { display: block; font-size: .7rem; font-weight: 400; color: var(--muted); letter-spacing: .04em; }
-.strip { display: flex; align-items: flex-end; gap: 4px; height: 140px; padding: 0 0 2px; border-bottom: 1px solid var(--line); }
-.dot { flex: 1; min-width: 5px; height: var(--h); background: var(--tint); border-top: 2px solid var(--accent); transform-origin: bottom;
-  transform: scaleY(0); transition: transform .6s var(--ease); transition-delay: calc(var(--i) * 45ms); }
-.is-visible .dot { transform: scaleY(1); }
-.dist-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: .9rem 0 0; border: 1px solid var(--line); }
-.dist-stats > div { padding: 10px 12px; border-right: 1px solid var(--line); }
-.dist-stats > div:last-child { border-right: 0; }
-.dist-stats dt { color: var(--accent); font-size: .66rem; margin-bottom: 2px; }
-.dist-stats dd { margin: 0; font-weight: 600; font-size: 1.02rem; }
-.bx-axis { grid-column: 1 / -1; font-size: .66rem; color: var(--muted); }
-
-.verdict { display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; align-items: start; margin-top: 2.2rem; padding: 1.6rem 1.8rem; background: var(--bg-tint); border-left: 3px solid var(--accent); }
-.verdict-stat { font-size: 1.6rem; font-weight: 500; color: var(--accent); letter-spacing: -0.02em; white-space: nowrap; }
-.verdict-t { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: .4rem; }
-
-.findings { list-style: none; padding: 0; margin: 0; counter-reset: f; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.findings li { counter-increment: f; background: #fff; padding: 1.4rem 1.6rem; }
-.finding-t { font-weight: 600; font-size: 1.08rem; letter-spacing: -0.015em; margin-bottom: .3rem; }
-.finding-t::before { content: "0" counter(f); font-family: var(--font-mono); font-size: .72rem; color: var(--accent); margin-right: 10px; }
-.implication { margin-top: 2rem; padding: 1.6rem 1.8rem; border: 1px solid var(--tint); background: var(--tint-soft); }
-.implication .label { margin-bottom: .6rem; }
-.bx-mine { max-width: 760px; }
-
-@media (max-width: 860px) {
-  .setup, .dist { grid-template-columns: 1fr; }
-  .verdict { grid-template-columns: 1fr; gap: .6rem; }
-}

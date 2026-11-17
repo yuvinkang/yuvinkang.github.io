@@ -1,11 +1,11 @@
-# PROFILE — your bio, education, and awards.
+# PROFILE — bio, education, awards.
 # The bio is plain text: leave a blank line between paragraphs. **bold**, *italics* and [links](https://...) work.
 bio: |
-  I'm a biomedical engineering student at Yale, from Duluth, Georgia. My work sits where tissue engineering, plant biotechnology, and hardware meet.
+  Biomedical engineering student at Yale, from Duluth, Georgia.
 
-  Right now I'm in the **Kyriakides Lab**, studying how ECM bioscaffolds integrate with host tissue in diabetic and burn wounds. Before that, I optimized biolistic gene delivery in the **Ng Lab** at University College Dublin. I also co-founded **Prari Robotics**, an autonomous rover for plant and soil health.
+  I work in the **Kyriakides Lab** on how ECM bioscaffolds integrate with host tissue in diabetic and burn wounds. Previously in the **Ng Lab** at University College Dublin on biolistic gene delivery. I co-founded **Prari Robotics**, an autonomous rover for soil and plant health.
 
-  Outside the lab I'm principal bassist of the Yale Symphony Orchestra, and I play club soccer and train in taekwondo.
+  Principal bassist of the Yale Symphony Orchestra. Club soccer and taekwondo.
 
 education:
   - school: "Yale University"
