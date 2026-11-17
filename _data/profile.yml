@@ -10,10 +10,11 @@
 #            waver        the stick figure
 #            bioscaffold  the Kyriakides Lab scene
 #            interests    music / soccer / taekwondo switcher
-#            galantamine  the daffodil → galantamine walkthrough
-#            fields       the three fields of biomedical engineering
+#            galantamine  the daffodil → galantamine animation (plays itself)
 #            quote        a pull quote, set in `note:`
 #          leave it out for a full-width block.
+#   side:  right or left to pin the panel to that side; otherwise blocks
+#          alternate down the page.
 #   note:  the pull quote, when aside is `quote`.
 
 bio:
@@ -30,18 +31,12 @@ bio:
     text: |
       I also love to play music in various chamber groups, composition ensembles, and the **Yale Symphony Orchestra**. I like to explore sports too — Yale's club soccer first team, Social Chair for **Yale Taekwondo**, and basketball with friends.
 
-  - text: |
-      Intellectually, I love thinking about <b class="t-bio">evolutionary biology</b> — how crazy it is for us to be here, how genes evolved, how cellular machinery this advanced could self-evolve.
-
-      One of my favourite facts: we crave sugars and carbohydrates because those resources were seasonally scarce in our ancestral environment.
-
-  - aside: fields
-    text: |
-      I hope to innovate in **biomedical engineering** across <b class="t-delivery">drug delivery</b>, <b class="t-design">product design</b> and <b class="t-research">research technology</b>, to keep exploring what blows my mind.
-
   - aside: galantamine
+    side: right
     text: |
-      I envision a future of medicine based in nature. In the **Ng Lab** I worked on bringing <b class="t-bio">galantamine</b>, a moderate Alzheimer's therapeutic, into viable cell-culture manufacturing. Galantamine is produced naturally in daffodil glandular trichomes.
+      Intellectually, I love thinking about <b class="t-bio">evolutionary biology</b> — how crazy it is for us to be here, how genes evolved, how cellular machinery this advanced could self-evolve. One of my favourite facts: we crave sugars and carbohydrates because those resources were seasonally scarce in our ancestral environment.
+
+      I hope to innovate in **biomedical engineering** across <b class="t-delivery">drug delivery</b>, <b class="t-design">product design</b> and <b class="t-research">research technology</b>, and I envision a future of medicine based in nature. In the **Ng Lab** I worked on bringing <b class="t-bio">galantamine</b>, a moderate Alzheimer's therapeutic, into viable cell-culture manufacturing — it is produced naturally in daffodil glandular trichomes.
 
   - aside: quote
     note: "If nature can make us, it can repair us."

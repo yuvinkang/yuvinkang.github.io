@@ -1,13 +1,14 @@
 {%- comment -%}
-Daffodil → galantamine walkthrough. Four steps, driven by the generic
-[data-toggle-group] widget in site.js; each step shows one <g data-panel>.
+Daffodil → galantamine. Plays on its own: four stages crossfade on one 20s
+CSS cycle (`galShow`, staggered by --n), with the caption and the step dots
+on the same timing. No clicking — nothing here is a control.
 Hand-written SVG, not a _tools/scenes.py output.
 {%- endcomment -%}
-<div class="gal" data-toggle-scope>
+<div class="gal">
   <svg class="gal-svg" viewBox="0 0 320 210" role="img"
-       aria-label="Galantamine from daffodil glandular trichomes to cell culture">
+       aria-label="Galantamine taken from daffodil glandular trichomes through extraction into cell culture">
     <!-- 1. the daffodil -->
-    <g data-panel="g1" class="gal-stage">
+    <g class="gal-stage" style="--n: 0">
       <line class="gal-ground" x1="40" y1="186" x2="280" y2="186"/>
       <path class="gal-stem" d="M160 186 C 158 150 156 120 158 92"/>
       <path class="gal-leaf" d="M158 182 C 126 168 116 136 126 112 C 146 128 156 156 158 182Z"/>
@@ -24,7 +25,7 @@ Hand-written SVG, not a _tools/scenes.py output.
     </g>
 
     <!-- 2. glandular trichomes on the leaf surface -->
-    <g data-panel="g2" class="gal-stage">
+    <g class="gal-stage" style="--n: 1">
       <path class="gal-surface" d="M30 150 C 90 132 230 132 290 150 L290 186 L30 186Z"/>
       {% assign xs = "58,96,134,172,210,248" | split: "," %}
       {% for x in xs %}
@@ -38,21 +39,19 @@ Hand-written SVG, not a _tools/scenes.py output.
     </g>
 
     <!-- 3. extraction -->
-    <g data-panel="g3" class="gal-stage">
+    <g class="gal-stage" style="--n: 2">
       <path class="gal-glass" d="M128 44 L128 92 L96 164 a12 12 0 0 0 11 18 L209 182 a12 12 0 0 0 11 -18 L188 92 L188 44Z"/>
       <path class="gal-liquid" d="M110 148 L206 148 L209 162 a12 12 0 0 1 -11 18 L118 180 a12 12 0 0 1 -11 -18Z"/>
       <line class="gal-glass" x1="122" y1="44" x2="194" y2="44"/>
-      {% assign ys = "1,2,3,4,5" | split: "," %}
-      {% for n in ys %}
-      <circle class="gal-bub" cx="{{ 130 | plus: forloop.index0 | times: 1 }}" r="3.4"
-              style="--i: {{ n }}; --bx: {{ forloop.index0 | times: 16 | plus: 132 }}px"/>
+      {% for n in (1..5) %}
+      <circle class="gal-bub" cx="0" cy="0" r="3.4"
+              style="--i: {{ n }}; --bx: {{ n | times: 16 | plus: 116 }}px"/>
       {% endfor %}
-      <path class="gal-arrow" d="M232 112 h40 m-12 -9 l12 9 l-12 9"/>
     </g>
 
     <!-- 4. cell-culture manufacture -->
-    <g data-panel="g4" class="gal-stage">
-      <rect class="gal-tank" x="86" y="56" width="104" height="112" rx="0"/>
+    <g class="gal-stage" style="--n: 3">
+      <rect class="gal-tank" x="86" y="56" width="104" height="112"/>
       <path class="gal-broth" d="M86 104 h104 v64 h-104Z"/>
       <line class="gal-shaft" x1="138" y1="40" x2="138" y2="150"/>
       <g class="gal-impeller">
@@ -74,15 +73,10 @@ Hand-written SVG, not a _tools/scenes.py output.
     </g>
   </svg>
 
-  <div class="gal-steps" data-toggle-group data-hover>
-    <button type="button" class="gal-step" data-show="g1"><span class="mono">01</span>Daffodil</button>
-    <button type="button" class="gal-step" data-show="g2"><span class="mono">02</span>Glandular trichomes</button>
-    <button type="button" class="gal-step" data-show="g3"><span class="mono">03</span>Extraction</button>
-    <button type="button" class="gal-step" data-show="g4"><span class="mono">04</span>Cell culture</button>
+  <div class="gal-cap-row" aria-hidden="true">
+    <p class="gal-note" style="--n: 0"><span class="mono">01</span> Daffodil — <em>Narcissus</em> makes galantamine itself.</p>
+    <p class="gal-note" style="--n: 1"><span class="mono">02</span> It collects in glandular trichomes on the leaf.</p>
+    <p class="gal-note" style="--n: 2"><span class="mono">03</span> Extraction from the plant, at the mercy of the season.</p>
+    <p class="gal-note" style="--n: 3"><span class="mono">04</span> In cell culture, the supply stops depending on weather.</p>
   </div>
-
-  <p class="gal-note" data-panel="g1"><em>Narcissus</em> makes galantamine itself — no synthesis needed.</p>
-  <p class="gal-note" data-panel="g2">The alkaloid collects in glandular trichomes on the leaf surface.</p>
-  <p class="gal-note" data-panel="g3">Field extraction is slow and the yield moves with the season.</p>
-  <p class="gal-note" data-panel="g4">Put the pathway in culture and the supply stops depending on the weather.</p>
 </div>

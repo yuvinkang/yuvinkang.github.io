@@ -2,7 +2,7 @@
 
 <div class="bio">
   {% for b in p.bio %}
-  <div class="bio-block{% if b.aside %} has-aside{% else %} no-aside{% endif %}{% if b.lead %} is-lead{% endif %}" style="--i: {{ forloop.index }}">
+  <div class="bio-block{% if b.aside %} has-aside{% else %} no-aside{% endif %}{% if b.lead %} is-lead{% endif %}{% if b.side %} aside-{{ b.side }}{% endif %}" style="--i: {{ forloop.index }}">
     <div class="bio-text prose">{{ b.text | markdownify }}</div>
     {% if b.aside %}
     <div class="bio-aside">
@@ -11,7 +11,6 @@
         {% when "bioscaffold" %}<div class="bio-fig">{% include scenes/bioscaffold.html %}</div>
         {% when "interests" %}{% include interests.html %}
         {% when "galantamine" %}{% include galantamine.html %}
-        {% when "fields" %}{% include fields.html %}
         {% when "quote" %}<blockquote class="bio-quote">{{ b.note }}</blockquote>
       {% endcase %}
     </div>
