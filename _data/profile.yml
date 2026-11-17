@@ -42,7 +42,7 @@ bio:
   - aside: galantamine
     side: right
     text: |
-      Intellectually, I love thinking about <b class="t-bio">evolutionary biology</b> — how crazy it is for us to be here, how genes evolved, how cellular machinery this advanced could self-evolve. More importantly, this informs how we think about society, medicine, and collective subconcious. One of my favourite facts: we crave sugars and carbs today because those resources were seasonally scarce in our ancestral environment.
+      Intellectually, I love thinking about <b class="t-bio">evolutionary biology</b> — how crazy it is for us to be here, how genes converge and self-select, how cellular machinery this advanced could evolve. More importantly, these concepts inform how we think about present-day society, medicine, and collective subconcious. One of my favourite facts: we crave sugars and carbs today because those resources were seasonally scarce in our ancestral environment.
 
       I hope to innovate in **biomedical engineering** across <b class="t-delivery">drug delivery</b>, <b class="t-design">product design</b> and <b class="t-research">research technology</b>, and I envision a future of medicine based in nature. In the **Ng Lab** I worked on bringing <b class="t-bio">galantamine</b>, a moderate Alzheimer's therapeutic, into viable cell-culture manufacturing — Galantamine is produced naturally in daffodil glandular trichomes, just one example of how nature holds our therapeutic secrets, just waiting to be discovered!
 
@@ -59,7 +59,7 @@ bio:
     cite: "Doctor Strange (2016)"
     class: film
     text: |
-      This is my favourite quote from one of my favourite movies: not just fiction, I hope medicine never grows to be synthetic or artificial. I hope it roots itself in where we come from, where we exist, and where we will return.
+      This is one of my favorite movie quotes: not just fiction, I hope medicine never grows to be synthetic or artificial. I hope it roots itself in where we come from, where we exist, and where we will return.
 
       AO: The Ancient One, DS: Doctor Strange
 
@@ -87,8 +87,6 @@ education:
 awards:
   - name: "National Merit Scholar (top 0.5% nationally in academic performance)"
     date: "Mar 2025"
-  - name: "QuestBridge National College Match Finalist"
-    date: "Oct 2025"
   - name: "Interlochen Arts Camp Full Orchestral Scholarship (×2) — 1 of 3 bassists selected internationally"
     date: "2024, 2025"
   - name: "GSMST Concerto Competition Winner — performed Bottesini Concerto No. 2 with full orchestra at Gas South Arena"
