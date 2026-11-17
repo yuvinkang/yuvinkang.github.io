@@ -637,11 +637,16 @@ body { background: transparent; }
 .tab.active .tab-label { color: var(--brand); }
 
 /* inside blocks */
+/* entries sit straight on the page: no white card, no gap, so the gradient
+   runs through research and experience without seams */
 .entries { gap: 0; }
-.entry { border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 2.4rem 0; }
+.entry { background: transparent; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 2.4rem 0; }
 .entry:first-child { border-top: 0; padding-top: .5rem; }
 .entry:hover { border-color: var(--line); box-shadow: none; transform: none; }
 .entry-scene, .personal-scene, .profile-scene, .section-scene-sm, .project-scene, .bx-scene, .rm-rover { background: transparent; border: 0; box-shadow: none; padding: 0; }
+/* project cards keep their hairline border for the click target, but no white
+   fill, so they don't cut a seam out of the page gradient either */
+.card { background: transparent; }
 .card:hover { border-color: var(--accent); background: transparent; }
 .cabin { box-shadow: 0 6px 16px -10px rgba(13,27,42,.5), 0 0 0 1px var(--line); }
 .gondola:hover .cabin, .gondola.is-active .cabin { box-shadow: 0 10px 22px -12px rgba(13,27,42,.5), 0 0 0 2px var(--accent); }
