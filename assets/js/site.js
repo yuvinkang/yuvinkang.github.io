@@ -264,12 +264,12 @@
       el.className = 'am ' + k[3];
       el.innerHTML = '<svg viewBox="0 0 40 34" width="' + k[1] + '" height="' + (k[1] * .85) + '"><use href="#am-' + k[0] + '"/></svg>';
       host.appendChild(el);
-      var ang = Math.random() * Math.PI * 2, sp = 16 + Math.random() * 20;
+      var ang = Math.random() * Math.PI * 2, sp = 9 + Math.random() * 11;
       items.push({
         el: el, r: k[1] * .5, m: k[2],
         x: Math.random() * W, y: Math.random() * H,
         vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
-        a: Math.random() * 360, va: (Math.random() - .5) * 16,
+        a: Math.random() * 360, va: (Math.random() - .5) * 9,
         // each one wanders on its own slow heading
         wa: Math.random() * Math.PI * 2, ws: 0.18 + Math.random() * 0.3
       });
@@ -279,12 +279,21 @@
     addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }, { passive: true });
     addEventListener('pointerleave', function () { mouse.active = false; mouse.x = mouse.y = -9999; });
 
-    var last = 0, running = true;
+    var last = 0, running = true, layer = document.querySelector('[data-ambient]'), fade = 1;
     document.addEventListener('visibilitychange', function () { running = !document.hidden; last = 0; });
+    // only on the landing page: fade out over the first screen, then stop
+    function updateFade() {
+      var hero = document.querySelector('.hero');
+      var span = hero ? hero.offsetHeight * 0.7 : innerHeight * 0.7;
+      var f = 1 - Math.min(1, Math.max(0, scrollY / span));
+      if (Math.abs(f - fade) > 0.01) { fade = f; layer.style.setProperty('--amb-fade', f.toFixed(2)); }
+    }
+    addEventListener('scroll', updateFade, { passive: true });
+    updateFade();
 
     function step(t) {
       requestAnimationFrame(step);
-      if (!running) { last = 0; return; }
+      if (!running || fade <= 0.02) { last = 0; return; }   // stopped once it has faded out
       var dt = last ? Math.min(0.05, (t - last) / 1000) : 0.016; last = t;
       var R = 170, R2 = R * R;
       for (var i = 0; i < items.length; i++) {
@@ -300,15 +309,15 @@
           }
         }
         // slow wandering heading keeps everything drifting instead of settling
-        p.wa += (Math.random() - .5) * 1.6 * dt + p.ws * dt;
-        p.vx += Math.cos(p.wa) * 26 * dt;
-        p.vy += Math.sin(p.wa) * 26 * dt;
+        p.wa += (Math.random() - .5) * 1.2 * dt + p.ws * dt;
+        p.vx += Math.cos(p.wa) * 13 * dt;
+        p.vy += Math.sin(p.wa) * 13 * dt;
         // light drag only — enough to damp a cursor hit, not enough to stop the drift
         var drag = Math.exp(-0.22 * dt);
         p.vx *= drag; p.vy *= drag; p.va *= Math.exp(-0.35 * dt);
         var sp = Math.hypot(p.vx, p.vy);
-        if (sp > 300) { p.vx *= 300 / sp; p.vy *= 300 / sp; }
-        else if (sp < 9) { var s2 = 9 / (sp || 1); p.vx *= s2; p.vy *= s2; }   // never fully stall
+        if (sp > 190) { p.vx *= 190 / sp; p.vy *= 190 / sp; }
+        else if (sp < 5) { var s2 = 5 / (sp || 1); p.vx *= s2; p.vy *= s2; }   // never fully stall
         p.x += p.vx * dt; p.y += p.vy * dt; p.a += p.va * dt;
         if (p.x < p.r) { p.x = p.r; p.vx = Math.abs(p.vx) * .8; p.va += 10; }
         else if (p.x > W - p.r) { p.x = W - p.r; p.vx = -Math.abs(p.vx) * .8; p.va -= 10; }

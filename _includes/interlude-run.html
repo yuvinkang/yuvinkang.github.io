@@ -1,11 +1,17 @@
-<div class="run-lane" aria-label="A stickman jogging across the page">
+<div class="run-lane" aria-label="Stickmen jogging across the page">
   <div class="lane-track" aria-hidden="true"></div>
-  <div class="jog">
-    {% if site.strava and site.strava != "" %}
-    <a class="jog-bubble" href="{{ site.strava }}">i love to run too! add me on strava <strong>@Yuvin Kang</strong> ↗</a>
+  {% for r in site.data.runners %}
+  <div class="jog" style="--dur: {{ r.speed | default: 24 }}s; --delay: -{{ forloop.index0 | times: 7 }}s; --gait: {{ r.speed | divided_by: 34.0 | plus: 0.42 }}s; --lane: {{ forloop.index0 | modulo: 3 }}">
+    {% if r.link and site.strava and site.strava != "" %}
+    <a class="jog-bubble" href="{{ site.strava }}">{{ r.says | markdownify | remove: '<p>' | remove: '</p>' }} ↗</a>
     {% else %}
-    <span class="jog-bubble">i love to run too! add me on strava <strong>@Yuvin Kang</strong></span>
+    <span class="jog-bubble">{{ r.says | markdownify | remove: '<p>' | remove: '</p>' }}</span>
     {% endif %}
-    {% include scenes/jogger.html %}
+    {% case r.kind %}
+      {% when "ball" %}{% include scenes/runner-ball.html %}
+      {% when "book" %}{% include scenes/runner-book.html %}
+      {% else %}{% include scenes/runner-plain.html %}
+    {% endcase %}
   </div>
+  {% endfor %}
 </div>

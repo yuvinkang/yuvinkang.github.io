@@ -26,7 +26,6 @@
 
 {% if p.awards %}
 <p class="label label-gap">Awards</p>
-<div class="awards-scene">{% include scenes/podium.html %}</div>
 <ul class="rows rows-tight">
   {% for a in p.awards %}
   <li class="row" style="--i: {{ forloop.index }}">
