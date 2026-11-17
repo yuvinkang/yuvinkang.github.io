@@ -1,0 +1,91 @@
+---
+layout: default
+---
+{% assign d = site.data.dispenser %}
+{% assign all = site.projects | sort: "order" %}
+{% for p in all %}{% if p.url == page.url %}{% assign pos = forloop.index0 %}{% endif %}{% endfor %}
+{% assign next_i = pos | plus: 1 %}
+{% assign dw = '/assets/drawings/dispenser-' %}
+
+<article class="px">
+
+  <header class="px-hero px-hero-plain">
+    <div class="px-hero-text">
+      <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a></p>
+      <h1 class="px-title">{{ page.title }}</h1>
+      <p class="px-tag">{{ d.tagline }}</p>
+      <div class="px-chips">{% for c in d.chips %}<span class="px-chip">{{ c }}</span>{% endfor %}</div>
+    </div>
+  </header>
+
+  <dl class="facts reveal">
+    <div><dt class="mono">My role</dt><dd>{{ page.role }}</dd></div>
+    <div><dt class="mono">Tools</dt><dd>{{ page.tools | join: " · " }}</dd></div>
+    <div><dt class="mono">Year</dt><dd>{{ page.year }}</dd></div>
+    <div><dt class="mono">Model</dt><dd><a href="{{ '/assets/files/nicotine-dispenser.step' | relative_url }}" download>STEP file ↓</a></dd></div>
+  </dl>
+
+  <section class="px-sec reveal">
+    <p class="px-num mono">01 — The idea</p>
+    <h2 class="px-h">The idea</h2>
+    <p class="px-lede">{{ d.idea }}</p>
+  </section>
+
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">02 — Drawings</p>
+    <h2 class="px-h">Drawings</h2>
+    <div class="dr-tabs" data-toggle-group>
+      {% for v in d.drawings %}
+      <button type="button" class="mod-btn" data-show="d{{ forloop.index }}">{{ v.name }}</button>
+      {% endfor %}
+    </div>
+    {% for v in d.drawings %}
+    <figure class="dr-sheet" data-panel="d{{ forloop.index }}">
+      <img src="{{ dw | append: v.file | append: '.svg' | relative_url }}" alt="{{ v.name }} drawing of the dispenser">
+      <figcaption class="mono">{{ v.note }}</figcaption>
+    </figure>
+    {% endfor %}
+  </section>
+
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">03 — Mechanism</p>
+    <h2 class="px-h">How the dose steps down</h2>
+    <div class="sc-feats">
+      <div class="mod-list" data-toggle-group data-hover>
+        {% for m in d.mechanism %}
+        <button type="button" class="mod-btn" data-show="m{{ forloop.index }}">
+          <span class="mono">{{ forloop.index }}</span>{{ m.name }}
+        </button>
+        {% endfor %}
+      </div>
+      <div class="sc-feat-notes">
+        {% for m in d.mechanism %}
+        <div class="mod-card" data-panel="m{{ forloop.index }}">
+          <p class="mono">Part 0{{ forloop.index }}</p>
+          <p class="mod-card-t">{{ m.name }}</p>
+          <p>{{ m.note }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-sec reveal">
+    <p class="px-num mono">04 — My part</p>
+    <h2 class="px-h">My part</h2>
+    <div class="px-mine">
+      <div class="prose">{{ content }}</div>
+      <div class="px-skills">
+        <p class="label">Skills</p>
+        <div class="skill-chips">{% for s in d.skills %}<span class="skill-chip">{{ s }}</span>{% endfor %}</div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="project-nav" aria-label="More projects">
+    <span></span>
+    {% if next_i < all.size %}{% assign np = all[next_i] %}
+    <a class="pn-card pn-next" href="{{ np.url | relative_url }}"><span class="mono">Next project →</span><span class="pn-title">{{ np.title }}</span></a>
+    {% endif %}
+  </nav>
+</article>

@@ -749,3 +749,38 @@ body { background: transparent; }
   .jog .mini-runner { width: 42px; }
   .jog-bubble { font-size: .6rem; padding: 4px 8px; left: 18px; }
 }
+
+/* ───────────── Shower-chair project page ───────────── */
+.sc-views { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 2rem; align-items: start; }
+.sc-stage { position: relative; aspect-ratio: 17 / 13; background: var(--tint-soft); overflow: hidden; }
+.sc-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .45s var(--ease); }
+.sc-stage img.on { opacity: 1; }
+.sc-tabs { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.1rem; }
+.sc-note { display: none; color: var(--muted); font-size: .92rem; margin: 0; }
+.sc-note.on { display: block; }
+.sc-feats { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2rem; align-items: start; }
+.sc-feat-notes { position: relative; min-height: 150px; }
+.sc-feats .mod-card { display: none; }
+.sc-feats .mod-card.on { display: block; }
+.sc-feats .mod-btn { text-align: left; display: flex; gap: 12px; align-items: baseline; }
+.sc-feats .mod-btn .mono { color: var(--accent); }
+.sc-still { width: 100%; height: auto; display: block; background: var(--tint-soft); }
+@media (max-width: 860px) {
+  .sc-views, .sc-feats { grid-template-columns: 1fr; gap: 1.4rem; }
+  .sc-tabs { flex-direction: row; flex-wrap: wrap; }
+}
+
+/* ───────────── Dispenser drawing sheets ───────────── */
+.px-hero-plain { min-height: 0; padding: 7vh 0 1rem; background: transparent; }
+.px-hero-plain .px-hero-text { position: static; padding: 0; color: inherit; }
+.px-hero-plain .px-title { color: var(--text); }
+.px-hero-plain .px-tag { color: var(--muted); }
+.px-hero-plain .px-chip { background: var(--tint-soft); color: var(--brand); border: 1px solid var(--tint); }
+.dr-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.4rem; }
+.dr-sheet { display: none; margin: 0; }
+.dr-sheet.on { display: block; }
+.dr-sheet img { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: #fff; }
+.dr-sheet figcaption { margin-top: .7rem; color: var(--muted); font-size: .76rem; }
+.dr-tabs .mod-btn { white-space: nowrap; width: auto; flex: 0 0 auto; padding: 9px 16px; }
+.sc-tabs .mod-btn { white-space: nowrap; }

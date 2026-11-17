@@ -1,0 +1,112 @@
+---
+layout: default
+---
+{% assign d = site.data.showerchair %}
+{% assign all = site.projects | sort: "order" %}
+{% for p in all %}{% if p.url == page.url %}{% assign pos = forloop.index0 %}{% endif %}{% endfor %}
+{% assign next_i = pos | plus: 1 %}
+{% assign img = '/assets/images/projects/shower-chair/' %}
+
+<article class="px">
+
+  <header class="px-hero">
+    <img class="px-hero-img" src="{{ img | append: 'hero.webp' | relative_url }}" alt="The shower chair straddling a tub wall, seat carriage mid-travel">
+    <div class="px-hero-shade"></div>
+    <div class="px-hero-text">
+      <p class="eyebrow"><a href="{{ '/' | relative_url }}#projects">← All projects</a></p>
+      <h1 class="px-title">{{ page.title }}</h1>
+      <p class="px-tag">{{ d.tagline }}</p>
+      <div class="px-chips">{% for c in d.chips %}<span class="px-chip">{{ c }}</span>{% endfor %}</div>
+    </div>
+  </header>
+
+  <dl class="facts reveal">
+    <div><dt class="mono">My role</dt><dd>{{ page.role }}</dd></div>
+    <div><dt class="mono">Tools</dt><dd>{{ page.tools | join: " · " }}</dd></div>
+    <div><dt class="mono">Year</dt><dd>{{ page.year }}</dd></div>
+    <div><dt class="mono">Model</dt><dd><a href="{{ '/assets/files/accessible-shower-chair.step' | relative_url }}" download>STEP file ↓</a></dd></div>
+  </dl>
+
+  <section class="px-sec reveal">
+    <p class="px-num mono">01 — The idea</p>
+    <h2 class="px-h">The idea</h2>
+    <p class="px-lede">{{ d.idea }}</p>
+  </section>
+
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">02 — The model</p>
+    <h2 class="px-h">Modelled in SolidWorks</h2>
+    <div class="sc-views">
+      <div class="sc-stage">
+        {% for v in d.views %}
+        <img data-panel="v{{ forloop.index }}" src="{{ img | append: v.file | append: '.webp' | relative_url }}" alt="{{ v.name }} render of the shower chair">
+        {% endfor %}
+      </div>
+      <div class="sc-side">
+        <div class="sc-tabs" data-toggle-group data-hover>
+          {% for v in d.views %}
+          <button type="button" class="mod-btn" data-show="v{{ forloop.index }}">{{ v.name }}</button>
+          {% endfor %}
+        </div>
+        {% for v in d.views %}
+        <p class="sc-note" data-panel="v{{ forloop.index }}">{{ v.note | default: v.height }}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-sec reveal" data-toggle-scope>
+    <p class="px-num mono">03 — Mechanisms</p>
+    <h2 class="px-h">Eight mechanisms</h2>
+    <div class="sc-feats">
+      <div class="mod-list" data-toggle-group data-hover>
+        {% for f in d.features %}
+        <button type="button" class="mod-btn" data-show="f{{ forloop.index }}">
+          <span class="mono">{{ forloop.index }}</span>{{ f.name }}
+        </button>
+        {% endfor %}
+      </div>
+      <div class="sc-feat-notes">
+        {% for f in d.features %}
+        <div class="mod-card" data-panel="f{{ forloop.index }}">
+          <p class="mono">Feature 0{{ forloop.index }}</p>
+          <p class="mod-card-t">{{ f.name }}</p>
+          <p>{{ f.note }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-sec reveal">
+    <p class="px-num mono">04 — Drive</p>
+    <h2 class="px-h">Motor and cable loop</h2>
+    <div class="px-solution">
+      <img class="sc-still" src="{{ img | append: 'drive.webp' | relative_url }}" alt="Gearmotor, gearbox and cable drum under the outboard rails">
+      <div class="px-design">
+        {% for x in d.drive %}
+        <div class="px-design-item"><p class="px-design-t">{{ x.title }}</p><p>{{ x.text }}</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-sec reveal">
+    <p class="px-num mono">05 — My part</p>
+    <h2 class="px-h">My part</h2>
+    <div class="px-mine">
+      <div class="prose">{{ content }}</div>
+      <div class="px-skills">
+        <p class="label">Skills</p>
+        <div class="skill-chips">{% for s in d.skills %}<span class="skill-chip">{{ s }}</span>{% endfor %}</div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="project-nav" aria-label="More projects">
+    <span></span>
+    {% if next_i < all.size %}{% assign np = all[next_i] %}
+    <a class="pn-card pn-next" href="{{ np.url | relative_url }}"><span class="mono">Next project →</span><span class="pn-title">{{ np.title }}</span></a>
+    {% endif %}
+  </nav>
+</article>

@@ -1,0 +1,32 @@
+# STEPWISE-DOSING NICOTINE DISPENSER — content for /projects/nicotine-dispenser/.
+# Drawings are projected from the CAD model in _tools/cad/dispenser.py.
+
+tagline: "Handheld dispenser that steps the dose down on a schedule the user cannot skip ahead of."
+chips: ["Product Quickstart · 2024", "Modelled in SolidWorks", "STEP model below"]
+
+idea: "Tapering works when the steps are small and the schedule holds. This dispenser puts the schedule in the mechanism instead of on the label: a 28-pocket carousel holds one pod per day, a ratchet indexes it one pocket per actuation, and a spiral cam under the carousel shortens the metering plunger's stroke once a week. The dose falls whether or not the user keeps count, and nothing resets it short of a new cartridge."
+
+drawings:
+  - file: ga
+    name: "General arrangement"
+    note: "Front, right and top, with hidden detail dashed. Housing splits on the centre plane."
+  - file: section
+    name: "Section A-A"
+    note: "Front half removed. Carousel, ratchet, taper cam and metering plunger in place."
+  - file: mechanism
+    name: "Mechanism"
+    note: "Housing omitted, so the drive train reads on its own."
+
+mechanism:
+  - name: "Carousel"
+    note: "28 pockets, one per day of the course. Loaded as a sealed cartridge through the back door."
+  - name: "Ratchet and pawl"
+    note: "Indexes one pocket per actuation and holds position between doses. The pawl only clears in one direction, so the carousel cannot be wound back."
+  - name: "Taper cam"
+    note: "A four-step spiral under the carousel. Each quarter turn drops the plunger's travel, which is what steps the delivered dose down weekly."
+  - name: "Metering plunger"
+    note: "Sprung plunger running in the metering chamber. Its stroke sets the volume delivered into the airway."
+  - name: "Airway"
+    note: "Runs from the chamber to the mouthpiece in a straight line, so nothing collects in the path."
+
+skills: ["SolidWorks", "Mechanism design", "Technical drawing", "3D printing", "Client reviews"]

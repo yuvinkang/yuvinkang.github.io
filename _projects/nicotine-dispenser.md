@@ -1,11 +1,12 @@
 ---
+layout: dispenser
 title: "Stepwise-Dosing Nicotine Dispenser"
 year: "2024"
 order: 4
 role: "Industrial Design Intern · Product Quickstart"
 tools: ["SolidWorks", "3D printing", "Client reviews"]
 tags: ["Product design", "Health", "Prototyping"]
-summary: "Device that steps nicotine dosing down over time to support tapered cessation."
+summary: "Handheld dispenser that steps the dose down on a schedule the user cannot skip ahead of."
 scene: dispenser
 metrics:
   - value: "Stepwise"
@@ -15,8 +16,9 @@ metrics:
 image: ""
 ---
 
-Dispenser that lowers nicotine dosing in fixed steps, designed during my internship at Product Quickstart.
+I developed the dosing mechanism at Product Quickstart and took it from concept to drawings and printed prototypes.
 
-- Developed the concept and dosing mechanism.
-- Modeled and 3D-printed prototypes in SolidWorks.
-- Presented design reviews to the client.
+- **Designed** the taper as a mechanism: ratchet-indexed carousel, four-step cam, sprung metering plunger.
+- **Modelled** the full assembly in SolidWorks and drew the general arrangement, sections and mechanism views.
+- **Printed** and tested the ratchet and cam until the index held under one-handed actuation.
+- **Presented** design reviews to the client at each step.

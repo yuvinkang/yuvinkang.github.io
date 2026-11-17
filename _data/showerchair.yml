@@ -1,0 +1,54 @@
+# ACCESSIBLE SHOWER CHAIR — content for /projects/accessible-shower-chair/.
+# Renders come from the CAD model in _tools/cad/shower_chair.py.
+
+tagline: "Powered transfer chair that straddles the tub wall and carries the user into the shower."
+chips: ["Product Quickstart · 2024", "Modelled in SolidWorks", "STEP model below"]
+
+idea: "Getting over a tub wall is the hardest part of showering with limited mobility, and it is where most falls happen. The frame stands half outside the tub and half inside it. The user boards at the outboard end on a level floor; a gearmotor and cable loop then draw the seat carriage along the rails and into the shower while a powered leg lift swings the calf support up and over the wall."
+
+# The render views, in the order they appear in the viewer
+views:
+  - file: hero
+    name: "Three-quarter"
+    note: "The frame straddles the wall: outboard legs on the bathroom floor, inboard legs standing in the tub."
+  - file: section
+    name: "Elevation"
+    note: "Seat at rim height, with the leg support raised clear of the wall."
+  - file: drive
+    name: "Drive"
+    note: "Gearmotor, gearbox and cable drum under the outboard rails; the cable clamps to the carriage."
+  - file: leglift
+    name: "Leg lift"
+    note: "Linear actuator between the carriage and the support arms, pivoting under the front of the seat."
+  - file: intub
+    name: "From the tub"
+    height: "Rollers run the carriage along both top rails."
+
+# The eight mechanisms, numbered as they are in the model
+features:
+  - name: "Rotating transfer seat"
+    note: "Turns on a ring under the seat and drops into any of eight notches 45° apart, so it cannot creep under load."
+  - name: "Flip-up armrests"
+    note: "Hinge back out of the way for a wheelchair transfer, and give something to push down on when standing."
+  - name: "Adjustable seat height"
+    note: "Telescoping pin-locked legs. It is also what lets the inboard pair stand on the tub floor while the outboard pair stands on the bathroom floor."
+  - name: "Contoured drainage seat"
+    note: "Dished shell with a front relief and slotted drainage, so water leaves the seat instead of pooling."
+  - name: "Removable leg support"
+    note: "Lifts off its socket on one quick-release pin. Powered, so the legs clear the tub wall as the carriage advances."
+  - name: "Adjustable backrest"
+    note: "Detent plate at each pivot sets the recline for users who cannot hold an upright posture."
+  - name: "Foldable aluminium frame"
+    note: "Cross-braces pivot at the centre of each leg plane so the frame scissors shut for transport and storage."
+  - name: "Replaceable rubber feet"
+    note: "Moulded cups that pull off the leg tubes; the pair inside the tub takes a non-slip wet-surface compound."
+
+drive:
+  - title: "Gearmotor and drum"
+    text: "Mounted under the outboard rails, clear of the shower. The cable wraps the drum and clamps to both ends of the carriage."
+  - title: "Idler at the far end"
+    text: "Closes the loop inside the tub, so the same motor drives the carriage in and back out."
+  - title: "Carriage on rollers"
+    text: "Four rollers capture both top rails; the turntable ring sits straight on top of the carriage deck."
+
+skills: ["SolidWorks", "Mechanism design", "Design for assembly", "Human factors", "3D printing"]
