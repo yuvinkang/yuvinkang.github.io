@@ -24,6 +24,22 @@ layout: default
     {% if page.status %}<div><dt class="mono">Status</dt><dd><span class="status-dot"></span>{{ page.status }}</dd></div>{% endif %}
   </dl>
 
+  {% if page.demo or page.repo %}
+  <div class="project-links reveal">
+    {% if page.demo %}<a class="btn btn-solid" href="{{ page.demo }}" target="_blank" rel="noopener">Open the app ↗</a>{% endif %}
+    {% if page.repo %}<a class="btn" href="{{ page.repo }}" target="_blank" rel="noopener">View on GitHub ↗</a>{% endif %}
+  </div>
+  {% endif %}
+
+  {% if page.demo %}
+  <figure class="project-demo reveal">
+    <figcaption class="mono demo-bar"><span>Live demo</span><span>Click and scroll inside the window</span></figcaption>
+    <div class="demo-frame" data-demo>
+      <iframe src="{{ page.demo }}" title="{{ page.title }}, live demo" loading="lazy"></iframe>
+    </div>
+  </figure>
+  {% endif %}
+
   {% if page.metrics %}
   <div class="metrics reveal">
     {% for m in page.metrics %}

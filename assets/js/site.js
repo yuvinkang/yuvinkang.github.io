@@ -476,6 +476,25 @@
     });
   }
 
+  // Live demo embeds: lay the app out at 1024x700 and scale it to the column; phones get the app's own mobile layout.
+  document.querySelectorAll('[data-demo]').forEach(function (box) {
+    var frame = box.querySelector('iframe');
+    var W = 1024, H = 700;
+    function fit() {
+      var w = box.clientWidth;
+      if (w < 700) {
+        frame.style.width = '100%'; frame.style.height = '100%'; frame.style.transform = ''; box.style.height = '';
+        return;
+      }
+      var s = Math.min(1, w / W);
+      frame.style.width = W + 'px'; frame.style.height = H + 'px';
+      frame.style.transform = 'scale(' + s + ')';
+      box.style.height = Math.round(H * s) + 'px';
+    }
+    fit();
+    window.addEventListener('resize', fit);
+  });
+
   // 4h. Exploded-view scrubber. Double-buffered: two <img> layers take turns,
   //     and a frame is only swapped in once it has decoded, so a frame never
   //     paints half-drawn and the two layers never cross-fade through the
